@@ -18,7 +18,7 @@ class Model_WP_Term_Taxonomy extends Jelly_Model
             ->foreign_key('term_taxonomy_id')
             ->fields(array
             (
-    			'term_taxonomy_id' => new Field_Primary(),
+    			'term_taxonomy_id' => new Field_Primary,
                 'term_id' => new Field_Integer(array
                 (
                     'default' => 0,

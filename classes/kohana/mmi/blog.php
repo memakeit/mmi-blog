@@ -97,7 +97,7 @@ abstract class Kohana_MMI_Blog
      */
     protected function _extract_results($items, $ids = array(), $preserve_keys = FALSE)
     {
-        $result = ($preserve_keys) ? $items : array_values($items);
+        $result = $preserve_keys ? $items : (array_values($items));
         if (MMI_Util::is_set($ids))
         {
             $result = array();
@@ -150,7 +150,7 @@ abstract class Kohana_MMI_Blog
      */
     protected function _extract_multiple_results($items, $item_key = 'id', $ids = array(), $preserve_keys = FALSE)
     {
-        $result = ($preserve_keys) ? $items : array_values($items);
+        $result = $preserve_keys ? $items : (array_values($items));
         if (MMI_Util::is_set($ids))
         {
             if (is_array($ids) AND count($ids) > 0)

@@ -18,7 +18,7 @@ class Model_WP_Posts extends Jelly_Model
             ->foreign_key('ID')
             ->fields(array
             (
-                'ID' => new Field_Primary(),
+                'ID' => new Field_Primary,
                 'post_author' => new Field_Integer(array
                 (
                     'default' => 0,

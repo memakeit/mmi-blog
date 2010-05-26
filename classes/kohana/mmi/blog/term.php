@@ -48,7 +48,7 @@ abstract class Kohana_MMI_Blog_Term extends Kohana_MMI_Blog
     public static function factory($type = MMI_Blog_Drivers::WORDPRESS)
     {
         $class = 'MMI_Blog_'.ucfirst($type).'_Term';
-        if( ! class_exists($class))
+        if ( ! class_exists($class))
         {
             MMI_Log::log_error(__METHOD__, __LINE__, $class.' class does not exist');
             throw new Kohana_Exception(':class class does not exist in :method.', array

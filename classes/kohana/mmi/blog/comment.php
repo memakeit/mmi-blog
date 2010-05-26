@@ -71,7 +71,7 @@ abstract class Kohana_MMI_Blog_Comment extends Kohana_MMI_Blog
     public static function factory($driver = MMI_Blog_Drivers::WORDPRESS)
     {
         $class = 'MMI_Blog_'.ucfirst($driver).'_Comment';
-        if( ! class_exists($class))
+        if ( ! class_exists($class))
         {
             MMI_Log::log_error(__METHOD__, __LINE__, $class.' class does not exist');
             throw new Kohana_Exception(':class class does not exist in :method.', array

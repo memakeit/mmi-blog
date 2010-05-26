@@ -10,7 +10,7 @@
 class Model_WP_Term_Relationships extends Jelly_Model
 {
 	protected static $_table_name = 'wp_term_relationships';
-	public static function initialize(Jelly_Meta $meta)
+    public static function initialize(Jelly_Meta $meta)
     {
         $meta
             ->table(self::$_table_name)
