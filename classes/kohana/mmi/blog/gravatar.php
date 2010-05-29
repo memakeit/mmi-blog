@@ -6,7 +6,7 @@
  * @author      Me Make It
  * @copyright   (c) 2010 Me Make It
  * @license     http://www.memakeit.com/license
- * @see         http://en.gravatar.com/site/implement/url
+ * @link        http://en.gravatar.com/site/implement/url
  */
 class Kohana_MMI_Blog_Gravatar
 {
