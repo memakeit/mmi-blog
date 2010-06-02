@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// Blog settings
+// Blog configuration
 return array
 (
     'cache_lifetimes' => array
