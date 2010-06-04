@@ -7,7 +7,7 @@
  * @copyright   (c) 2010 Me Make It
  * @license     http://www.memakeit.com/license
  */
-abstract class Kohana_MMI_Blog_Post extends Kohana_MMI_Blog
+abstract class Kohana_MMI_Blog_Post extends MMI_Blog
 {
     // Abstract methods
     abstract public function get_posts($ids = NULL, $reload_cache = FALSE);

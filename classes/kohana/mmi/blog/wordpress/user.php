@@ -7,7 +7,7 @@
  * @copyright   (c) 2010 Me Make It
  * @license     http://www.memakeit.com/license
  */
-class Kohana_MMI_Blog_Wordpress_User extends Kohana_MMI_Blog_User
+class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 {
     /**
      * @var string driver name
