@@ -1,1 +1,1 @@
-## Me Make It Blog Module
+## MMI Blog Module

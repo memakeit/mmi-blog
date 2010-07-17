@@ -1,15 +1,15 @@
-<?php defined('SYSPATH') or die('No direct script access.'); ?>
+<?php defined('SYSPATH') or die('No direct script access.');
 
-<?php
+// mmi/blog/content/comments
 
 $output = array();
-if ( ! empty($title)) 
+if ( ! empty($title))
 {
-    $output[] = '<h1>'.HTML::chars($title, FALSE).'</h1>';
+	$output[] = '<h1>'.HTML::chars($title, FALSE).'</h1>';
 }
 if ( ! empty($content))
 {
-    $output[] = $content;
+	$output[] = $content;
 }
 $output[] = '<p><em>'.date('Y-m-d H:i:s').'</em></p>';
 
