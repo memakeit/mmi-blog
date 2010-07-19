@@ -12,7 +12,7 @@ class Model_WP_Term_Taxonomy extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp_term_taxonomy';
+	protected static $_table_name = 'wp3_term_taxonomy';
 
 	/**
 	 * Initialize the model settings.

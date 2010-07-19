@@ -12,7 +12,7 @@ class Model_WP_Term_Relationships extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp_term_relationships';
+	protected static $_table_name = 'wp3_term_relationships';
 
 	/**
 	 * Initialize the model settings.

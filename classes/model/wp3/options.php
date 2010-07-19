@@ -12,7 +12,7 @@ class Model_WP_Options extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp_options';
+	protected static $_table_name = 'wp3_options';
 
 	/**
 	 * Initialize the model settings.

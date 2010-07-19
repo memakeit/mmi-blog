@@ -12,7 +12,7 @@ class Model_WP_Terms extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp_terms';
+	protected static $_table_name = 'wp3_terms';
 
 	/**
 	 * Initialize the model settings.

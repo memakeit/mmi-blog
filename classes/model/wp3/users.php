@@ -12,7 +12,7 @@ class Model_WP_Users extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp_users';
+	protected static $_table_name = 'wp3_users';
 
 	/**
 	 * Initialize the model settings.

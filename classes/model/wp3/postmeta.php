@@ -12,7 +12,7 @@ class Model_WP_PostMeta extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp_postmeta';
+	protected static $_table_name = 'wp3_postmeta';
 
 	/**
 	 * Initialize the model settings.
