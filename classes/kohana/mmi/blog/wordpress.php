@@ -60,7 +60,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog
 				$blog_id = 0;
 			}
 			// Load all data
-			$data = Model_WP_Options::select_by_id(NULL, $blog_id, self::$_db_option_mappings, TRUE, 'option_name');
+			$data = Model_WP_Options::select_by_option_id(NULL, $blog_id, self::$_db_option_mappings, TRUE, 'option_name');
 			$options = array();
 			foreach ($data as $id => $fields)
 			{
