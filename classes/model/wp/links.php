@@ -12,7 +12,7 @@ class Model_WP_Links extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp3_links';
+	protected static $_table_name = 'wp_links';
 
 	/**
 	 * Initialize the model settings.

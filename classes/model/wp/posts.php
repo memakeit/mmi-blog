@@ -12,7 +12,7 @@ class Model_WP_Posts extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp3_posts';
+	protected static $_table_name = 'wp_posts';
 
 	/**
 	 * Initialize the model settings.

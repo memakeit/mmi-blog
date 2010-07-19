@@ -12,7 +12,7 @@ class Model_WP_Comments extends Jelly_Model
 	/**
 	 * @var string the table name
 	 */
-	protected static $_table_name = 'wp3_comments';
+	protected static $_table_name = 'wp_comments';
 
 	/**
 	 * Initialize the model settings.
