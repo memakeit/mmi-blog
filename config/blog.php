@@ -28,15 +28,9 @@ return array
 	(
 		'defaults' => array
 		(
-			'img'		=>'/media/img/icons/gravatar_default_100_v001.png',
+			'img'		=> URL::site('/media/img/icons/gravatar_default_100_v001.png', TRUE),
 			'rating'	=> 'pg',
 			'size'		=> '100'
 		),
-		'valid' => array
-		(
-			'img'		=> array('identicon', 'monsterid', 'wavatar'),
-			'rating'	=> array('g', 'pg', 'r', 'x'),
-			'size'		=> array('min' => 1, 'max' => 512)
-		)
 	),
 );
