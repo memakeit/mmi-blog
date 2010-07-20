@@ -1,181 +1,186 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Core blog functionality.
+ * Blog helper functions.
  *
  * @package		MMI Blog
  * @author		Me Make It
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-abstract class Kohana_MMI_Blog
+class Kohana_MMI_Blog
 {
 	// Blog types
 	const BLOG_WORDPRESS = 'wordpress';
 
-	// Class constants
-	const META_PREFIX = 'meta_';
-
 	/**
-	 * @var Kohana_Config blog settings
-	 */
-	protected static $_config;
-
-	/**
-	 * Load an object with data from an array.
-	 * This method is chainable.
+	 * Get a blog guid.
 	 *
-	 * @param	array	data
-	 * @param	boolean	load meta data?
-	 * @return	mixed
-	 */
-	protected function _load($data = array(), $load_meta = FALSE)
-	{
-		$meta_prefix = self::META_PREFIX;
-		$meta_prefix_length = strlen($meta_prefix);
-		foreach ($data as $name => $value)
-		{
-			if (substr($name, 0, $meta_prefix_length) === $meta_prefix)
-			{
-				if ($load_meta)
-				{
-					$name = substr($name, $meta_prefix_length);
-					$method = '_get_'.$name;
-					if (method_exists($this, $method))
-					{
-						$this->meta[$name] = $this->$method($value);
-					}
-					else
-					{
-						$this->meta[$name] = $value;
-					}
-				}
-			}
-			else
-			{
-				$method = '_get_'.$name;
-				if (method_exists($this, $method))
-				{
-					$this->$name = $this->$method($value);
-				}
-				else
-				{
-					$this->$name = $value;
-				}
-			}
-		}
-		return $this;
-	}
-
-	/**
-	 * Get the cache id.
-	 *
-	 * @param	string	blog driver
-	 * @param	mixed	id's being cached
+	 * @param	integer	the page number
+	 * @param	boolean	return an absolute URL?
 	 * @return	string
 	 */
-	protected function _get_cache_id($driver, $type, $ids = NULL)
+	public static function get_blog_guid($page = 1, $absolute = TRUE)
 	{
-		$cache_id = $driver.'_blog_'.$type;
-		if ( ! empty($ids))
+		$parms = array();
+		if (intval($page) > 1)
 		{
-			if (is_array($ids) AND count($ids) > 0)
-			{
-				$cache_id .= '_'.implode('_', $ids);
-			}
-			else
-			{
-				$cache_id .= '_'.$ids;
-			}
+			$parms['page'] = $page;
 		}
-		return $cache_id;
+		$url = Route::get('blog/index')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
 	}
 
 	/**
-	 * Extract results from a data set based on ids.
+	 * Get a post guid.
 	 *
-	 * @param	array	items
-	 * @param	mixed	id's being extracted
-	 * @param	boolean	preserve array keys?
-	 * @return	array
+	 * @param	integer	the 4-digit year
+	 * @param	integer	the 2-digit month
+	 * @param	string	the page slug
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
 	 */
-	protected function _extract_results($items, $ids = array(), $preserve_keys = FALSE)
+	public static function get_post_guid($year, $month, $slug, $absolute = TRUE)
 	{
-		$result = $preserve_keys ? $items : (array_values($items));
-		if (MMI_Util::is_set($ids))
+		$parms = array
+		(
+			'year'	=> $year,
+			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
+			'slug'	=> URL::title($slug),
+		);
+		$url = Route::get('blog/post')->uri($parms);
+		if ($absolute)
 		{
-			$result = array();
-			if (is_array($ids) AND count($ids) > 0)
-			{
-				$temp;
-				foreach ($ids as $id)
-				{
-					$temp = Arr::get($items, $id);
-					if ( ! empty($temp))
-					{
-						if ($preserve_keys)
-						{
-							$result[$id] = $temp;
-						}
-						else
-						{
-							$result[] = $temp;
-						}
-					}
-				}
-			}
-			else
-			{
-				$temp = Arr::get($items, $ids);
-				if ( ! empty($temp))
-				{
-					if ($preserve_keys)
-					{
-						$result[$ids] = $temp;
-					}
-					else
-					{
-						$result[] = $temp;
-					}
-				}
-			}
+			$url = URL::site($url, TRUE);
 		}
-		return $result;
+		return $url;
 	}
 
 	/**
-	 * Extract multiple results from a data set based on ids.
+	 * Get an archive guid.
 	 *
-	 * @param	array	items
-	 * @param	string	preserve array keys?
-	 * @param	mixed	id's being extracted
-	 * @param	boolean	preserve array keys?
-	 * @return	array
+	 * @param	integer	the 4-digit year
+	 * @param	integer	the 2-digit month
+	 * @param	integer	the page number
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
 	 */
-	protected function _extract_multiple_results($items, $item_key = 'id', $ids = array(), $preserve_keys = FALSE)
+	public static function get_archive_guid($year, $month, $page = 1, $absolute = TRUE)
 	{
-		$result = $preserve_keys ? $items : (array_values($items));
-		if (MMI_Util::is_set($ids))
+		$parms = array
+		(
+			'year' => $year,
+			'month' => str_pad($month, 2, '0', STR_PAD_LEFT),
+		);
+		if (intval($page) > 1)
 		{
-			if (is_array($ids) AND count($ids) > 0)
-			{
-				$result = array();
-				foreach ($items as $item)
-				{
-					if (in_array($item->$item_key, $ids))
-					{
-						if ($preserve_keys)
-						{
-							$result[$item->id] = $item;
-						}
-						else
-						{
-							$result[] = $item;
-						}
-					}
-				}
-			}
+			$parms['page'] = $page;
 		}
-		return $result;
+		$url = Route::get('blog/archive')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
+	}
+
+	/**
+	 * Get a category guid.
+	 *
+	 * @param	string	the category slug
+	 * @param	integer	the page number
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
+	 */
+	public static function get_category_guid($slug, $page = 1, $absolute = TRUE)
+	{
+		$parms = array('slug' => URL::title($slug));
+		if (intval($page) > 1)
+		{
+			$parms['page'] = $page;
+		}
+		$url = Route::get('blog/category')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
+	}
+
+	/**
+	 * Get a tag guid.
+	 *
+	 * @param	string	the tag slug
+	 * @param	integer	the page number
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
+	 */
+	public static function get_tag_guid($slug, $page = 1, $absolute = TRUE)
+	{
+		$parms = array('slug' => URL::title($slug));
+		if (intval($page) > 1)
+		{
+			$parms['page'] = $page;
+		}
+		$url = Route::get('blog/tag')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
+	}
+
+	/**
+	 * Get a trackback guid.
+	 *
+	 * @param	integer	the 4-digit year
+	 * @param	integer	the 2-digit month
+	 * @param	string	the page slug
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
+	 */
+	public static function get_trackback_guid($year, $month, $slug, $absolute = TRUE)
+	{
+		$parms = array
+		(
+			'year'	=> $year,
+			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
+			'slug'	=> URL::title($slug),
+		);
+		$url = Route::get('blog/trackback')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
+	}
+
+	/**
+	 * Get a feed guid.
+	 *
+	 * @param	integer	the 4-digit year
+	 * @param	integer	the 2-digit month
+	 * @param	string	the page slug
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
+	 */
+	public static function get_feed_guid($year, $month, $slug, $absolute = TRUE)
+	{
+		$parms = array
+		(
+			'year'	=> $year,
+			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
+			'slug'	=> URL::title($slug),
+		);
+		$url = Route::get('blog/feed')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
 	}
 
 	/**
