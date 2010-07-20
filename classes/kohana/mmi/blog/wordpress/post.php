@@ -91,7 +91,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	protected function _get_posts($ids = NULL, $post_type = self::TYPE_POST, $reload_cache = FALSE)
 	{
 		$driver = self::$_driver;
-		$config = self::get_config(TRUE);
+		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type);
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.post', 0);
 		$load_categories = Arr::path($config, 'features.category', FALSE);

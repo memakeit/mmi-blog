@@ -56,7 +56,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	public function get_comments($post_ids = NULL, $reload_cache = TRUE)
 	{
 		$driver = self::$_driver;
-		$config = self::get_config(TRUE);
+		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'comments');
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.comment', 0);
 		$load_gravatar = Arr::path($config, 'features.comment_gravatar', FALSE);

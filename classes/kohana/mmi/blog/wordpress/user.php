@@ -51,7 +51,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	public function get_users($ids = NULL, $reload_cache = FALSE)
 	{
 		$driver = self::$_driver;
-		$config = self::get_config(TRUE);
+		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'users');
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.user', 0);
 		$load_meta = Arr::path($config, 'features.user_meta', FALSE);

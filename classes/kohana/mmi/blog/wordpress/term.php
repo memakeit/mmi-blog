@@ -85,7 +85,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	protected function _get_terms($ids = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = FALSE)
 	{
 		$driver = self::$_driver;
-		$config = self::get_config(TRUE);
+		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'terms_'.$term_type);
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.'.$term_type, 0);
 		$load_meta = Arr::path($config, 'features.'.$term_type.'_meta', FALSE);

@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-abstract class Kohana_MMI_Blog_Comment extends MMI_Blog
+abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 {
 	// Abstract methods
 	abstract public function get_comments($post_ids = NULL, $reload_cache = TRUE);
