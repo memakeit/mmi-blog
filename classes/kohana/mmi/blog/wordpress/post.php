@@ -92,7 +92,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	{
 		$driver = self::$_driver;
 		$config = MMI_Blog::get_config(TRUE);
-		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type);
+		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type, $ids);
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.post', 0);
 		$load_categories = Arr::path($config, 'features.category', FALSE);
 		$load_meta = Arr::path($config, 'features.post_meta', FALSE);
@@ -106,7 +106,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		if (empty($posts))
 		{
 			// Load all data
-			$data = Model_WP_Posts::select_by_id(NULL, $post_type, self::$_db_mappings, TRUE, 'ID');
+			$data = Model_WP_Posts::select_by_id($ids, $post_type, self::$_db_mappings, TRUE, 'ID');
 			$posts = array();
 			foreach ($data as $id => $fields)
 			{
@@ -151,9 +151,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		if ($value > 0)
 		{
 			$user = MMI_Blog_User::factory(self::$_driver)->get_users($value, TRUE);
-			$this->author_name = $user->display_name;
-			$this->author_email = $user->email;
-			$this->author_url = $user->url;
+			$this->author = $user;
 		}
 		return $value;
 	}

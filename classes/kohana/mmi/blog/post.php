@@ -18,78 +18,84 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	const TYPE_POST = 'post';
 
 	/**
+	 * @var MMI_Blog_User author
+	 */
+	public $author;
+
+	/**
 	 * @var integer author id
 	 */
 	public $author_id;
-	/**
-	 * @var string author email
-	 */
-	public $author_email;
-	/**
-	 * @var string author name
-	 */
-	public $author_name;
-	/**
-	 * @var string author URL
-	 */
-	public $author_url;
+
 	/**
 	 * @var array categories
 	 */
 	public $categories;
+
 	/**
 	 * @var integer comment count
 	 */
 	public $comment_count;
+
 	/**
 	 * @var string comment status
 	 */
 	public $comment_status;
+
 	/**
 	 * @var string post content
 	 */
 	public $content;
+
 	/**
 	 * @var string post excerpt
 	 */
 	public $excerpt;
+
 	/**
 	 * @var integer post id
 	 */
 	public $id;
-	/**
-	 * @var string post slug
-	 */
-	public $slug;
-	/**
-	 * @var string post status
-	 */
-	public $status;
-	/**
-	 * @var array tags
-	 */
-	public $tags;
-	/**
-	 * @var integer post timestamp created
-	 */
-	public $timestamp_created;
-	/**
-	 * @var integer post timestamp modified
-	 */
-	public $timestamp_modified;
-	/**
-	 * @var string post title
-	 */
-	public $title;
-	/**
-	 * @var string post type
-	 */
-	public $type;
 
 	/**
 	 * @var array post metadata
 	 */
 	public $meta = array();
+
+	/**
+	 * @var string post slug
+	 */
+	public $slug;
+
+	/**
+	 * @var string post status
+	 */
+	public $status;
+
+	/**
+	 * @var array tags
+	 */
+	public $tags;
+
+	/**
+	 * @var integer post timestamp created
+	 */
+	public $timestamp_created;
+
+	/**
+	 * @var integer post timestamp modified
+	 */
+	public $timestamp_modified;
+
+	/**
+	 * @var string post title
+	 */
+	public $title;
+
+	/**
+	 * @var string post type
+	 */
+	public $type;
 
 	/**
 	 * Create a post instance.

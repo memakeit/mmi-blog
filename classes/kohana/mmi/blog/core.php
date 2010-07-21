@@ -13,11 +13,6 @@ abstract class Kohana_MMI_Blog_Core
 	const META_PREFIX = 'meta_';
 
 	/**
-	 * @var Kohana_Config blog settings
-	 */
-	protected static $_config;
-
-	/**
 	 * Load an object with data from an array.
 	 * This method is chainable.
 	 *
