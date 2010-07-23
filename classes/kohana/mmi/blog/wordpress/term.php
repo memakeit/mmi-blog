@@ -57,8 +57,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 */
 	public function get_categories($ids = NULL, $reload_cache = FALSE)
 	{
-		$term_type = self::TYPE_CATEGORY;
-		return $this->_get_terms($ids, $term_type, $reload_cache);
+		return $this->_get_terms($ids, self::TYPE_CATEGORY, $reload_cache);
 	}
 
 	/**
@@ -70,8 +69,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 */
 	public function get_tags($ids = NULL, $reload_cache = FALSE)
 	{
-		$term_type = self::TYPE_TAG;
-		return $this->_get_terms($ids, $term_type, $reload_cache);
+		return $this->_get_terms($ids, self::TYPE_TAG, $reload_cache);
 	}
 
 	/**
@@ -111,7 +109,6 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			{
 				$term_ids_taxonomy_ids[intval($item['term_id'])] = intval($item['taxonomy_id']);
 			}
-			$term_ids = array_keys($term_ids_taxonomy_ids);
 
 			// Load relationship data
 			$relationships = Model_WP_Term_Relationships::select_by_term_taxonomy_id(array_values($term_ids_taxonomy_ids), self::$_db_relationship_mappings);
@@ -133,6 +130,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			}
 
 			$data = array();
+			$term_ids = array_keys($term_ids_taxonomy_ids);
 			if (count($term_ids) > 0)
 			{
 				$data = Model_WP_Terms::select_by_term_id($term_ids, self::$_db_mappings, TRUE, 'term_id');

@@ -21,23 +21,26 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	 * @var integer term id
 	 */
 	public $id;
-	/**
-	 * @var string term name
-	 */
-	public $name;
-	/**
-	 * @var array term post ids
-	 */
-	public $post_ids;
-	/**
-	 * @var string term name
-	 */
-	public $slug;
 
 	/**
 	 * @var array term metadata
 	 */
 	public $meta = array();
+
+	/**
+	 * @var string term name
+	 */
+	public $name;
+
+	/**
+	 * @var array term post ids
+	 */
+	public $post_ids;
+
+	/**
+	 * @var string term name
+	 */
+	public $slug;
 
 	/**
 	 * Create a term instance.

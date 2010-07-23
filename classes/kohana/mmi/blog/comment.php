@@ -16,51 +16,61 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 	 * @var boolean comment approved?
 	 */
 	public $approved;
+
 	/**
 	 * @var string comment author
 	 */
 	public $author;
+
 	/**
 	 * @var string comment author's email
 	 */
 	public $author_email;
+
 	/**
 	 * @var string comment author's URL
 	 */
 	public $author_url;
+
 	/**
 	 * @var string comment content
 	 */
 	public $content;
+
 	/**
 	 * @var string gravatar url
 	 */
 	public $gravatar_url;
+
 	/**
 	 * @var integer comment id
 	 */
 	public $id;
-	/**
-	 * @var integer parent comment id
-	 */
-	public $parent_id;
-	/**
-	 * @var integer post id
-	 */
-	public $post_id;
-	/**
-	 * @var integer comment timestamp
-	 */
-	public $timestamp;
-	/**
-	 * @var string comment type
-	 */
-	public $type;
 
 	/**
 	 * @var array comment metadata
 	 */
 	public $meta = array();
+
+	/**
+	 * @var integer parent comment id
+	 */
+	public $parent_id;
+
+	/**
+	 * @var integer post id
+	 */
+	public $post_id;
+
+	/**
+	 * @var integer comment timestamp
+	 */
+	public $timestamp;
+
+	/**
+	 * @var string comment type
+	 */
+	public $type;
 
 	/**
 	 * Create a comment instance.

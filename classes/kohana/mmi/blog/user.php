@@ -16,31 +16,36 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	 * @var string user display name
 	 */
 	public $display_name;
+
 	/**
 	 * @var string user email
 	 */
 	public $email;
+
 	/**
 	 * @var integer user id
 	 */
 	public $id;
-	/**
-	 * @var string user name
-	 */
-	public $name;
-	/**
-	 * @var string user status
-	 */
-	public $status;
-	/**
-	 * @var string user URL
-	 */
-	public $url;
 
 	/**
 	 * @var array user metadata
 	 */
 	public $meta = array();
+
+	/**
+	 * @var string user name
+	 */
+	public $name;
+
+	/**
+	 * @var string user status
+	 */
+	public $status;
+
+	/**
+	 * @var string user URL
+	 */
+	public $url;
 
 	/**
 	 * Create a user instance.

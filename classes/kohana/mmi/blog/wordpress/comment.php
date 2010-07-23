@@ -175,15 +175,13 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	{
 		if (is_array($comments) AND count($comments) > 0)
 		{
-			$item;
-			for ($i=0; $i<count($comments); $i++)
+			foreach ($comments as $idx => $item)
 			{
-				$item = $comments[$i];
 				$author_email = $item->author_email;
 				if ( ! empty($author_email))
 				{
 					$item->gravatar_url = MMI_Blog_Gravatar::get_gravatar_url($author_email);
-					$comments[$i] = $item;
+					$comments[$idx] = $item;
 				}
 			}
 		}
@@ -203,9 +201,9 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			$ids[] = $item->id;
 		}
 		$meta = Model_WP_CommentMeta::select_by_comment_id($ids, self::$_db_meta_mappings);
-		$current_id;
+
 		$old_id = -1;
-		$item_meta;
+		$item_meta = array();
 		foreach ($meta as $item)
 		{
 			$current_id = intval($item['comment_id']);

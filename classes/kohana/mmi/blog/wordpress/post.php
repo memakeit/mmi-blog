@@ -63,8 +63,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	public function get_posts($ids = NULL, $reload_cache = FALSE)
 	{
-		$post_type = self::TYPE_POST;
-		return $this->_get_posts($ids, $post_type, $reload_cache);
+		return $this->_get_posts($ids, self::TYPE_POST, $reload_cache);
 	}
 
 	/**
@@ -76,8 +75,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	public function get_pages($ids = NULL, $reload_cache = FALSE)
 	{
-		$post_type = self::TYPE_PAGE;
-		return $this->_get_posts($ids, $post_type, $reload_cache);
+		return $this->_get_posts($ids, self::TYPE_PAGE, $reload_cache);
 	}
 
 	/**
@@ -92,7 +90,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	{
 		$driver = self::$_driver;
 		$config = MMI_Blog::get_config(TRUE);
-		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type, $ids);
+		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type);
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.post', 0);
 		$load_categories = Arr::path($config, 'features.category', FALSE);
 		$load_meta = Arr::path($config, 'features.post_meta', FALSE);
@@ -106,7 +104,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		if (empty($posts))
 		{
 			// Load all data
-			$data = Model_WP_Posts::select_by_id($ids, $post_type, self::$_db_mappings, TRUE, 'ID');
+			$data = Model_WP_Posts::select_by_id(NULL, $post_type, self::$_db_mappings, TRUE, 'ID');
 			$posts = array();
 			foreach ($data as $id => $fields)
 			{
@@ -140,7 +138,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	}
 
 	/**
-	 * If an author id is specified, load the user settings (display name, email and url).
+	 * If an author id is specified, load the author.
 	 *
 	 * @param	string	user id
 	 * @return	integer
@@ -150,8 +148,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		$value = intval($value);
 		if ($value > 0)
 		{
-			$user = MMI_Blog_User::factory(self::$_driver)->get_users($value, TRUE);
-			$this->author = $user;
+			$this->author = MMI_Blog_User::factory(self::$_driver)->get_users($value, TRUE);
 		}
 		return $value;
 	}
@@ -214,9 +211,9 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$ids[] = $item->id;
 		}
 		$meta = Model_WP_PostMeta::select_by_post_id($ids, self::$_db_meta_mappings);
-		$current_id;
+
 		$old_id = -1;
-		$item_meta;
+		$item_meta = array();
 		foreach ($meta as $item)
 		{
 			$current_id = intval($item['post_id']);

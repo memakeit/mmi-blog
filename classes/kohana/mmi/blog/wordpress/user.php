@@ -124,9 +124,8 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 			$ids[] = $item->id;
 		}
 		$meta = Model_WP_UserMeta::select_by_user_id($ids, self::$_db_meta_mappings);
-		$current_id;
 		$old_id = -1;
-		$item_meta;
+		$item_meta = array();
 		foreach ($meta as $item)
 		{
 			$current_id = intval($item['user_id']);
