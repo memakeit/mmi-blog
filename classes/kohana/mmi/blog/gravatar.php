@@ -18,7 +18,7 @@ class Kohana_MMI_Blog_Gravatar
 	/**
 	 * @var array valid default images
 	 */
-	protected static $_valid_default_imgs = array('identicon', 'monsterid', 'wavatar');
+	protected static $_valid_default_imgs = array('404', 'identicon', 'mm', 'monsterid', 'wavatar');
 
 	/**
 	 * @var array valid ratings
