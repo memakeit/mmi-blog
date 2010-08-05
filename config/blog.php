@@ -33,4 +33,11 @@ return array
 			'size'		=> '100'
 		),
 	),
+	'titles' => array
+	(
+		'archive'	=> 'Articles for %s',
+		'blog'		=> 'Recent Articles',
+		'category'	=> 'Articles in %s',
+		'tag'		=> 'Articles Tagged: %s',
+	)
 );
