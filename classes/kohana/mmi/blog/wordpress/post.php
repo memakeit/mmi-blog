@@ -55,6 +55,29 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
+	 * Get posts for a month and year.
+	 *
+	 * @param	integer	year
+	 * @param	integer	month
+	 * @param	boolean	reload cache from database?
+	 * @return	array
+	 */
+	public function get_archive($year, $month, $reload_cache = FALSE)
+	{
+		$archive = array();
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		foreach ($posts as $post)
+		{
+			$created = $post->timestamp_created;
+			if (intval(date('Y', $created)) === $year AND intval(date('n', $created)) === $month)
+			{
+				$archive[date('Ym', $created)][] = $post;
+			}
+		}
+		return $archive;
+	}
+
+	/**
 	 * Get posts. If no id is specified, all posts are returned.
 	 *
 	 * @param	mixed	id's being selected
