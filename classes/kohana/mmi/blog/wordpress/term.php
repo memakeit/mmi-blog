@@ -61,6 +61,18 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	}
 
 	/**
+	 * Get categories by slug. If no slug is specified, all categories are returned.
+	 *
+	 * @param	mixed	slugs being selected
+	 * @param	boolean	reload cache from database?
+	 * @return	array
+	 */
+	public function get_categories_by_slug($slugs = NULL, $reload_cache = FALSE)
+	{
+		return $this->_get_terms_by_slug($slugs, self::TYPE_CATEGORY, $reload_cache);
+	}
+
+	/**
 	 * Get tags. If no id is specified, all tags are returned.
 	 *
 	 * @param	mixed	id's being selected
@@ -70,6 +82,48 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	public function get_tags($ids = NULL, $reload_cache = FALSE)
 	{
 		return $this->_get_terms($ids, self::TYPE_TAG, $reload_cache);
+	}
+
+	/**
+	 * Get tags by slug. If no slug is specified, all tags are returned.
+	 *
+	 * @param	mixed	slugs being selected
+	 * @param	boolean	reload cache from database?
+	 * @return	array
+	 */
+	public function get_tags_by_slug($slugs = NULL, $reload_cache = FALSE)
+	{
+		return $this->_get_terms_by_slug($slugs, self::TYPE_TAG, $reload_cache);
+	}
+
+	/**
+	 * Get terms by slug. If no slug is specified, all terms are returned.
+	 *
+	 * @param	mixed	slugs being selected
+	 * @param	string	term type (category | tag)
+	 * @param	boolean	reload cache from database?
+	 * @return	array
+	 */
+	protected function _get_terms_by_slug($slugs = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = FALSE)
+	{
+		$matches = array();
+		$terms = $this->_get_terms(NULL, $term_type, $reload_cache);
+		if (is_array($terms) AND count($terms) > 0)
+		{
+			foreach ($terms as $term)
+			{
+				$term_slug = $term->slug;
+				if (is_string($slugs) AND $term_slug === $slugs)
+				{
+					$matches[$term_slug] = $term;
+				}
+				elseif (is_array($slugs) AND in_array($term_slug, $slugs, TRUE))
+				{
+					$matches[$term_slug] = $term;
+				}
+			}
+		}
+		return $matches;
 	}
 
 	/**
