@@ -15,38 +15,46 @@ Route::set('blog/index', 'blog(/<page>)', array('page' => '\d+'))
 ->defaults(array
 (
 	'controller' 	=> 'blog',
-));
-Route::set('blog/feed', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
-->defaults(array
-(
-	'controller' 	=> 'feed',
-));
-Route::set('blog/trackback', 'blog/<year>/<month>/<slug>/trackback', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
-->defaults(array
-(
-	'controller' 	=> 'trackback',
-));
-Route::set('blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
-->defaults(array
-(
-	'action'		=> 'post',
-	'controller' 	=> 'blog',
+	'directory'		=> 'blog',
 ));
 Route::set('blog/archive', 'archive/<year>/<month>(/<page>)', array('year' => '\d{4}', 'month' => '\d{2}', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'archive',
 	'controller' 	=> 'blog',
+	'directory'		=> 'blog',
 ));
 Route::set('blog/category', 'category/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'category',
 	'controller' 	=> 'blog',
+	'directory'		=> 'blog',
 ));
 Route::set('blog/tag', 'tag/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'tag',
 	'controller' 	=> 'blog',
+	'directory'		=> 'blog',
+));
+
+Route::set('blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+->defaults(array
+(
+	'controller' 	=> 'post',
+	'directory'		=> 'blog',
+));
+
+Route::set('blog/feed', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+->defaults(array
+(
+	'controller'	=> 'feed',
+	'directory'		=> 'blog',
+));
+Route::set('blog/trackback', 'blog/<year>/<month>/<slug>/trackback', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+->defaults(array
+(
+	'controller'	=> 'trackback',
+	'directory'		=> 'blog',
 ));
