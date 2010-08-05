@@ -67,8 +67,8 @@ class Kohana_MMI_Blog
 	/**
 	 * Get an archive guid.
 	 *
-	 * @param	integer	the 4-digit year
-	 * @param	integer	the 2-digit month
+	 * @param	integer	the year
+	 * @param	integer	the month
 	 * @param	integer	the page number
 	 * @param	boolean	return an absolute URL?
 	 * @return	string
@@ -189,23 +189,6 @@ class Kohana_MMI_Blog
 	}
 
 	/**
-	 * Get the configuration settings.
-	 *
-	 * @param	boolean	return the configuration as an array?
-	 * @return	mixed
-	 */
-	public static function get_config($as_array = FALSE)
-	{
-		(self::$_config === NULL) AND self::$_config = Kohana::config('blog');
-		$config = self::$_config;
-		if ($as_array)
-		{
-			$config = $config->as_array();
-		}
-		return $config;
-	}
-
-	/**
 	 * Parse the post content, extracting (and removing from the body)
 	 * an excerpt and initial image if present.
 	 *
@@ -271,6 +254,12 @@ class Kohana_MMI_Blog
 		$body = $content;
 	}
 
+
+
+
+
+
+
 	public static function get_first_paragraph($content)
 	{
 		$content = str_replace(array("\n", "\r"), '', $content);
@@ -306,12 +295,12 @@ class Kohana_MMI_Blog
 
 	public static function get_pagination($total_count)
 	{
-		$config = Kohana::config('pagination')->as_array();
+		$config = Kohana::config('pagination.blog');
 		$config['total_items'] = $total_count;
 		return Pagination::factory($config);
 	}
 
-	public static function get_author($user)
+	public static function format_author($user)
 	{
 		$author = $user->display_name;
 		$url = $user->url;
@@ -324,5 +313,22 @@ class Kohana_MMI_Blog
 			$author = HTML::chars($author, FALSE);
 		}
 		return $author;
+	}
+
+	/**
+	 * Get the configuration settings.
+	 *
+	 * @param	boolean	return the configuration as an array?
+	 * @return	mixed
+	 */
+	public static function get_config($as_array = FALSE)
+	{
+		(self::$_config === NULL) AND self::$_config = Kohana::config('blog');
+		$config = self::$_config;
+		if ($as_array)
+		{
+			$config = $config->as_array();
+		}
+		return $config;
 	}
 } // End Kohana_MMI_Blog
