@@ -39,5 +39,5 @@ return array
 		'category'	=> 'Articles in %s',
 		'index'		=> 'Recent Articles',
 		'tag'		=> 'Articles Tagged: %s',
-	)
+	),
 );
