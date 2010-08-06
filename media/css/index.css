@@ -1,0 +1,232 @@
+/* mmi-blog/index.css */
+
+article
+{
+	background: #EEE;
+}
+
+p.hdr
+{
+	font-size: 1.286em; /* 18px */
+}
+
+/*	header
+ ******************************************************************************/
+article header h2
+{
+	font-size: 2.571em; /* 32px */
+	line-height: 1.2;
+}
+
+article header p
+{
+	border-bottom: 1px solid #CCC;
+	display: block;
+	float: left;
+	line-height: 24px;
+	margin-bottom: 20px;
+	position: relative;
+	width: 100%;
+}
+
+article header .meta a
+{
+	font-weight: bold;
+	margin-left: 4px;
+}
+
+article header .comments
+{
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+article header .comments a
+{
+	background: url('../../img/icons/24px/Discuss.png') no-repeat 100% 0;
+	float: right;
+	height: 24px;
+	padding-right: 32px;
+}
+
+/*	figure
+ ******************************************************************************/
+article figure
+{
+	height: 220px;
+	width: 220px;
+}
+
+article figure img
+{
+	background: #FFF;
+	border: 1px solid #CCC;
+	height: 200px;
+	width: 200px;
+	padding: 9px;
+}
+
+article figure img:hover
+{
+	background: #EEE;
+	border-color: #BBB;
+}
+
+/*	section
+ ******************************************************************************/
+article section
+{
+	float: right;
+}
+
+article section p
+{
+	float: left;
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+article section div.last
+{
+	float: left;
+	margin: 20px 0;
+	width: 100%;
+}
+
+/*	addthis toolbox
+ ******************************************************************************/
+div.addthis_toolbox
+{
+	display: inline;
+	float: left;
+}
+
+div.addthis_toolbox a
+{
+	display: block;
+	float: left;
+	height: 24px;
+	margin-right: 8px;
+	width: 24px
+}
+
+div.addthis_toolbox img
+{
+	height: 24px;
+	width: 24px
+}
+
+div.addthis_toolbox em
+{
+	display: block;
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	vertical-align: middle;
+}
+
+/*	more
+ ******************************************************************************/
+a.more
+{
+	background: url('../../img/icons/24px/Arrow1 Right.png') no-repeat 100% 0;
+	float: right;
+	height: 24px;
+	line-height: 24px;
+	padding-right: 32px;
+	vertical-align: middle;
+}
+
+/*	article footer
+ ******************************************************************************/
+article footer
+{
+	float: right;
+}
+
+article footer p
+{
+	margin-bottom: 20px;
+}
+
+article footer .tags
+{
+	background: url('../../img/icons/24px/Tag.png') no-repeat 0 0;
+	padding-left: 32px;
+}
+
+article footer .tags strong,
+article footer .tags a
+{
+	padding-left: 4px;
+}
+
+/*	pagination
+ ******************************************************************************/
+.pagination
+{
+	background: #FFF;
+	float: left;
+	margin-bottom: 20px;
+}
+
+.pagination span
+{
+	float: left;
+	height: 26px;
+	line-height: 26px;
+}
+
+.pagination .txt
+{
+	font-weight: bold;
+	margin-right: 8px;
+	text-align: right;
+	width: 212px;
+}
+
+.pagination a,
+.pagination strong
+{
+	border: 1px solid #CCC;
+	display: block;
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	padding: 0 8px;
+	margin-right: 8px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.pagination a:hover
+{
+	border-color: #000;
+}
+
+.pagination a.next,
+.pagination a.prev
+{
+	padding: 0;
+	text-indent: -7777px;
+	width: 24px;
+}
+
+.pagination a.prev
+{
+	background: url('../../img/icons/24px/Player Play2.png') no-repeat 0 0;
+}
+
+.pagination a.next
+{
+	background: url('../../img/icons/24px/Player Play.png') no-repeat 100% 0;
+	padding: 0;
+	width: 24px;
+	text-indent: -7777px;
+}
+
+.pagination strong
+{
+	background: #EEE;
+}

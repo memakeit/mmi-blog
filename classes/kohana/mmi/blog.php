@@ -12,6 +12,12 @@ class Kohana_MMI_Blog
 	// Blog types
 	const BLOG_WORDPRESS = 'wordpress';
 
+	// Navigation types
+	const NAV_ARCHIVE = 'archive';
+	const NAV_CATEGORY = 'category';
+	const NAV_DEFAULT = 'default';
+	const NAV_TAG = 'tag';
+
 	/**
 	 * @var Kohana_Config blog settings
 	 */
@@ -313,6 +319,25 @@ class Kohana_MMI_Blog
 			$author = HTML::chars($author, FALSE);
 		}
 		return $author;
+	}
+
+	public static function get_nav_type()
+	{
+		$nav_type = Cookie::get('mmi-bnav', '');
+		if ( ! empty($nav_type))
+		{
+			$nav_type = json_decode($nav_type, TRUE);
+		}
+		return $nav_type;
+	}
+
+	public static function set_nav_type($nav_type)
+	{
+		if( ! empty($nav_type))
+		{
+			$nav_type = json_encode($nav_type);
+		}
+		Cookie::set('mmi-bnav', $nav_type, 30 * Date::DAY);
 	}
 
 	/**

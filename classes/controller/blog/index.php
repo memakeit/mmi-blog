@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Blog index controller.
+ * Blog index controller (used for the archive, category, index, and tag pages).
  *
  * @package		MMI Blog
  * @author		Me Make It
@@ -15,16 +15,18 @@ class Controller_Blog_Index extends MMI_Template
 	public $debug = TRUE;
 
 	/**
+	 * @var array the blog settings
+	 **/
+	protected $_blog_config;
+
+	/**
 	 * @var Pagination the pagination object
 	 **/
 	protected $_pagination;
 
-	protected $_blog_config;
-	protected $_title = 'Blog!';
-
-
 	/**
-	 * Create a new blog controller instance.
+	 * Ensure the pagination module is loaded.
+	 * Load the blog settings from the configuration file.
 	 *
 	 * @param	object	the request that created the controller
 	 * @return	void
@@ -32,9 +34,7 @@ class Controller_Blog_Index extends MMI_Template
 	public function __construct(Request $request)
 	{
 		parent::__construct($request);
-		$modules = Arr::merge(Kohana::modules(), array('pagination' => MODPATH.'pagination'));
-		Kohana::modules($modules);
-
+		MMI_Util::load_module('pagination', MODPATH.'pagination');
 		$this->_blog_config = MMI_Blog::get_config(TRUE);
 	}
 
@@ -47,18 +47,25 @@ class Controller_Blog_Index extends MMI_Template
 	{
 		$request = $this->request;
 		$page = $request->param('page', 1);
-		$title = Arr::path($this->_blog_config, 'titles.blog', 'Recent Articles');
+		$title = Arr::path($this->_blog_config, 'titles.index', 'Recent Articles');
 
 		// Get the data
 		$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts(NULL, TRUE);
+		$num_posts = count($posts);
 
 		// Configure the pagination
 		$pagination = MMI_Blog::get_pagination(count($posts));
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
-		// Render the posts
-		$this->_render_posts($posts, $title);
+		// Set the nav type
+		if ($num_posts > 0)
+		{
+			MMI_Blog::set_nav_type('');
+		}
+
+		// Process the posts
+		$this->_process_posts($posts, $title);
 	}
 
 	/**
@@ -83,14 +90,21 @@ class Controller_Blog_Index extends MMI_Template
 		{
 			$posts = $data[$slug];
 		}
+		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination(count($posts));
+		$pagination = MMI_Blog::get_pagination($num_posts);
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
-		// Render the posts
-		$this->_render_posts($posts, $title);
+		// Set the nav type
+		if ($num_posts > 0)
+		{
+			MMI_Blogset_nav_type(array(MMI_Blog::NAV_ARCHIVE => $slug));
+		}
+
+		// Process the posts
+		$this->_process_posts($posts, $title);
 	}
 
 	/**
@@ -114,14 +128,21 @@ class Controller_Blog_Index extends MMI_Template
 			$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts($data->post_ids, FALSE);
 			$title = sprintf(Arr::path($this->_blog_config, 'titles.category', 'Articles in %s'), $data->name);
 		}
+		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination(count($posts));
+		$pagination = MMI_Blog::get_pagination($num_posts);
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
-		// Render the posts
-		$this->_render_posts($posts, $title);
+		// Set the nav type
+		if ($num_posts > 0)
+		{
+			MMI_Blog::set_nav_type(array(MMI_Blog::NAV_CATEGORY => $slug));
+		}
+
+		// Process the posts
+		$this->_process_posts($posts, $title);
 	}
 
 	/**
@@ -145,70 +166,43 @@ class Controller_Blog_Index extends MMI_Template
 			$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts($data->post_ids, FALSE);
 			$title = sprintf(Arr::path($this->_blog_config, 'titles.tag', 'Articles Tagged: %s'), $data->name);
 		}
+		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination(count($posts));
+		$pagination = MMI_Blog::get_pagination($num_posts);
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
-		// Render the posts
-		$this->_render_posts($posts, $title);
-	}
-
-//	/**
-//	 * Display a blog post.
-//	 *
-//	 * @return	void
-//	 */
-//	public function action_post()
-//	{
-//		$request = $this->request;
-//		$year = $request->param('year');
-//		$month = $request->param('month');
-//		$slug = $request->param('slug');
-//		MMI_Debug::mdead($year, 'year', $month, 'month', $slug, 'slug');
-//
-//		$view = View::factory('mmi/template/content/default')
-//			->set('content', '1 post')
-//			->set('title', 'Post');
-//		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
-//	}
-
-
-
-
-
-
-
-
-
-	protected function _render_posts($posts, $title)
-	{
-		foreach ($posts as $id => $item)
+		// Set the nav type
+		if ($num_posts > 0)
 		{
-			$categories = $item->categories;
-			$temp = NULL;
-			if (is_array($categories) AND count($categories) > 0)
-			{
-				$temp = reset($categories);
-			}
-			if ( ! empty( $temp))
-			{
-				$posts[$id]->categories[] = $temp;
-				$posts[$id]->tags[] = $temp;
-				$posts[$id]->tags[] = $temp;
-			}
+			MMI_Blog::set_nav_type(array(MMI_Blog::NAV_TAG => $slug));
 		}
 
+		// Process the posts
+		$this->_process_posts($posts, $title);
+	}
+
+	/**
+	 * Inject CSS and JavaScript and create the posts view.
+	 *
+	 * @param	array	an array of MMI_Post objects
+	 * @param	string	the page title
+	 * @return	void
+	 */
+	protected function _process_posts($posts, $title)
+	{
+		$this->_title = $title;
+
 		// Inject CSS and JavaScript
-		$this->add_css_url('mmi-blog_articles.css', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
 		$config = MMI_Social_AddThis::get_config(TRUE);
 		$addthis_username = Arr::get($config, 'username');
 		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
 		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));
 
-		// Configure view
-		$view = View::factory('mmi/blog/blog_all')
+		// Configure and add the view
+		$view = View::factory('mmi/blog/index')
 			->set('pagination', $this->_pagination->render())
 			->set('posts', $posts)
 			->set('title', $title);
@@ -268,25 +262,4 @@ class Controller_Blog_Index extends MMI_Template
 			$controller = $slug;
 		}
 	}
-
-	// Nav-type logic
-	protected function _get_nav_type()
-	{
-		$nav_type = Cookie::get('mmi-blog', '');
-		if ( ! empty($nav_type))
-		{
-			$nav_type = json_decode($nav_type, TRUE);
-		}
-		return $nav_type;
-	}
-
-	protected function _set_nav_type($nav_type)
-	{
-		if( ! empty($nav_type))
-		{
-			$nav_type = json_encode($nav_type);
-		}
-		Cookie::set('mmi-blog', $nav_type, 30 * Date::DAY);
-	}
-
 } // End Controller_Blog_Index

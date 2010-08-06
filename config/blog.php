@@ -36,8 +36,8 @@ return array
 	'titles' => array
 	(
 		'archive'	=> 'Articles for %s',
-		'blog'		=> 'Recent Articles',
 		'category'	=> 'Articles in %s',
+		'index'		=> 'Recent Articles',
 		'tag'		=> 'Articles Tagged: %s',
 	)
 );
