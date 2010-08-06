@@ -1,13 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Blog controller.
+ * Blog index controller.
  *
  * @package		MMI Blog
  * @author		Me Make It
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Blog_Blog extends MMI_Template
+class Controller_Blog_Index extends MMI_Template
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -204,8 +204,8 @@ class Controller_Blog_Blog extends MMI_Template
 		$this->add_css_url('mmi-blog_articles.css', array('bundle' => 'blog'));
 		$config = MMI_Social_AddThis::get_config(TRUE);
 		$addthis_username = Arr::get($config, 'username');
-		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#username='.$addthis_username);
-		$this->add_js_url('addthis.toolbox.blog', array('bundle' => 'blog'));
+		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
+		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));
 
 		// Configure view
 		$view = View::factory('mmi/blog/blog_all')
@@ -215,6 +215,59 @@ class Controller_Blog_Blog extends MMI_Template
 		$this->add_view('blog_all', self::LAYOUT_ID, 'content', $view);
 	}
 
+	/**
+	 * Load page meta information from the database.
+	 *
+	 * @return	array
+	 */
+	protected function _load_page_meta()
+	{
+		$this->_init_page_meta($controller, $directory);
+		return Model_MMI_PageMeta::select_by_controller_and_directory($controller, $directory, TRUE);
+	}
+
+	/**
+	 * Insert page meta information into the database.
+	 *
+	 * @return	integer
+	 */
+	protected function _insert_page_meta()
+	{
+		$this->_init_page_meta($controller, $directory);
+		return Model_MMI_PageMeta::insert_page_view($controller, $directory);
+	}
+
+	/**
+	 * Set the controller and directory used to get and set page meta
+	 * information in the database.
+	 *
+	 * @param	string	the controller name
+	 * @param	string	the directory name
+	 * @return	void
+	 */
+	protected function _init_page_meta(& $controller, & $directory)
+	{
+		$request = $this->request;
+		$directory = $request->directory;
+		$controller = $request->action;
+
+		$slug = $request->param('slug');
+		if (empty($slug))
+		{
+			$month = $request->param('month');
+			$year = $request->param('year');
+			if (ctype_digit($year) AND ctype_digit($month))
+			{
+				$timestamp = mktime(0, 0, 0, $month, 1, $year);
+				$slug = date('Y.m', $timestamp);
+			}
+		}
+		if ( ! empty($slug))
+		{
+			$directory .= '/'.$controller;
+			$controller = $slug;
+		}
+	}
 
 	// Nav-type logic
 	protected function _get_nav_type()
@@ -236,4 +289,4 @@ class Controller_Blog_Blog extends MMI_Template
 		Cookie::set('mmi-blog', $nav_type, 30 * Date::DAY);
 	}
 
-} // End Controller_Blog_Blog
+} // End Controller_Blog_Index
