@@ -1,0 +1,316 @@
+/* mmi-blog/post.css */
+
+div.wp_content p
+{
+	padding: 16px 0;
+}
+
+div.wp_content ol li,
+div.wp_content ul li
+{
+	padding-bottom: 0;
+}
+
+div.wp_retweet
+{
+	padding-top: 16px;
+}
+
+div.wp_last
+{
+	padding-bottom: 32px;
+}
+
+h1
+{
+	border-bottom-width: 0;
+}
+
+a.img
+{
+	border: 1px solid #BBB;
+	float: left;
+	padding: 4px;
+}
+
+a.img:hover
+{
+	background: #DDD;
+	border-color: #888;
+}
+
+a.img img
+{
+	border: 1px solid #BBB;
+	float: left;
+}
+
+div.first
+{
+	padding-bottom: 0;
+	padding-top: 12px;
+}
+
+div.body div
+{
+	clear: both;
+	float: left;
+	padding-bottom: 24px;
+	width: 580px;
+}
+
+div.body div.first
+{
+	padding-top: 0;
+}
+
+div.body div.last
+{
+	padding-bottom: 0;
+}
+
+/* meta */
+#meta
+{
+	height: 200px;
+	left: 0;
+	padding-bottom: 8px;
+	position: absolute;
+	top: 0;
+	width: 128px;
+}
+
+/* calendar */
+#cal
+{
+	background: url('mmi-blog/img/sprites_v001.png') no-repeat 0 -297px;
+	float: left;
+	height: 128px;
+	width: 128px;
+}
+
+#cal div.month
+{
+	color: #CCC;
+	font-size: .9em;
+	line-height: 1;
+	margin-top: -4px;
+	text-align: center;
+	width: 128px;
+}
+
+#cal div.date
+{
+	color: #CCC;
+	font-size: 3.75em;
+	line-height: 1;
+	margin-top: 36px;
+	text-align: center;
+	width: 128px;
+}
+
+/* comment count */
+#comment_ct
+{
+	float: left;
+	height: 72px;
+	padding-bottom: 16px;
+	position: relative;
+	width: 128px;
+}
+
+#comment_ct a.comment
+{
+	background: url('mmi-blog/img/comment_64_v001.png') no-repeat 100% 0;
+	clear: both;
+	display: block;
+	font-size: 1.1em;
+	height: 28px;
+	line-height: 28px;
+	padding: 44px 0 0 10px;
+	text-align: left;
+	width: 118px;
+}
+
+#comment_ct a.count
+{
+	color: #CCC;
+	font-size: 1.75em;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 14px;
+	width: 62px;
+}
+
+#comment_ct a.count:hover
+{
+	color: #FFF;
+}
+
+/* intro */
+#intro
+{
+	float: left;
+	min-height: 210px;
+	padding-left: 150px;
+	position: relative;
+}
+
+#intro p
+{
+	float: left;
+	width: 100%;
+}
+
+/* img */
+#img
+{
+	margin-bottom: 8px;
+}
+
+#img a
+{
+	border: 1px solid #BBB;
+	float: left;
+	padding: 4px;
+	width: 440px;
+}
+
+#img a:hover
+{
+	background: #DDD;
+	border-color: #888;
+}
+
+#img img
+{
+	border: 1px solid #BBB;
+	float: left;
+	width: 438px;
+}
+
+/* toolbox */
+#toolbox
+{
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	margin: 0;
+	padding-bottom: 8px;
+	vertical-align: middle;
+}
+
+#toolbox strong
+{
+	float: left;
+	width: 65px;
+}
+
+#toolbox span.links
+{
+	float: left;
+}
+
+#toolbox span.links a,
+#toolbox span.links a img
+{
+	float: left;
+	height: 24px;
+	width: 24px;
+}
+
+#toolbox span.links a
+{
+	padding-right: 4px;
+}
+
+#toolbox span.links a img
+{
+	padding: 0;
+}
+
+#toolbox span#tb_details
+{
+	float: left;
+	font-style: italic;
+	line-height: 24px;
+	padding-left: 4px;
+}
+
+/* author & categories */
+#author,
+#categories
+{
+	margin: 0;
+}
+
+#categories
+{
+	margin-bottom: 8px;
+}
+
+#author strong,
+#categories strong
+{
+	float: left;
+	margin-right: 8px;
+}
+
+/* excerpt */
+#excerpt
+{
+	padding: 0;
+	width: 100%;
+}
+
+/* prev-next */
+#prev_next
+{
+	clear: both;
+	float: left;
+	font-weight: bold;
+	padding: 8px 10px 24px 10px;
+	width: 600px;
+}
+
+#prev_next div.prev,
+#prev_next div.next
+{
+	float: left;
+	width: 300px;
+}
+
+#prev_next div.prev a,
+#prev_next div.next a
+{
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	vertical-align: middle;
+}
+
+#prev_next div.prev a
+{
+	background: url('mmi-blog/img/sprites_v001.png') no-repeat 0 0;
+	float: left;
+	padding-left: 36px;
+	width: 260px;
+}
+#prev_next div.prev a:hover
+{
+	background: url('mmi-blog/img/sprites_v001.png') no-repeat 0 -42px;
+}
+
+#prev_next div.next a
+{
+	background: url('mmi-blog/img/sprites_v001.png') no-repeat 100% -84px;
+	float: right;
+	padding-right: 36px;
+	text-align: right;
+	width: 260px;
+}
+#prev_next div.next a:hover
+{
+	background: url('mmi-blog/img/sprites_v001.png') no-repeat 100% -126px;
+}
