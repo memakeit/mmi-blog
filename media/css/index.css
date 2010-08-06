@@ -90,7 +90,7 @@ article section p
 article section div.last
 {
 	float: left;
-	margin: 20px 0;
+	margin: 16px 0 20px 0;
 	width: 100%;
 }
 
@@ -104,17 +104,23 @@ div.addthis_toolbox
 
 div.addthis_toolbox a
 {
-	display: block;
 	float: left;
 	height: 24px;
 	margin-right: 8px;
-	width: 24px
+	padding-top: 4px;
+	width: 24px;
+}
+
+div.addthis_toolbox a:hover
+{
+	padding: 0 0 3px 0;
+	border-bottom: 1px solid #CCC;
 }
 
 div.addthis_toolbox img
 {
 	height: 24px;
-	width: 24px
+	width: 24px;
 }
 
 div.addthis_toolbox em

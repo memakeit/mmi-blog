@@ -100,7 +100,6 @@ else
 		}
 
 		// Toolbox
-		$all_tweets = array();
 		$output[] = '<div class="last">';
 		$toolbox = Request::factory('mmi/social/addthis/toolbox');
 		$toolbox->post = array
@@ -109,6 +108,10 @@ else
 			'title'			=> $post_title,
 			'url'			=> $post_guid,
 		);
+		if (is_array($toolbox_config) AND count($toolbox_config) > 0)
+		{
+			$toolbox->post['config'] = $toolbox_config;
+		}
 		$output[] = $toolbox->execute()->response;
 
 		// Read more

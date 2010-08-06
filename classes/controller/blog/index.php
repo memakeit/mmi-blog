@@ -100,7 +100,7 @@ class Controller_Blog_Index extends MMI_Template
 		// Set the nav type
 		if ($num_posts > 0)
 		{
-			MMI_Blogset_nav_type(array(MMI_Blog::NAV_ARCHIVE => $slug));
+			MMI_Blog::set_nav_type(array(MMI_Blog::NAV_ARCHIVE => $slug));
 		}
 
 		// Process the posts
@@ -195,9 +195,8 @@ class Controller_Blog_Index extends MMI_Template
 		$this->_title = $title;
 
 		// Inject CSS and JavaScript
+		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
 		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
-		$config = MMI_Social_AddThis::get_config(TRUE);
-		$addthis_username = Arr::get($config, 'username');
 		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
 		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));
 
@@ -205,7 +204,9 @@ class Controller_Blog_Index extends MMI_Template
 		$view = View::factory('mmi/blog/index')
 			->set('pagination', $this->_pagination->render())
 			->set('posts', $posts)
-			->set('title', $title);
+			->set('title', $title)
+			->set('toolbox_config', MMI_Blog::get_index_config()->get('toolbox'))
+		;
 		$this->add_view('blog_all', self::LAYOUT_ID, 'content', $view);
 	}
 

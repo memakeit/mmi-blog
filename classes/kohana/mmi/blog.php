@@ -24,6 +24,16 @@ class Kohana_MMI_Blog
 	protected static $_config;
 
 	/**
+	 * @var Kohana_Config the blog index settings
+	 **/
+	protected static $_index_config;
+
+	/**
+	 * @var Kohana_Config the blog post settings
+	 **/
+	protected static $_post_config;
+
+	/**
 	 * Get a blog guid.
 	 *
 	 * @param	integer	the page number
@@ -348,8 +358,42 @@ class Kohana_MMI_Blog
 	 */
 	public static function get_config($as_array = FALSE)
 	{
-		(self::$_config === NULL) AND self::$_config = Kohana::config('blog');
+		(self::$_config === NULL) AND self::$_config = Kohana::config('mmi-blog');
 		$config = self::$_config;
+		if ($as_array)
+		{
+			$config = $config->as_array();
+		}
+		return $config;
+	}
+
+	/**
+	 * Get the index configuration settings.
+	 *
+	 * @param	boolean	return the configuration as an array?
+	 * @return	mixed
+	 */
+	public static function get_index_config($as_array = FALSE)
+	{
+		(self::$_index_config === NULL) AND self::$_index_config = Kohana::config('mmi-blog-index');
+		$config = self::$_index_config;
+		if ($as_array)
+		{
+			$config = $config->as_array();
+		}
+		return $config;
+	}
+
+	/**
+	 * Get the post configuration settings.
+	 *
+	 * @param	boolean	return the configuration as an array?
+	 * @return	mixed
+	 */
+	public static function get_post_config($as_array = FALSE)
+	{
+		(self::$_post_config === NULL) AND self::$_post_config = Kohana::config('mmi-blog-post');
+		$config = self::$_post_config;
 		if ($as_array)
 		{
 			$config = $config->as_array();
