@@ -46,10 +46,14 @@ class Controller_Blog_Post extends MMI_Template
 	public function action_index()
 	{
 		$request = $this->request;
-		$year = $request->param('year');
 		$month = $request->param('month');
+		$year = $request->param('year');
 		$slug = $request->param('slug');
 		MMI_Debug::mdump($year, 'year', $month, 'month', $slug, 'slug');
+
+		$archive = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_archive($year, $month);
+		$post = Arr::path($archive, $year.$month.'.'.$slug);
+		unset($archive);
 
 		// Inject CSS and JavaScript
 		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
@@ -57,6 +61,11 @@ class Controller_Blog_Post extends MMI_Template
 		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
 		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));
 
+		// Get and re-set the nav type
+		$nav_type = MMI_Blog::get_nav_type();
+		MMI_Blog::set_nav_type($nav_type);
+
+		$this->_title = $post->title;
 
 		$toolbox_config = MMI_Blog::get_post_config()->get('toolbox');
 		$toolbox = Request::factory('mmi/social/addthis/toolbox');
