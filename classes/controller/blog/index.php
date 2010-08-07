@@ -50,7 +50,7 @@ class Controller_Blog_Index extends MMI_Template
 		$title = Arr::path($this->_blog_config, 'titles.index', 'Recent Articles');
 
 		// Get the data
-		$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts(NULL, TRUE);
+		$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts();
 		$num_posts = count($posts);
 
 		// Configure the pagination
@@ -84,7 +84,7 @@ class Controller_Blog_Index extends MMI_Template
 		$title = sprintf(Arr::path($this->_blog_config, 'titles.archive', 'Articles for %s'), date('F Y', $timestamp));
 
 		// Get the data
-		$data = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_archive($year, $month, TRUE);
+		$data = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_archive($year, $month);
 		$posts = array();
 		if (array_key_exists($slug, $data))
 		{
@@ -120,12 +120,12 @@ class Controller_Blog_Index extends MMI_Template
 		$title = sprintf(Arr::path($this->_blog_config, 'titles.category', 'Articles in %s'), ucwords($slug));
 
 		// Get the data
-		$data = MMI_Blog_Term::factory(MMI_Blog::BLOG_WORDPRESS)->get_categories_by_slug($slug, TRUE);
+		$data = MMI_Blog_Term::factory(MMI_Blog::BLOG_WORDPRESS)->get_categories_by_slug($slug);
 		$posts = array();
 		if (array_key_exists($slug, $data))
 		{
 			$data = $data[$slug];
-			$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts($data->post_ids, FALSE);
+			$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts($data->post_ids);
 			$title = sprintf(Arr::path($this->_blog_config, 'titles.category', 'Articles in %s'), $data->name);
 		}
 		$num_posts = count($posts);
@@ -158,12 +158,12 @@ class Controller_Blog_Index extends MMI_Template
 		$title = sprintf(Arr::path($this->_blog_config, 'titles.tag', 'Articles Tagged: %s'), ucwords($slug));
 
 		// Get the data
-		$data = MMI_Blog_Term::factory(MMI_Blog::BLOG_WORDPRESS)->get_tags_by_slug($slug, TRUE);
+		$data = MMI_Blog_Term::factory(MMI_Blog::BLOG_WORDPRESS)->get_tags_by_slug($slug);
 		$posts = array();
 		if (array_key_exists($slug, $data))
 		{
 			$data = $data[$slug];
-			$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts($data->post_ids, FALSE);
+			$posts = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts($data->post_ids);
 			$title = sprintf(Arr::path($this->_blog_config, 'titles.tag', 'Articles Tagged: %s'), $data->name);
 		}
 		$num_posts = count($posts);

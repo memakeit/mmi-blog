@@ -10,7 +10,7 @@
 abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 {
 	// Abstract methods
-	abstract public function get_users($ids = NULL, $reload_cache = FALSE);
+	abstract public function get_users($ids = NULL, $reload_cache = NULL);
 
 	/**
 	 * @var string user display name

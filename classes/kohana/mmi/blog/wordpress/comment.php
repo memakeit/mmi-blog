@@ -67,7 +67,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		{
 			$comments = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
-		if (empty($comments))
+		if ( ! isset($comments))
 		{
 			$data = Model_WP_Comments::select_by_post_id(NULL, self::$_db_mappings);
 			$comments = array();

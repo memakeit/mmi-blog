@@ -52,10 +52,10 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 * Get categories. If no id is specified, all categories are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_categories($ids = NULL, $reload_cache = FALSE)
+	public function get_categories($ids = NULL, $reload_cache = NULL)
 	{
 		return $this->_get_terms($ids, self::TYPE_CATEGORY, $reload_cache);
 	}
@@ -64,10 +64,10 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 * Get categories by slug. If no slug is specified, all categories are returned.
 	 *
 	 * @param	mixed	slugs being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_categories_by_slug($slugs = NULL, $reload_cache = FALSE)
+	public function get_categories_by_slug($slugs = NULL, $reload_cache = NULL)
 	{
 		return $this->_get_terms_by_slug($slugs, self::TYPE_CATEGORY, $reload_cache);
 	}
@@ -76,10 +76,10 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 * Get tags. If no id is specified, all tags are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_tags($ids = NULL, $reload_cache = FALSE)
+	public function get_tags($ids = NULL, $reload_cache = NULL)
 	{
 		return $this->_get_terms($ids, self::TYPE_TAG, $reload_cache);
 	}
@@ -88,10 +88,10 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 * Get tags by slug. If no slug is specified, all tags are returned.
 	 *
 	 * @param	mixed	slugs being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_tags_by_slug($slugs = NULL, $reload_cache = FALSE)
+	public function get_tags_by_slug($slugs = NULL, $reload_cache = NULL)
 	{
 		return $this->_get_terms_by_slug($slugs, self::TYPE_TAG, $reload_cache);
 	}
@@ -101,10 +101,10 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 *
 	 * @param	mixed	slugs being selected
 	 * @param	string	term type (category | tag)
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	protected function _get_terms_by_slug($slugs = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = FALSE)
+	protected function _get_terms_by_slug($slugs = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = NULL)
 	{
 		$matches = array();
 		$terms = $this->_get_terms(NULL, $term_type, $reload_cache);
@@ -131,11 +131,16 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 *
 	 * @param	mixed	id's being selected
 	 * @param	string	term type (category | tag)
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	protected function _get_terms($ids = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = FALSE)
+	protected function _get_terms($ids = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = NULL)
 	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
 		$driver = self::$_driver;
 		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'terms_'.$term_type);
@@ -154,7 +159,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 		{
 			$terms = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
-		if (empty($terms))
+		if ( ! isset($terms))
 		{
 			// Load taxonomy data
 			$taxonomy = Model_WP_Term_Taxonomy::select_by_taxomony($term_type, self::$_db_taxonomy_mappings);

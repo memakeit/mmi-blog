@@ -59,10 +59,10 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 *
 	 * @param	integer	year
 	 * @param	integer	month
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_archive($year, $month, $reload_cache = FALSE)
+	public function get_archive($year, $month, $reload_cache = NULL)
 	{
 		$archive = array();
 		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
@@ -81,10 +81,10 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get posts. If no id is specified, all posts are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_posts($ids = NULL, $reload_cache = FALSE)
+	public function get_posts($ids = NULL, $reload_cache = NULL)
 	{
 		return $this->_get_posts($ids, self::TYPE_POST, $reload_cache);
 	}
@@ -93,10 +93,10 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get pages. If no id is specified, all pages are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_pages($ids = NULL, $reload_cache = FALSE)
+	public function get_pages($ids = NULL, $reload_cache = NULL)
 	{
 		return $this->_get_posts($ids, self::TYPE_PAGE, $reload_cache);
 	}
@@ -106,11 +106,16 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 *
 	 * @param	mixed	id's being selected
 	 * @param	string	post type (page | post)
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	protected function _get_posts($ids = NULL, $post_type = self::TYPE_POST, $reload_cache = FALSE)
+	protected function _get_posts($ids = NULL, $post_type = self::TYPE_POST, $reload_cache = NULL)
 	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
 		$driver = self::$_driver;
 		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type);
@@ -124,7 +129,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		{
 			$posts = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
-		if (empty($posts))
+		if ( ! isset($posts))
 		{
 			// Load all data
 			$data = Model_WP_Posts::select_by_id(NULL, $post_type, self::$_db_mappings, TRUE, 'ID');
@@ -139,7 +144,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			}
 			if ($load_tags)
 			{
-				self::_load_tags($posts);
+				self::_load_tags($posts, ! $load_categories);
 			}
 			if ($load_meta)
 			{
@@ -171,7 +176,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		$value = intval($value);
 		if ($value > 0)
 		{
-			$this->author = MMI_Blog_User::factory(self::$_driver)->get_users($value, TRUE);
+			$this->author = MMI_Blog_User::factory(self::$_driver)->get_users($value);
 		}
 		return $value;
 	}
@@ -228,6 +233,11 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _load_meta($posts)
 	{
+		if ( ! (is_array($posts) AND count($posts) > 0))
+		{
+			return;
+		}
+
 		$ids = array();
 		foreach ($posts as $item)
 		{
@@ -261,20 +271,26 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Load post categories.
 	 *
 	 * @param	array	array of blog post objects
+	 * @param	mixed	reload cache from database?
 	 * @return	void
 	 */
-	protected static function _load_categories($posts)
+	protected static function _load_categories($posts, $reload_cache = NULL)
 	{
-		if ( ! is_array($posts))
+		if ( ! (is_array($posts) AND count($posts) > 0))
 		{
-			$posts = array();
+			return;
+		}
+
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
 		}
 
 		foreach ($posts as $id => $item)
 		{
 			$posts[$id]->categories = array();
 		}
-		$terms = MMI_Blog_Term::factory(self::$_driver)->get_categories(NULL, TRUE);
+		$terms = MMI_Blog_Term::factory(self::$_driver)->get_categories(NULL, $reload_cache);
 		self::_load_terms($posts, $terms);
 	}
 
@@ -282,20 +298,26 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Load post tags.
 	 *
 	 * @param	array	array of blog post objects
+	 * @param	mixed	reload cache from database?
 	 * @return	void
 	 */
-	protected static function _load_tags($posts)
+	protected static function _load_tags($posts, $reload_cache = NULL)
 	{
-		if ( ! is_array($posts))
+		if ( ! (is_array($posts) AND count($posts) > 0))
 		{
-			$posts = array();
+			return;
+		}
+
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
 		}
 
 		foreach ($posts as $id => $item)
 		{
 			$posts[$id]->tags = array();
 		}
-		$terms = MMI_Blog_Term::factory(self::$_driver)->get_tags(NULL, TRUE);
+		$terms = MMI_Blog_Term::factory(self::$_driver)->get_tags(NULL, $reload_cache);
 		self::_load_terms($posts, $terms);
 	}
 
@@ -308,10 +330,6 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _load_terms($posts, $terms)
 	{
-		if ( ! is_array($posts))
-		{
-			$posts = array();
-		}
 		if ( ! is_array($terms))
 		{
 			$terms = array();

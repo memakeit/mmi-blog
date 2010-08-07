@@ -45,11 +45,16 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	 * Get users. If no id is specified, all users are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	boolean	reload cache from database?
+	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_users($ids = NULL, $reload_cache = FALSE)
+	public function get_users($ids = NULL, $reload_cache = NULL)
 	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
 		$driver = self::$_driver;
 		$config = MMI_Blog::get_config(TRUE);
 		$cache_id = $this->_get_cache_id($driver, 'users');
@@ -61,7 +66,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 		{
 			$users = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
-		if (empty($users))
+		if ( ! isset($users))
 		{
 			$data = Model_WP_Users::select_by_id(NULL, self::$_db_mappings, TRUE, 'ID');
 			$users = array();
