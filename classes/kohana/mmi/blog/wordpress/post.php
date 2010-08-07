@@ -64,6 +64,9 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	public function get_archive($year, $month, $reload_cache = NULL)
 	{
+		$year = intval($year);
+		$month = intval($month);
+
 		$archive = array();
 		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
 		foreach ($posts as $post)
@@ -71,7 +74,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$created = $post->timestamp_created;
 			if (intval(date('Y', $created)) === $year AND intval(date('n', $created)) === $month)
 			{
-				$archive[date('Ym', $created)][] = $post;
+				$archive[date('Ym', $created)][$post->slug] = $post;
 			}
 		}
 		return $archive;

@@ -77,8 +77,8 @@ class Controller_Blog_Index extends MMI_Template
 	{
 		$request = $this->request;
 		$page = $request->param('page', 1);
-		$month = intval($request->param('month'));
-		$year = intval($request->param('year'));
+		$month = $request->param('month');
+		$year = $request->param('year');
 		$timestamp = mktime(0, 0, 0, $month, 1, $year);
 		$slug = date('Ym', $timestamp);
 		$title = sprintf(Arr::path($this->_blog_config, 'titles.archive', 'Articles for %s'), date('F Y', $timestamp));
@@ -240,7 +240,7 @@ class Controller_Blog_Index extends MMI_Template
 	 * @param	string	the directory name
 	 * @return	void
 	 */
-	protected function _init_page_meta(& $controller, & $directory)
+	protected function _init_page_meta( & $controller, & $directory)
 	{
 		$request = $this->request;
 		$directory = $request->directory;
