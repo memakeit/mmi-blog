@@ -385,6 +385,16 @@ class Kohana_MMI_Blog
 	}
 
 	/**
+	 * Does the cache need to be reloaded from the database?
+	 *
+	 * @return	boolean
+	 */
+	public static function reload_cache()
+	{
+		return (Kohana::$environment !== Kohana::PRODUCTION);
+	}
+
+	/**
 	 * Get the post configuration settings.
 	 *
 	 * @param	boolean	return the configuration as an array?
