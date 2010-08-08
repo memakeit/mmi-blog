@@ -94,44 +94,6 @@ article section div.last
 	width: 100%;
 }
 
-/*	addthis toolbox
- ******************************************************************************/
-div.addthis_toolbox
-{
-	display: inline;
-	float: left;
-}
-
-div.addthis_toolbox a
-{
-	float: left;
-	height: 24px;
-	margin-right: 8px;
-	padding-top: 4px;
-	width: 24px;
-}
-
-div.addthis_toolbox a:hover
-{
-	padding: 0 0 3px 0;
-	border-bottom: 1px solid #CCC;
-}
-
-div.addthis_toolbox img
-{
-	height: 24px;
-	width: 24px;
-}
-
-div.addthis_toolbox em
-{
-	display: block;
-	float: left;
-	height: 24px;
-	line-height: 24px;
-	vertical-align: middle;
-}
-
 /*	more
  ******************************************************************************/
 a.more

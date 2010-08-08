@@ -196,6 +196,7 @@ class Controller_Blog_Index extends MMI_Template
 
 		// Inject CSS and JavaScript
 		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
+		$this->add_css_url('mmi-blog_core', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
 		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
 		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));

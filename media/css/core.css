@@ -1,0 +1,113 @@
+/* mmi-blog/core.css */
+
+article
+{
+	background: #EEE;
+}
+
+/*	addthis toolbox
+ ******************************************************************************/
+div.addthis_toolbox
+{
+	display: inline;
+	float: left;
+}
+
+div.addthis_toolbox a
+{
+	float: left;
+	height: 24px;
+	margin-right: 8px;
+	padding-top: 4px;
+	width: 24px;
+}
+
+div.addthis_toolbox a:hover
+{
+	padding: 0 0 3px 0;
+	border-bottom: 1px solid #CCC;
+}
+
+div.addthis_toolbox img
+{
+	height: 24px;
+	width: 24px;
+}
+
+div.addthis_toolbox em
+{
+	display: block;
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	vertical-align: middle;
+}
+
+/*	pagination
+ ******************************************************************************/
+.pagination
+{
+	background: #FFF;
+	float: left;
+	margin-bottom: 20px;
+}
+
+.pagination span
+{
+	float: left;
+	height: 26px;
+	line-height: 26px;
+}
+
+.pagination .txt
+{
+	font-weight: bold;
+	margin-right: 8px;
+	text-align: right;
+	width: 212px;
+}
+
+.pagination a,
+.pagination strong
+{
+	border: 1px solid #CCC;
+	display: block;
+	float: left;
+	height: 24px;
+	line-height: 24px;
+	padding: 0 8px;
+	margin-right: 8px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.pagination a:hover
+{
+	border-color: #000;
+}
+
+.pagination a.next,
+.pagination a.prev
+{
+	padding: 0;
+	text-indent: -7777px;
+	width: 24px;
+}
+
+.pagination a.prev
+{
+	background: url('../../img/icons/24px/Player Play2.png') no-repeat 0 0;
+}
+
+.pagination a.next
+{
+	background: url('../../img/icons/24px/Player Play.png') no-repeat 100% 0;
+	padding: 0;
+	width: 24px;
+	text-indent: -7777px;
+}
+
+.pagination strong
+{
+	background: #EEE;
+}
