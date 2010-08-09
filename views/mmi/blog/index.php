@@ -36,7 +36,7 @@ else
 		}
 		$i++;
 
-		$author = MMI_Blog::format_author($post->author);
+		$author = MMI_Blog_User::format_user($post->author);
 		$comment_count = $post->comment_count;
 		$categories = $post->categories;
 		$post_title = HTML::chars($post->title, FALSE);
@@ -44,10 +44,8 @@ else
 		$tags = $post->tags;
 
 		$post_date = $post->timestamp_created;
-		$month = date('m', $post_date);
-		$year = date('Y', $post_date);
-		$post_guid = MMI_Blog::get_post_guid($year, $month, $slug);
-		MMI_Blog::parse_content($post, $excerpt, $img, $body, TRUE);
+		$post_guid = $post->guid;
+		MMI_Blog_Post::parse_content($post, $excerpt, $img, $body, TRUE);
 
 		// Begin article
 		$output[] = '<article id="post_'.$post->id.'"'.$class.'>';
@@ -69,8 +67,7 @@ else
 			foreach ($categories as $category)
 			{
 				$cat_name = $category->name;
-				$cat_url = MMI_Blog::get_category_guid($category->slug);
-				$temp[] = HTML::anchor($cat_url, $cat_name, array('title' => 'articles for'.$cat_name));
+				$temp[] = HTML::anchor($category->guid, $cat_name, array('title' => 'articles for'.$cat_name));
 			}
 			$output[] = ' in: '.implode(', ', $temp);
 		}
@@ -108,6 +105,7 @@ else
 			'title'			=> $post_title,
 			'url'			=> $post_guid,
 		);
+		$toolbox_config = MMI_Blog::get_index_config()->get('toolbox');
 		if (is_array($toolbox_config) AND count($toolbox_config) > 0)
 		{
 			$toolbox->post['config'] = $toolbox_config;
@@ -136,8 +134,7 @@ else
 			foreach ($tags as $tag)
 			{
 				$tag_name = $tag->name;
-				$tag_url = MMI_Blog::get_tag_guid($tag->slug);
-				$temp[] = HTML::anchor($tag_url, $tag_name, array('title' => 'articles for'.$tag_name));
+				$temp[] = HTML::anchor($tag->guid, $tag_name, array('title' => 'articles for'.$tag_name));
 			}
 			$output[] = implode(', ', $temp);
 			$output[] = '</p>';

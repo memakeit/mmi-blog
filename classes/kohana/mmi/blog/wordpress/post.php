@@ -140,6 +140,10 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			foreach ($data as $id => $fields)
 			{
 				$posts[$id] = self::factory($driver)->_load($fields, $load_meta);
+
+				// Set the guid
+				$post_date = $posts[$id]->timestamp_created;
+				$posts[$id]->guid = self::get_guid(date('Y', $post_date), date('m', $post_date), $posts[$id]->slug);
 			}
 			if ($load_categories)
 			{
@@ -153,6 +157,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			{
 				self::_load_meta($posts);
 			}
+
 			if ($cache_lifetime > 0)
 			{
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $posts, $cache_lifetime);

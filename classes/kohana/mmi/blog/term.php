@@ -18,6 +18,11 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	const TYPE_TAG = 'tag';
 
 	/**
+	 * @var string post guid
+	 */
+	public $guid;
+
+	/**
 	 * @var integer term id
 	 */
 	public $id;
@@ -41,6 +46,52 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	 * @var string term name
 	 */
 	public $slug;
+
+	/**
+	 * Get a category guid.
+	 *
+	 * @param	string	the category slug
+	 * @param	integer	the page number
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
+	 */
+	public static function get_category_guid($slug, $page = 1, $absolute = TRUE)
+	{
+		$parms = array('slug' => URL::title($slug));
+		if (intval($page) > 1)
+		{
+			$parms['page'] = $page;
+		}
+		$url = Route::get('blog/category')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
+	}
+
+	/**
+	 * Get a tag guid.
+	 *
+	 * @param	string	the tag slug
+	 * @param	integer	the page number
+	 * @param	boolean	return an absolute URL?
+	 * @return	string
+	 */
+	public static function get_tag_guid($slug, $page = 1, $absolute = TRUE)
+	{
+		$parms = array('slug' => URL::title($slug));
+		if (intval($page) > 1)
+		{
+			$parms['page'] = $page;
+		}
+		$url = Route::get('blog/tag')->uri($parms);
+		if ($absolute)
+		{
+			$url = URL::site($url, TRUE);
+		}
+		return $url;
+	}
 
 	/**
 	 * Create a term instance.

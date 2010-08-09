@@ -5,7 +5,7 @@
 $output = array();
 if (count($post) > 0)
 {
-	$author = MMI_Blog::format_author($post->author);
+	$author = MMI_Blog_User::format_user($post->author);
 	$comment_count = $post->comment_count;
 	$categories = $post->categories;
 	$post_title = HTML::chars($post->title, FALSE);
@@ -13,10 +13,8 @@ if (count($post) > 0)
 	$tags = $post->tags;
 
 	$post_date = $post->timestamp_created;
-	$month = date('m', $post_date);
-	$year = date('Y', $post_date);
-	$post_guid = MMI_Blog::get_post_guid($year, $month, $slug);
-	MMI_Blog::parse_content($post, $excerpt, $img, $body, TRUE);
+	$post_guid = $post->guid;
+	MMI_Blog_Post::parse_content($post, $excerpt, $img, $body, TRUE);
 
 	if ($is_homepage)
 	{
@@ -28,20 +26,20 @@ if (count($post) > 0)
 	}
 
 	// Begin intro
-	$output[] = '<div class="content first">';
-	$output[] = '<div id="intro">';
-
-	// Image
-	if ( ! empty($img))
-	{
-		$output[] = '<p id="img">'.$img.'</p>';
-	}
-
-//	// Toolbox
-//	if ( ! empty($toolbox_one))
+//	$output[] = '<div class="content first">';
+//	$output[] = '<div id="intro">';
+//
+//	// Image
+//	if ( ! empty($img))
 //	{
-//		$output[] = $toolbox_one;
+//		$output[] = '<p id="img">'.$img.'</p>';
 //	}
+
+	// Toolbox
+	if ( ! empty($toolbox))
+	{
+		$output[] = $toolbox;
+	}
 
 //	// Author
 //	$author = blog::get_author($post->author_name);
@@ -59,100 +57,100 @@ if (count($post) > 0)
 //		$output[] = '</span>';
 //		$output[] = '</p>';
 //	}
-
-	// Excerpt
-	if ( ! empty($excerpt))
-	{
-		$output[] = '<div id="excerpt" class="wp_content">'.$excerpt.'</div>';
-	}
-
-	// Begin meta
-	$output[] = '<div id="meta">';
-
-	// Calendar
-	$post_date = $post->timestamp_created;
-	$output[] = '<div id="cal">';
-	$output[] = '<div class="date">'.date('j', $post_date).'</div>';
-	$output[] = '<div class="month">'.date('M Y', $post_date).'</div>';
-	$output[] = '</div>';
-
-	// Comments
-	$comment_url = '#comments';
-	if ($use_full_comment_url)
-	{
-		$slug = $post->slug;
-		$comment_url = MMI_Blog::get_post_guid($year, $month, $slug).'/#comments';
-	}
-	$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
-	$output[] = '<div id="comment_ct">';
-	$output[] = '<a class="comment" href="'.$comment_url.'" title="'.$link_title.'">comments</a>';
-	$output[] = '<a class="count" href="'.$comment_url.'" title="'.$link_title.'">'.$post['comment_count'].'</a>';
-	$output[] = '</div>';
-
-	// End meta
-	$output[] = '</div>';
-
-	// End intro
-	$output[] = '</div>';
-	$output[] = '</div>';
-
-	// Body
-	if ( ! empty($body))
-	{
-		$last_html = '';
-		$last_paragraph = page::get_last_paragraph($body);
-
-		$last_class = 'wp_content';
-		if (empty($prev_next) OR ( ! empty($prev_next) AND trim($prev_next->render()) === ''))
-		{
-			$last_class .= ' wp_last';
-		}
-		elseif ( ! empty($retweet))
-		{
-			$last_class .= ' wp_retweet';
-		}
-
-		if ( ! empty($last_paragraph))
-		{
-			if (empty($retweet))
-			{
-				$retweet  = '';
-			}
-
-			// Insert retweet
-			$last_html = $last_paragraph[0];
-			$last_inner = $last_paragraph[1];
-			$temp = '<div class="'.$last_class.'">'.$retweet.$last_inner.'</div>';
-			$body = str_replace($last_html, '', $body);
-			$last_html = $temp;
-		}
-
-		if (empty($last_html))
-		{
-			$output[] = '<div class="'.$last_class.'">'.$body.'</div>';
-		}
-		else
-		{
-			$output[] = '<div class="wp_content">'.$body.'</div>';
-			$output[] = $last_html;
-		}
-	}
-
+//
+//	// Excerpt
+//	if ( ! empty($excerpt))
+//	{
+//		$output[] = '<div id="excerpt" class="wp_content">'.$excerpt.'</div>';
+//	}
+//
+//	// Begin meta
+//	$output[] = '<div id="meta">';
+//
+//	// Calendar
+//	$post_date = $post->timestamp_created;
+//	$output[] = '<div id="cal">';
+//	$output[] = '<div class="date">'.date('j', $post_date).'</div>';
+//	$output[] = '<div class="month">'.date('M Y', $post_date).'</div>';
+//	$output[] = '</div>';
+//
+//	// Comments
+//	$comment_url = '#comments';
+//	if ($use_full_comment_url)
+//	{
+//		$slug = $post->slug;
+//		$comment_url = MMI_Blog::get_post_guid($year, $month, $slug).'/#comments';
+//	}
+//	$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
+//	$output[] = '<div id="comment_ct">';
+//	$output[] = '<a class="comment" href="'.$comment_url.'" title="'.$link_title.'">comments</a>';
+//	$output[] = '<a class="count" href="'.$comment_url.'" title="'.$link_title.'">'.$post['comment_count'].'</a>';
+//	$output[] = '</div>';
+//
+//	// End meta
+//	$output[] = '</div>';
+//
+//	// End intro
+//	$output[] = '</div>';
+//	$output[] = '</div>';
+//
+//	// Body
+//	if ( ! empty($body))
+//	{
+//		$last_html = '';
+//		$last_paragraph = MMI_Blog_Post::get_last_paragraph($body);
+//
+//		$last_class = 'wp_content';
+//		if (empty($prev_next) OR ( ! empty($prev_next) AND trim($prev_next->render()) === ''))
+//		{
+//			$last_class .= ' wp_last';
+//		}
+//		elseif ( ! empty($retweet))
+//		{
+//			$last_class .= ' wp_retweet';
+//		}
+//
+//		if ( ! empty($last_paragraph))
+//		{
+//			if (empty($retweet))
+//			{
+//				$retweet  = '';
+//			}
+//
+//			// Insert retweet
+//			$last_html = $last_paragraph[0];
+//			$last_inner = $last_paragraph[1];
+//			$temp = '<div class="'.$last_class.'">'.$retweet.$last_inner.'</div>';
+//			$body = str_replace($last_html, '', $body);
+//			$last_html = $temp;
+//		}
+//
+//		if (empty($last_html))
+//		{
+//			$output[] = '<div class="'.$last_class.'">'.$body.'</div>';
+//		}
+//		else
+//		{
+//			$output[] = '<div class="wp_content">'.$body.'</div>';
+//			$output[] = $last_html;
+//		}
+//	}
+//
 //	// Prev next links
 //	if ( ! empty($prev_next))
 //	{
 //		$output[] = $prev_next;
 //	}
 //
-	// Social links
-	$bookmarks = Request::factory('mmi/social/addthis/bookmarks');
-	$bookmarks->post = array
-	(
-		'description'	=> $excerpt,
-		'title'			=> $post_title,
-		'url'			=> $post_guid,
-	);
-	$output[] = $bookmarks->execute()->response;
+//	// Social links
+//	$bookmarks = Request::factory('mmi/social/addthis/bookmarks');
+//	$bookmarks->post = array
+//	(
+//		'description'	=> $excerpt,
+//		'title'			=> $post_title,
+//		'url'			=> $post_guid,
+//	);
+//	$output[] = $bookmarks->execute()->response;
 //
 //	// Related product
 //	if ( ! empty($related_product))

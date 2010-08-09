@@ -218,6 +218,20 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 				}
 			}
 
+			// Set guids
+			foreach ($terms as $id => $term)
+			{
+				switch ($term_type)
+				{
+					case self::TYPE_CATEGORY:
+						$terms[$id]->guid = self::get_category_guid($terms[$id]->slug);
+						break;
+
+					case self::TYPE_TAG:
+						$terms[$id]->guid = self::get_tag_guid($terms[$id]->slug);
+						break;
+				}
+			}
 			if ($cache_lifetime > 0)
 			{
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $terms, $cache_lifetime);

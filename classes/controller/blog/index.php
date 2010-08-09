@@ -54,7 +54,7 @@ class Controller_Blog_Index extends MMI_Template
 		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination(count($posts));
+		$pagination = $this->_get_pagination(count($posts));
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
@@ -93,7 +93,7 @@ class Controller_Blog_Index extends MMI_Template
 		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination($num_posts);
+		$pagination = $this->_get_pagination($num_posts);
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
@@ -131,7 +131,7 @@ class Controller_Blog_Index extends MMI_Template
 		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination($num_posts);
+		$pagination = $this->_get_pagination($num_posts);
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
@@ -169,7 +169,7 @@ class Controller_Blog_Index extends MMI_Template
 		$num_posts = count($posts);
 
 		// Configure the pagination
-		$pagination = MMI_Blog::get_pagination($num_posts);
+		$pagination = $this->_get_pagination($num_posts);
 		$this->_pagination = $pagination;
 		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
 
@@ -206,9 +206,21 @@ class Controller_Blog_Index extends MMI_Template
 			->set('pagination', $this->_pagination->render())
 			->set('posts', $posts)
 			->set('title', $title)
-			->set('toolbox_config', MMI_Blog::get_index_config()->get('toolbox'))
 		;
 		$this->add_view('blog_all', self::LAYOUT_ID, 'content', $view);
+	}
+
+	/**
+	 * Configure and return a pagination object.
+	 *
+	 * @param	integer	the total number of items
+	 * @return	Pagination
+	 */
+	protected function _get_pagination($total_items)
+	{
+		$config = Kohana::config('pagination.blog');
+		$config['total_items'] = $total_items;
+		return Pagination::factory($config);
 	}
 
 	/**

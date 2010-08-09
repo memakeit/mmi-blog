@@ -48,6 +48,27 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	public $url;
 
 	/**
+	 * If the user has an associated URL, display the user's name as a link.
+	 *
+	 * @param	MMI_Blog_User	the user object
+	 * @return	string
+	 */
+	public static function format_user($user)
+	{
+		$author = $user->display_name;
+		$url = $user->url;
+		if ( ! empty($url))
+		{
+			$author = HTML::anchor($url, HTML::chars($author, FALSE), array('title' => $author));
+		}
+		else
+		{
+			$author = HTML::chars($author, FALSE);
+		}
+		return $author;
+	}
+
+	/**
 	 * Create a user instance.
 	 *
 	 * @throws	Kohana_Exception
