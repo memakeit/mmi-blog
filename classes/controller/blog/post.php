@@ -57,11 +57,7 @@ class Controller_Blog_Post extends MMI_Template
 		unset($archive);
 
 		// Inject CSS and JavaScript
-		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
-		$this->add_css_url('mmi-blog_core', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
-		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));
+		$this->_inject_media();
 
 		// Get and re-set the nav type
 		$nav_type = MMI_Blog::get_nav_type();
@@ -69,32 +65,69 @@ class Controller_Blog_Post extends MMI_Template
 
 		$this->_title = $post->title;
 
+		$post_title = $post->title;
+		$post_url = $post->guid;
 		$view = View::factory('mmi/blog/post')
-		 	->set('is_homepage', FALSE)
+		 	->set('bookmarks', $this->_get_bookmarks($post_title, $post_url))
+			->set('is_homepage', FALSE)
 			->set('post', $post)
-			->set('toolbox', $this->_get_toolbox($post->title, $post->guid))
+			->set('toolbox', $this->_get_toolbox($post_title, $post_url))
 		;
 		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
 	}
 
-	protected function _get_toolbox($title, $url, $description = NULL)
+	/**
+	 * Inject CSS and JavaScript.
+	 *
+	 * @return	void
+	 */
+	protected function _inject_media()
 	{
-		$toolbox = Request::factory('mmi/social/addthis/toolbox');
-		$toolbox->post = array
+		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
+		$media_config = MMI_Blog::get_post_config()->get('media');
+		$css_config = Arr::get($media_config, 'css');
+		$js_config = Arr::get($media_config, 'js');
+		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
+		$this->add_css_url(Arr::get($css_config, 'toolbox'), array('bundle' => 'blog'));
+		$this->add_css_url(Arr::get($css_config, 'bookmarks'), array('bundle' => 'blog'));
+		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
+		$this->add_js_url(Arr::get($js_config, 'addthis'), array('bundle' => 'blog'));
+	}
+
+	protected function _get_bookmarks($title, $url, $description = NULL)
+	{
+		$addthis = Request::factory('mmi/social/addthis/bookmarks');
+		$addthis->post = array
 		(
 			'title'	=> $title,
 			'url'	=> $url,
 		);
 		if ( ! empty($description))
 		{
-			$toolbox->post['description'] = $description;
+			$addthis->post['description'] = $description;
+		}
+		return $addthis->execute()->response;
+	}
+
+
+	protected function _get_toolbox($title, $url, $description = NULL)
+	{
+		$addthis = Request::factory('mmi/social/addthis/toolbox');
+		$addthis->post = array
+		(
+			'title'	=> $title,
+			'url'	=> $url,
+		);
+		if ( ! empty($description))
+		{
+			$addthis->post['description'] = $description;
 		}
 
-		$toolbox_config = MMI_Blog::get_post_config()->get('toolbox');
-		if (is_array($toolbox_config) AND count($toolbox_config) > 0)
+		$config = MMI_Blog::get_post_config()->get('toolbox');
+		if (is_array($config) AND count($config) > 0)
 		{
-			$toolbox->post['config'] = $toolbox_config;
+			$addthis->post['config'] = $config;
 		}
-		return $toolbox->execute()->response;
+		return $addthis->execute()->response;
 	}
 } // End Controller_Blog_Post
