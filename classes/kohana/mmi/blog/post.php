@@ -121,11 +121,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'slug'	=> URL::title($slug),
 		);
 		$url = Route::get('blog/post')->uri($parms);
-		if ($absolute)
-		{
-			$url = URL::site($url, TRUE);
-		}
-		return $url;
+		return URL::site($url, $absolute);
 	}
 
 	/**
@@ -149,11 +145,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			$parms['page'] = $page;
 		}
 		$url = Route::get('blog/archive')->uri($parms);
-		if ($absolute)
-		{
-			$url = URL::site($url, TRUE);
-		}
-		return $url;
+		return $url = URL::site($url, $absolute);
 	}
 
 	/**
@@ -174,11 +166,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'slug'	=> URL::title($slug),
 		);
 		$url = Route::get('blog/feed')->uri($parms);
-		if ($absolute)
-		{
-			$url = URL::site($url, TRUE);
-		}
-		return $url;
+		return $url = URL::site($url, $absolute);
 	}
 
 	/**
@@ -199,11 +187,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'slug'	=> URL::title($slug),
 		);
 		$url = Route::get('blog/trackback')->uri($parms);
-		if ($absolute)
-		{
-			$url = URL::site($url, TRUE);
-		}
-		return $url;
+		return $url = URL::site($url, $absolute);
 	}
 
 	/**

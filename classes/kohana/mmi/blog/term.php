@@ -63,11 +63,7 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 			$parms['page'] = $page;
 		}
 		$url = Route::get('blog/category')->uri($parms);
-		if ($absolute)
-		{
-			$url = URL::site($url, TRUE);
-		}
-		return $url;
+		return URL::site($url, $absolute);
 	}
 
 	/**
@@ -86,11 +82,7 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 			$parms['page'] = $page;
 		}
 		$url = Route::get('blog/tag')->uri($parms);
-		if ($absolute)
-		{
-			$url = URL::site($url, TRUE);
-		}
-		return $url;
+		return URL::site($url, $absolute);
 	}
 
 	/**
