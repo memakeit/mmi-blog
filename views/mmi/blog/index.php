@@ -105,11 +105,6 @@ else
 			'title'			=> $post_title,
 			'url'			=> $post_guid,
 		);
-		$toolbox_config = MMI_Blog::get_index_config()->get('toolbox');
-		if (is_array($toolbox_config) AND count($toolbox_config) > 0)
-		{
-			$toolbox->post['config'] = $toolbox_config;
-		}
 		$output[] = $toolbox->execute()->response;
 
 		// Read more

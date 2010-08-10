@@ -184,7 +184,7 @@ class Controller_Blog_Index extends MMI_Template
 	}
 
 	/**
-	 * Inject CSS and JavaScript and create the posts view.
+	 * Create and add the index view.
 	 *
 	 * @param	array	an array of MMI_Post objects
 	 * @param	string	the page title
@@ -195,11 +195,7 @@ class Controller_Blog_Index extends MMI_Template
 		$this->_title = $title;
 
 		// Inject CSS and JavaScript
-		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
-		$this->add_css_url('mmi-blog_core', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
-		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
-		$this->add_js_url('mmi-social_addthis.toolbox.blog', array('bundle' => 'blog'));
+		$this->_inject_media();
 
 		// Configure and add the view
 		$view = View::factory('mmi/blog/index')
@@ -208,6 +204,24 @@ class Controller_Blog_Index extends MMI_Template
 			->set('title', $title)
 		;
 		$this->add_view('blog_all', self::LAYOUT_ID, 'content', $view);
+	}
+
+	/**
+	 * Inject CSS and JavaScript.
+	 *
+	 * @return	void
+	 */
+	protected function _inject_media()
+	{
+		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
+		$media_config = MMI_Blog::get_post_config()->get('media');
+		$css_config = Arr::get($media_config, 'css');
+		$js_config = Arr::get($media_config, 'js');
+		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-blog_pagination', array('bundle' => 'blog'));
+		$this->add_css_url(Arr::get($css_config, 'toolbox'), array('bundle' => 'blog'));
+		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
+		$this->add_js_url(Arr::get($js_config, 'addthis'), array('bundle' => 'blog'));
 	}
 
 	/**
