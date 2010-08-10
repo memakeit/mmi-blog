@@ -1,10 +1,25 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// Blog post configuration
+// MMI blog post configuration
 return array
 (
+	'media' => array
+	(
+		'css' => array
+		(
+			'bookmarks'	=> 'mmi-social_addthis.bookmarks',
+			'toolbox'	=> 'mmi-social_addthis.toolbox',
+		),
+		'js' => array
+		(
+			'addthis'	=> 'mmi-social_addthis',
+		),
+	),
+
 	'toolbox' => array
 	(
+		'after_links' => '<em></em>',
+		'before_links' => '',
 		'div_attr' => array
 		(
 		),
@@ -39,17 +54,6 @@ return array
 			(
 				'alt'	=> 'bookmark on delicious',
 				'icon'	=> 'delicious-24x24.png',
-			),
-			'stumbleupon' => array
-			(
-				'alt'	=> 'stumble it',
-				'icon'	=> 'stumbleupon-24x24.png',
-			),
-			'google buzz' => array
-			(
-				'alt'	=> 'buzz it',
-				'code' 	=> 'googlebuzz',
-				'icon'	=> 'google-buzz-24x24.png',
 			),
 			'rss' => array
 			(

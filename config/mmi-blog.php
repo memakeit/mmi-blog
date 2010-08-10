@@ -1,15 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// Blog configuration
+// MMI blog configuration
 return array
 (
 	'cache_lifetimes' => array
 	(
-		'category'	=> 4 * Date::HOUR,
+		'category'	=> 1 * Date::HOUR,
 		'comment'	=> 0,
-		'post'		=> 2 * Date::HOUR,
-		'tag'		=> 4 * Date::HOUR,
-		'user'		=> 8 * Date::HOUR,
+		'post'		=> 1 * Date::HOUR,
+		'tag'		=> 1 * Date::HOUR,
+		'user'		=> 1 * Date::HOUR,
 	),
 	'features' => array
 	(
