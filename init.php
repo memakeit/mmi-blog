@@ -46,15 +46,23 @@ Route::set('blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', '
 	'directory'		=> 'blog',
 ));
 
-Route::set('blog/feed', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('blog/trackback', 'trackback/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+->defaults(array
+(
+	'controller'	=> 'trackback',
+	'directory'		=> 'blog',
+));
+
+Route::set('blog/feed', 'feed')
 ->defaults(array
 (
 	'controller'	=> 'feed',
 	'directory'		=> 'blog',
 ));
-Route::set('blog/trackback', 'blog/<year>/<month>/<slug>/trackback', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('blog/comments', 'comments/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
-	'controller'	=> 'trackback',
+	'action'		=> 'comments',
+	'controller'	=> 'feed',
 	'directory'		=> 'blog',
 ));
