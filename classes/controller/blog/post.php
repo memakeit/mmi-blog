@@ -15,14 +15,9 @@ class Controller_Blog_Post extends MMI_Template
 	public $debug = TRUE;
 
 	/**
-	 * @var array the blog settings
+	 * @var string the blog driver
 	 **/
-	protected $_blog_config;
-
-	/**
-	 * @var Pagination the pagination object
-	 **/
-	protected $_pagination;
+	protected $_driver;
 
 	/**
 	 * Ensure the pagination module is loaded.
@@ -35,7 +30,8 @@ class Controller_Blog_Post extends MMI_Template
 	{
 		parent::__construct($request);
 		MMI_Util::load_module('pagination', MODPATH.'pagination');
-		$this->_blog_config = MMI_Blog::get_config(TRUE);
+		$config = MMI_Blog::get_config();
+		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 	}
 
 	/**
@@ -52,9 +48,12 @@ class Controller_Blog_Post extends MMI_Template
 //		MMI_Debug::mdump($year, 'year', $month, 'month', $slug, 'slug');
 
 		// Get the post
-		$archive = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_archive($year, $month);
+		$archive = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
 		$post = Arr::path($archive, $year.$month.'.'.$slug);
 		unset($archive);
+
+		$comments = MMI_Blog_Comment::factory($this->_driver)->get_comments($post->id);;
+		MMI_Debug::dead($comments);
 
 		// Inject CSS and JavaScript
 		$this->_inject_media();
@@ -84,14 +83,11 @@ class Controller_Blog_Post extends MMI_Template
 	protected function _inject_media()
 	{
 		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
-		$media_config = MMI_Blog::get_post_config()->get('media');
-		$css_config = Arr::get($media_config, 'css');
-		$js_config = Arr::get($media_config, 'js');
 		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_css_url(Arr::get($css_config, 'toolbox'), array('bundle' => 'blog'));
-		$this->add_css_url(Arr::get($css_config, 'bookmarks'), array('bundle' => 'blog'));
+		$this->add_css_url('mmi-social_addthis.toolbox', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-social_addthis.bookmarks', array('bundle' => 'blog'));
 		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
-		$this->add_js_url(Arr::get($js_config, 'addthis'), array('bundle' => 'blog'));
+		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
 	}
 
 	protected function _get_bookmarks($title, $url, $description = NULL)
