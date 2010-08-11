@@ -13,7 +13,7 @@ return array
 		'icons' => array
 		(
 			'height'	=> 24,
-			'path'		=> 'media/img/icons/social/',
+			'path'		=> 'media/img/icons/wpzoom/24x24/',
 			'width'		=> 24,
 		),
 		'link_attr' => array
@@ -25,36 +25,36 @@ return array
 			'twitter' => array
 			(
 				'alt'	=> 'retweet',
-				'icon'	=> 'twitter-24x24.png',
+				'icon'	=> 'twitter.png',
 			),
 			'facebook' => array
 			(
 				'alt'	=> 'post to facebook',
-				'icon'	=> 'facebook-24x24.png',
+				'icon'	=> 'facebook.png',
 			),
 			'digg' => array
 			(
 				'alt'	=> 'digg it',
-				'icon'	=> 'digg-24x24.png',
+				'icon'	=> 'digg.png',
 			),
 			'delicious' => array
 			(
 				'alt'	=> 'bookmark on delicious',
-				'icon'	=> 'delicious-24x24.png',
+				'icon'	=> 'delicious.png',
 			),
 			'rss' => array
 			(
 				'alt'	=> 'subscribe to comments',
-				'icon'	=> 'feed-24x24.png',
+				'icon'	=> 'rss.png',
 			),
 			'email' => array
 			(
-				'icon'	=> 'email-24x24.png',
+				'icon'	=> 'gmail.png',
 			),
 			'expanded' => array
 			(
 				'alt'	=> 'share',
-				'icon'	=> 'share-24x24.png',
+				'icon'	=> 'sharethis.png',
 			),
 		),
 	),
