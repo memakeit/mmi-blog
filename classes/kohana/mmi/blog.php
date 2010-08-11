@@ -123,23 +123,6 @@ class Kohana_MMI_Blog
 	}
 
 	/**
-	 * Get the index configuration settings.
-	 *
-	 * @param	boolean	return the configuration as an array?
-	 * @return	mixed
-	 */
-	public static function get_index_config($as_array = FALSE)
-	{
-		(self::$_index_config === NULL) AND self::$_index_config = Kohana::config('mmi-blog-index');
-		$config = self::$_index_config;
-		if ($as_array)
-		{
-			$config = $config->as_array();
-		}
-		return $config;
-	}
-
-	/**
 	 * Get the post configuration settings.
 	 *
 	 * @param	boolean	return the configuration as an array?
