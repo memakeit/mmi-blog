@@ -9,6 +9,10 @@
  */
 class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 {
+	// Type constants
+	const TYPE_PINGBACK = 'pingback';
+	const TYPE_TRACKBACK = 'trackback';
+
 	/**
 	 * @var string driver name
 	 */
@@ -89,6 +93,40 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			}
 		}
 		return $this->_extract_results($comments, $post_ids, TRUE, 'id', 'post_id');
+	}
+
+	/**
+	 * Separate user comments from pingbacks and trackbacks.
+	 *
+	 * @param	array	user comments
+	 * @param	array	pingbacks
+	 * @param	array	trackbacks
+	 * @return	void
+	 */
+	public function separate(& $comments, & $pingbacks, & $trackbacks)
+	{
+		$pingbacks = array();
+		$trackbacks = array();
+		if (empty($comments))
+		{
+			return;
+		}
+
+		foreach ($comments as $id => $comment)
+		{
+			switch ($comment->type)
+			{
+				case self::TYPE_PINGBACK:
+					$pingbacks[$id] = $comment;
+					unset($comments[$id]);
+					break;
+
+				case self::TYPE_TRACKBACK:
+					$trackbacks[$id] = $comment;
+					unset($comments[$id]);
+					break;
+			}
+		}
 	}
 
 	/**

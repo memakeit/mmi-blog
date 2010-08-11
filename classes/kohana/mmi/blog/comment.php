@@ -11,10 +11,7 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 {
 	// Abstract methods
 	abstract public function get_comments($post_ids = NULL, $reload_cache = NULL);
-
-	// Type constants
-	const TYPE_PINGBACK = 'pingback';
-	const TYPE_TRACKBACK = 'trackback';
+	abstract public function separate(& $comments, & $pingbacks, & $trackbacks);
 
 	/**
 	 * @var boolean comment approved?
@@ -75,32 +72,6 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 	 * @var string comment type
 	 */
 	public $type;
-
-	/**
-	 * Separate user comments from pingbacks and trackbacks.
-	 *
-	 * @param	array	user comments
-	 * @param	array	pingbacks and trackbacks
-	 * @return	void
-	 */
-	public static function separate_trackbacks(& $comments, & $trackbacks)
-	{
-		$trackbacks = array();
-		if (empty($comments))
-		{
-			return;
-		}
-
-		foreach ($comments as $id => $comment)
-		{
-			$type = $comment->type;
-			if ($type === self::TYPE_PINGBACK OR $type === self::TYPE_TRACKBACK)
-			{
-				$trackbacks[$id] = $comment;
-				unset($comments[$id]);
-			}
-		}
-	}
 
 	/**
 	 * Create a comment instance.
