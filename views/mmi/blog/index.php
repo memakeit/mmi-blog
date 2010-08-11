@@ -58,7 +58,7 @@ else
 		$output[] = '<span class="comments omega grid_2"><a href="'.$post_guid.'/#comments" title="'.$link_title.'">'.$comment_count.' '.Inflector::plural('comment', $comment_count).'</a></span>';
 		$output[] = '<span class="meta alpha grid_6">';
 		$output[] = 'By '.$author;
-		$output[] = ' on <time datetime="'.date('Y-m-d').'"pubdate>'.date('F j, Y', $post_date).'</time>';
+		$output[] = ' on <time datetime="'.date('Y-m-d', $post_date).'" pubdate>'.date('F j, Y', $post_date).'</time>';
 
 		// Categories
 		if (count($categories) > 0)
