@@ -90,82 +90,33 @@ abstract class Kohana_MMI_Blog_Core
 	 * @param	array	items
 	 * @param	mixed	id's being extracted
 	 * @param	boolean	preserve array keys?
+	 * @param	string	the item's id field
+	 * @param	string	the field used to make matches
 	 * @return	array
 	 */
-	protected function _extract_results($items, $ids = array(), $preserve_keys = FALSE)
+	protected function _extract_results($items, $ids = array(), $preserve_keys = FALSE, $id_field = 'id', $match_field = 'id')
 	{
-		$result = $preserve_keys ? $items : (array_values($items));
-		if (MMI_Util::is_set($ids))
+		if (MMI_Util::not_set($ids))
 		{
-			$result = array();
-			if (is_array($ids) AND count($ids) > 0)
-			{
-				$temp;
-				foreach ($ids as $id)
-				{
-					$temp = Arr::get($items, $id);
-					if ( ! empty($temp))
-					{
-						if ($preserve_keys)
-						{
-							$result[$id] = $temp;
-						}
-						else
-						{
-							$result[] = $temp;
-						}
-					}
-				}
-			}
-			else
-			{
-				$temp = Arr::get($items, $ids);
-				if ( ! empty($temp))
-				{
-					if ($preserve_keys)
-					{
-						$result[$ids] = $temp;
-					}
-					else
-					{
-						$result[] = $temp;
-					}
-				}
-			}
+			return $preserve_keys ? $items : (array_values($items));
 		}
-		return $result;
-	}
-
-	/**
-	 * Extract multiple results from a data set based on ids.
-	 *
-	 * @param	array	items
-	 * @param	string	item key
-	 * @param	mixed	id's being extracted
-	 * @param	boolean	preserve array keys?
-	 * @return	array
-	 */
-	protected function _extract_multiple_results($items, $item_key = 'id', $ids = array(), $preserve_keys = FALSE)
-	{
-		$result = $preserve_keys ? $items : (array_values($items));
-		if (MMI_Util::is_set($ids))
+		if (is_scalar($ids))
 		{
-			if (is_array($ids) AND count($ids) > 0)
+			$ids = array($ids);
+		}
+
+		$result = array();
+		foreach ($items as $item)
+		{
+			if (in_array($item->$match_field, $ids, TRUE))
 			{
-				$result = array();
-				foreach ($items as $item)
+				if ($preserve_keys)
 				{
-					if (in_array($item->$item_key, $ids, TRUE))
-					{
-						if ($preserve_keys)
-						{
-							$result[$item->$item_key] = $item;
-						}
-						else
-						{
-							$result[] = $item;
-						}
-					}
+					$result[$item->$id_field] = $item;
+				}
+				else
+				{
+					$result[] = $item;
 				}
 			}
 		}

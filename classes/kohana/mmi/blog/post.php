@@ -14,7 +14,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	abstract public function get_posts($ids = NULL, $reload_cache = NULL);
 	abstract public function get_pages($ids = NULL, $reload_cache = NULL);
 
-	// Class constants
+	// Type constants
 	const TYPE_PAGE = 'page';
 	const TYPE_POST = 'post';
 

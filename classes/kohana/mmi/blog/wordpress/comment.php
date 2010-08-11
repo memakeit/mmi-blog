@@ -88,7 +88,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $comments, $cache_lifetime);
 			}
 		}
-		return $this->_extract_multiple_results($comments, 'post_id', $post_ids, FALSE);
+		return $this->_extract_results($comments, $post_ids, TRUE, 'id', 'post_id');
 	}
 
 	/**
@@ -157,10 +157,14 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		$value = intval($value);
 		if ($value > 0)
 		{
-			$user = MMI_Blog_User::factory(self::$_driver)->get_users($value);
-			$this->author = $user->display_name;
-			$this->author_email = $user->email;
-			$this->author_url = $user->url;
+			$users = MMI_Blog_User::factory(self::$_driver)->get_users($value);
+			$user = Arr::get($users, $value);
+			if ( ! empty($user))
+			{
+				$this->author = $user->display_name;
+				$this->author_email = $user->email;
+				$this->author_url = $user->url;
+			}
 		}
 		return $value;
 	}

@@ -83,14 +83,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $users, $cache_lifetime);
 			}
 		}
-
-		// If only 1 object in results array, return the object instead of an array of objects
-		$results = $this->_extract_results($users, $ids, TRUE);
-		if (MMI_Util::is_set($ids) AND ! is_array($ids) AND count($results) === 1)
-		{
-			$results = $results[$ids];
-		}
-		return $results;
+		return $this->_extract_results($users, $ids, TRUE);
 	}
 
 	/**

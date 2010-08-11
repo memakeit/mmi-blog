@@ -72,12 +72,10 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 			}
 		}
 
-		// If only 1 object in results array, return the object instead of an array of objects
-		$results = $this->_extract_results($options, $option_names, TRUE);
-		if (MMI_Util::is_set($option_names) AND ! is_array($option_names) AND count($results) === 1)
+		if ( ! empty($option_names))
 		{
-			$results = $results[$option_names];
+			$options = array_intersect_key($options, array_flip($option_names));
 		}
-		return $results;
+		return $options;
 	}
 } // End Kohana_MMI_Blog_WordPress
