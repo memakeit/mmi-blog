@@ -141,9 +141,14 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			{
 				$posts[$id] = self::factory($driver)->_load($fields, $load_meta);
 
-				// Set the guid
+				// Set the guids
 				$post_date = $posts[$id]->timestamp_created;
-				$posts[$id]->guid = self::get_guid(date('Y', $post_date), date('m', $post_date), $posts[$id]->slug);
+				$year = date('Y', $post_date);
+				$month = date('m', $post_date);
+				$slug = $posts[$id]->slug;
+				$posts[$id]->guid = self::get_guid($year, $month, $slug);
+				$posts[$id]->comments_feed_guid = self::get_comments_feed_guid($year, $month, $slug);
+				$posts[$id]->trackback_guid = self::get_trackback_guid($year, $month, $slug);
 			}
 			if ($load_categories)
 			{

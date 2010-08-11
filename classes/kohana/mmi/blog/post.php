@@ -44,6 +44,11 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	public $comment_status;
 
 	/**
+	 * @var string comments feed guid
+	 */
+	public $comments_feed_guid;
+
+	/**
 	 * @var string post content
 	 */
 	public $content;
@@ -99,6 +104,11 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	public $title;
 
 	/**
+	 * @var string trackback guid
+	 */
+	public $trackback_guid;
+
+	/**
 	 * @var string post type
 	 */
 	public $type;
@@ -149,7 +159,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	}
 
 	/**
-	 * Get a feed guid.
+	 * Get a comments feed guid.
 	 *
 	 * @param	integer	the 4-digit year
 	 * @param	integer	the 2-digit month
@@ -157,7 +167,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 * @param	boolean	return an absolute URL?
 	 * @return	string
 	 */
-	public static function get_feed_guid($year, $month, $slug, $absolute = TRUE)
+	public static function get_comments_feed_guid($year, $month, $slug, $absolute = TRUE)
 	{
 		$parms = array
 		(
@@ -165,7 +175,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('blog/feed')->uri($parms);
+		$url = Route::get('blog/comments')->uri($parms);
 		return $url = URL::site($url, $absolute);
 	}
 
