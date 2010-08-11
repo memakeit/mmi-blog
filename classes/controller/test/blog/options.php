@@ -21,6 +21,9 @@ class Controller_Test_Blog_Options extends Controller
 	 */
 	public function action_index()
 	{
+		$data = MMI_Blog_WordPress::factory()->get_options(array('active_plugins', 'admin_email'), NULL, TRUE);
+		MMI_Debug::dump($data, 'options');
+
 		$data = MMI_Blog_WordPress::factory()->get_options(NULL, NULL, TRUE);
 		MMI_Debug::dead($data, 'options');
 	}
