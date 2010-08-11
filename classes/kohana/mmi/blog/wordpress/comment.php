@@ -222,7 +222,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 				$author_email = $item->author_email;
 				if ( ! empty($author_email))
 				{
-					$item->gravatar_url = MMI_Blog_Gravatar::get_gravatar_url($author_email);
+					$item->gravatar_url = MMI_Gravatar::get_gravatar_url($author_email);
 					$comments[$idx] = $item;
 				}
 			}

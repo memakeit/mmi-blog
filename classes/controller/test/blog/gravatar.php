@@ -21,7 +21,7 @@ class Controller_Test_Blog_Gravatar extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_Gravatar::get_gravatar_url('memakeit@gmail.com', 256, 'x', 'wavatar');
+		$data = MMI_Gravatar::get_gravatar_url('memakeit@gmail.com', 256, 'x', 'wavatar');
 		MMI_Debug::dump($data, 'gravatar url');
 	}
 } // End Controller_Test_Blog_Gravatar

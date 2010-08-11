@@ -8,7 +8,7 @@
  * @license		http://www.memakeit.com/license
  * @link		http://en.gravatar.com/site/implement/url
  */
-class Kohana_MMI_Blog_Gravatar
+class Kohana_MMI_Gravatar
 {
 	/**
 	 * @var Kohana_Config blog settings
@@ -51,8 +51,7 @@ class Kohana_MMI_Blog_Gravatar
 		}
 
 		// Get defaults
-		$config = MMI_Blog::get_config(TRUE);
-		$defaults = Arr::path($config, 'gravatar.defaults', array());
+		$defaults = self::get_config()->get('defaults', array());
 		$default_img = Arr::get($defaults, 'img');
 		$default_rating = Arr::get($defaults, 'rating');
 		$default_size = Arr::get($defaults, 'size');
@@ -108,4 +107,21 @@ class Kohana_MMI_Blog_Gravatar
 		$format = 'http://www.gravatar.com/avatar/%s.jpg?s=%s&amp;r=%s&amp;d=%s';
 		return sprintf($format, md5($email), $size, $rating, $img);
 	}
-} // End Kohana_MMI_Blog_Gravatar
+
+	/**
+	 * Get the gravatar configuration settings.
+	 *
+	 * @param	boolean	return the configuration as an array?
+	 * @return	mixed
+	 */
+	public static function get_config($as_array = FALSE)
+	{
+		(self::$_config === NULL) AND self::$_config = Kohana::config('mmi-gravatar');
+		$config = self::$_config;
+		if ($as_array)
+		{
+			$config = $config->as_array();
+		}
+		return $config;
+	}
+} // End Kohana_MMI_Gravatar

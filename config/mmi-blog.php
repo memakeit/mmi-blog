@@ -25,15 +25,6 @@ return array
 		'user'				=> TRUE,
 		'user_meta'			=> FALSE,
 	),
-	'gravatar' => array
-	(
-		'defaults' => array
-		(
-			'img'		=> URL::site('/media/img/icons/gravatar_default_100_v001.png', TRUE),
-			'rating'	=> 'pg',
-			'size'		=> '100'
-		),
-	),
 	'titles' => array
 	(
 		'archive'	=> 'Articles for %s',
