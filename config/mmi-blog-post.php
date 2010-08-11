@@ -3,19 +3,6 @@
 // MMI blog post configuration
 return array
 (
-	'media' => array
-	(
-		'css' => array
-		(
-			'bookmarks'	=> 'mmi-social_addthis.bookmarks',
-			'toolbox'	=> 'mmi-social_addthis.toolbox',
-		),
-		'js' => array
-		(
-			'addthis'	=> 'mmi-social_addthis',
-		),
-	),
-
 	'toolbox' => array
 	(
 		'after_links' => '<em></em>',

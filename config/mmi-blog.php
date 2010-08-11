@@ -11,6 +11,7 @@ return array
 		'tag'		=> 1 * Date::HOUR,
 		'user'		=> 1 * Date::HOUR,
 	),
+	'driver' => MMI_Blog::DRIVER_WORDPRESS,
 	'features' => array
 	(
 		'category'			=> TRUE,
