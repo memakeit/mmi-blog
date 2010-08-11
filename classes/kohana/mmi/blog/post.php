@@ -308,7 +308,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 * @param	string	type of post to create
 	 * @return	MMI_Blog_Post
 	 */
-	public static function factory($type = MMI_Blog::BLOG_WORDPRESS)
+	public static function factory($type = MMI_Blog::DRIVER_WORDPRESS)
 	{
 		$class = 'MMI_Blog_'.ucfirst($type).'_Post';
 		if ( ! class_exists($class))

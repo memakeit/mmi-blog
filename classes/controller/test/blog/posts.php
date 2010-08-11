@@ -21,10 +21,10 @@ class Controller_Test_Blog_Posts extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_posts(1, TRUE);
+		$data = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_posts(1, TRUE);
 		MMI_Debug::dump($data, 'posts');
 
-		$data = MMI_Blog_Post::factory(MMI_Blog::BLOG_WORDPRESS)->get_pages(array(2), TRUE);
+		$data = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_pages(array(2), TRUE);
 		MMI_Debug::dead($data, 'pages');
 	}
 } // End Controller_Test_Blog_Posts

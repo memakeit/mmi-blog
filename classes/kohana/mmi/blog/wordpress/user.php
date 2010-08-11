@@ -12,7 +12,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	/**
 	 * @var string driver name
 	 */
-	protected static $_driver = MMI_Blog::BLOG_WORDPRESS;
+	protected static $_driver = MMI_Blog::DRIVER_WORDPRESS;
 
 	/**
 	 * @var array database mappings ($column => $alias) for the users table

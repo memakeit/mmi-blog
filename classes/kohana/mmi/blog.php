@@ -9,8 +9,8 @@
  */
 class Kohana_MMI_Blog
 {
-	// Blog types
-	const BLOG_WORDPRESS = 'wordpress';
+	// Driver types
+	const DRIVER_WORDPRESS = 'wordpress';
 
 	// Navigation types
 	const NAV_ARCHIVE = 'archive';

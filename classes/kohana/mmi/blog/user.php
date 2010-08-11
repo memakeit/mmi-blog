@@ -75,7 +75,7 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	 * @param	string	blog driver
 	 * @return	MMI_Blog_User
 	 */
-	public static function factory($driver = MMI_Blog::BLOG_WORDPRESS)
+	public static function factory($driver = MMI_Blog::DRIVER_WORDPRESS)
 	{
 		$class = 'MMI_Blog_'.ucfirst($driver).'_User';
 		if ( ! class_exists($class))

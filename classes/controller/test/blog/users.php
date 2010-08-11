@@ -21,7 +21,7 @@ class Controller_Test_Blog_Users extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_User::factory(MMI_Blog::BLOG_WORDPRESS)->get_users(NULL, TRUE);
+		$data = MMI_Blog_User::factory(MMI_Blog::DRIVER_WORDPRESS)->get_users(NULL, TRUE);
 		MMI_Debug::dead($data, 'users');
 	}
 } // End Controller_Test_Blog_Users

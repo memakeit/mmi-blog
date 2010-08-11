@@ -21,10 +21,10 @@ class Controller_Test_Blog_Terms extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_Term::factory(MMI_Blog::BLOG_WORDPRESS)->get_categories(NULL, TRUE);
+		$data = MMI_Blog_Term::factory(MMI_Blog::DRIVER_WORDPRESS)->get_categories(NULL, TRUE);
 		MMI_Debug::dump($data, 'categories');
 
-		$data = MMI_Blog_Term::factory(MMI_Blog::BLOG_WORDPRESS)->get_tags(NULL, TRUE);
+		$data = MMI_Blog_Term::factory(MMI_Blog::DRIVER_WORDPRESS)->get_tags(NULL, TRUE);
 		MMI_Debug::dead($data, 'tags');
 	}
 } // End Controller_Test_Blog_Terms

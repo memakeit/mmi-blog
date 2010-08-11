@@ -21,7 +21,7 @@ class Controller_Test_Blog_Comments extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_Comment::factory(MMI_Blog::BLOG_WORDPRESS)->get_comments(array(1,2));
+		$data = MMI_Blog_Comment::factory(MMI_Blog::DRIVER_WORDPRESS)->get_comments(array(1,2));
 		MMI_Debug::dead($data, 'comments');
 	}
 } // End Controller_Test_Blog_Comments
