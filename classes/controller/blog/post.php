@@ -20,6 +20,12 @@ class Controller_Blog_Post extends MMI_Template
 	protected $_driver;
 
 	/**
+	 * @var array the blog feature settings
+	 **/
+	protected $_features_config;
+
+
+	/**
 	 * Ensure the pagination module is loaded.
 	 * Load the blog settings from the configuration file.
 	 *
@@ -32,6 +38,7 @@ class Controller_Blog_Post extends MMI_Template
 		MMI_Util::load_module('pagination', MODPATH.'pagination');
 		$config = MMI_Blog::get_config();
 		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
+		$this->_features_config = $config->get('features', array());
 	}
 
 	/**
@@ -45,15 +52,15 @@ class Controller_Blog_Post extends MMI_Template
 		$month = $request->param('month');
 		$year = $request->param('year');
 		$slug = $request->param('slug');
-//		MMI_Debug::mdump($year, 'year', $month, 'month', $slug, 'slug');
 
 		// Get the post
 		$archive = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
 		$post = Arr::path($archive, $year.$month.'.'.$slug);
 		unset($archive);
 
-		$comments = MMI_Blog_Comment::factory($this->_driver)->get_comments($post->id);;
-		MMI_Debug::dead($comments);
+		$mmi_comments = MMI_Blog_Comment::factory($this->_driver);
+		$comments = $mmi_comments->get_comments($post->id);;
+		$mmi_comments->separate($comments, $pingbacks, $trackbacks);
 
 		// Inject CSS and JavaScript
 		$this->_inject_media();
@@ -72,6 +79,11 @@ class Controller_Blog_Post extends MMI_Template
 			->set('post', $post)
 			->set('toolbox', $this->_get_toolbox($post_title, $post_url))
 		;
+		if (Arr::get($this->_features_config, 'comment', TRUE))
+		{
+			$view->set('comments', $this->_get_comments($comments, $post));
+		}
+
 		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
 	}
 
@@ -86,8 +98,29 @@ class Controller_Blog_Post extends MMI_Template
 		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-social_addthis.toolbox', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-social_addthis.bookmarks', array('bundle' => 'blog'));
+		if (Arr::get($this->_features_config, 'comment', TRUE))
+		{
+			$this->add_css_url('mmi-blog_comments', array('bundle' => 'blog'));
+		}
+
 		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
+	}
+
+	protected function _get_comments($comments, $post)
+	{
+		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
+		$default_img = Arr::get($defaults, 'img');
+		$default_img_size = Arr::get($defaults, 'size');
+
+		$view = View::factory('mmi/blog/comments')
+			->set('comments', $comments)
+			->set('default_img', $default_img)
+			->set('default_img_size', $default_img_size)
+			->set('feed_url', $post->comments_feed_guid)
+			->set('trackback_url', $post->trackback_guid)
+		;
+		return $view->render();
 	}
 
 	protected function _get_bookmarks($title, $url, $description = NULL)

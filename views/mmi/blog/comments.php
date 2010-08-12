@@ -1,17 +1,77 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// mmi/blog/content/comments
+// mmi/blog/comments
 
-$output = array();
-if ( ! empty($title))
-{
-	$output[] = '<h1>'.HTML::chars($title, FALSE).'</h1>';
-}
-if ( ! empty($content))
-{
-	$output[] = $content;
-}
-$output[] = '<p><em>'.date('Y-m-d H:i:s').'</em></p>';
+$num_comments = count($comments);
+$output[] = '<section id="comments" class="alpha omega grid_8">';
 
+// Header
+$header = $num_comments.' '.ucfirst(Inflector::plural('Comment', $num_comments));
+$output[] = '<header id="comments_hdr">';
+if ( ! empty($feed_url))
+{
+	$output[] = HTML::anchor($feed_url, $header, array('title' => 'subscribe to this article\'s comments'));
+}
+else
+{
+	$output[] =  $header;
+}
+if ( ! empty($trackback_url))
+{
+	$output[] = '<small>Trackback: '.$trackback_url.'</small>';
+}
+$output[] = '</header>';
+
+if ($num_comments > 0)
+{
+	$i = 0;
+	$last = count($comments) - 1;
+	foreach ($comments as $comment)
+	{
+		$class = 'comment';
+		if ($i === 0)
+		{
+			$class .= ' first';
+		}
+		if ($i === $last)
+		{
+			$class .= ' last';
+		}
+		$class = ' class="'.$class.'"';
+		$i++;
+
+		$author = $comment->author;
+		$author_email = $comment->author_email;
+		$author_url = $comment->author_url;
+		$timestamp = $comment->timestamp;
+
+		$output[] = '<article id="comment-'.$comment->id.'"'.$class.'>';
+
+		// Gravatar
+		$gravatar_url = ( ! empty($author_email)) ? MMI_Gravatar::get_gravatar_url($author_email) : $default_img;
+		$output[] = '<figure class="alpha grid_2">';
+		$output[] = '<img src="'.$gravatar_url.'" alt="'.HTML::chars($author, FALSE).'" height="'.$default_img_size.'" width="'.$default_img_size.'" />';
+		$output[] = '</figure>';
+
+		// Header
+		$output[] = '<header class="omega grid_6">By ';
+		if (empty($author_url))
+		{
+			$output[] = HTML::chars($author, FALSE);
+		}
+		else
+		{
+			$output[] = HTML::anchor($author_url, HTML::chars($author, FALSE), array('rel' => 'external nofollow'));
+		}
+		$output[] = 'on <time datetime="'.gmdate('c', $timestamp).'" pubdate>'.gmdate('F j, Y @ g:i a', $timestamp).'</time>';
+		$output[] = '</header>';
+
+		// Content
+		$output[] = Text::auto_p($comment->content);
+
+		$output[] = '</article>';
+	}
+}
+$output[] = '</section>';
 echo implode(PHP_EOL, $output);
 unset($output);

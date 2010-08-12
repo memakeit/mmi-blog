@@ -142,28 +142,18 @@ if (count($post) > 0)
 //		$output[] = $prev_next;
 //	}
 //
-//	// Social links
-//	$bookmarks = Request::factory('mmi/social/addthis/bookmarks');
-//	$bookmarks->post = array
-//	(
-//		'description'	=> $excerpt,
-//		'title'			=> $post_title,
-//		'url'			=> $post_guid,
-//	);
-//	$output[] = $bookmarks->execute()->response;
-//
-//	// Related product
-//	if ( ! empty($related_product))
-//	{
-//		$output[] = $related_product;
-//	}
-//
-//	// Comments
-//	if ( ! empty($comments))
-//	{
-//		$output[] = '<a name="comments"></a>';
-//		$output[] = $comments;
-//	}
+	// Bookmarks
+	if ( ! empty($bookmarks))
+	{
+		$output[] = $bookmarks;
+	}
+
+	// Comments
+	if ( ! empty($comments))
+	{
+		$output[] = '<a name="comments"></a>';
+		$output[] = $comments;
+	}
 //
 //	// Comment form
 //	if ( ! empty($comment_form))
