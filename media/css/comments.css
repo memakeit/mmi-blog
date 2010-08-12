@@ -63,7 +63,7 @@
  ******************************************************************************/
 #trackbacks header
 {
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 
 #trackbacks span
@@ -72,6 +72,7 @@
 	display: block;
 	font-size: 2.571em; /* 36px */
 	line-height: 1;
+	margin-bottom: 2px;
 	padding-bottom: 2px;
 }
 
@@ -80,12 +81,13 @@
 	color: #999;
 	display: block;
 	font-size: .857em; /* 12px */
+	line-height: 1;
 }
 
 #trackbacks ol
 {
 	list-style-type: decimal;
-	margin: 5px 0 15px 0;
+	margin-bottom: 15px;
 }
 
 #trackbacks li
