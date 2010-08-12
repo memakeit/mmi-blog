@@ -76,7 +76,7 @@ class Controller_Blog_Index extends MMI_Template
 		$month = $request->param('month');
 		$year = $request->param('year');
 		$timestamp = mktime(0, 0, 0, $month, 1, $year);
-		$slug = date('Ym', $timestamp);
+		$slug = gmdate('Ym', $timestamp);
 		$title = sprintf(Arr::get($this->_titles_config, 'archive', 'Articles for %s'), date('F Y', $timestamp));
 
 		// Get the data

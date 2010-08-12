@@ -72,9 +72,9 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		foreach ($posts as $post)
 		{
 			$created = $post->timestamp_created;
-			if (intval(date('Y', $created)) === $year AND intval(date('n', $created)) === $month)
+			if (intval(gmdate('Y', $created)) === $year AND intval(gmdate('n', $created)) === $month)
 			{
-				$archive[date('Ym', $created)][$post->slug] = $post;
+				$archive[gmdate('Ym', $created)][$post->slug] = $post;
 			}
 		}
 		return $archive;
@@ -143,8 +143,8 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 
 				// Set the guids
 				$post_date = $posts[$id]->timestamp_created;
-				$year = date('Y', $post_date);
-				$month = date('m', $post_date);
+				$year = gmdate('Y', $post_date);
+				$month = gmdate('m', $post_date);
 				$slug = $posts[$id]->slug;
 				$posts[$id]->guid = self::get_guid($year, $month, $slug);
 				$posts[$id]->comments_feed_guid = self::get_comments_feed_guid($year, $month, $slug);
