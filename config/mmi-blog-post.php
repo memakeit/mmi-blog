@@ -9,11 +9,11 @@ return array
 		'before_links' => '',
 		'div_attr' => array
 		(
+			'class'	=> 'tb',
 		),
 		'icons' => array
 		(
 			'height'	=> 24,
-			'path'		=> 'media/img/icons/wpzoom/24x24/',
 			'width'		=> 24,
 		),
 		'link_attr' => array
@@ -22,40 +22,12 @@ return array
 		),
 		'services' => array
 		(
-			'twitter' => array
-			(
-				'alt'	=> 'retweet',
-				'icon'	=> 'twitter.png',
-			),
-			'facebook' => array
-			(
-				'alt'	=> 'post to facebook',
-				'icon'	=> 'facebook.png',
-			),
-			'digg' => array
-			(
-				'alt'	=> 'digg it',
-				'icon'	=> 'digg.png',
-			),
-			'delicious' => array
-			(
-				'alt'	=> 'bookmark on delicious',
-				'icon'	=> 'delicious.png',
-			),
-			'rss' => array
-			(
-				'alt'	=> 'subscribe to comments',
-				'icon'	=> 'rss.png',
-			),
-			'email' => array
-			(
-				'icon'	=> 'gmail.png',
-			),
-			'expanded' => array
-			(
-				'alt'	=> 'share',
-				'icon'	=> 'sharethis.png',
-			),
+			'twitter' => array('alt' => 'retweet'),
+			'facebook' => array('alt' => 'post to facebook'),
+			'digg' => array('alt' => 'digg it'),
+			'delicious' => array('alt' => 'bookmark on delicious'),
+			'email' => array(),
+			'expanded' => array('alt' => 'share'),
 		),
 	),
 );
