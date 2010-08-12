@@ -7,6 +7,6 @@ return array
 	(
 		'img'		=> URL::site('/media/img/icons/48px/User.png', TRUE),
 		'rating'	=> 'pg',
-		'size'		=> '100'
+		'size'		=> '120'
 	),
 );
