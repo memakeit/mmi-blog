@@ -11,7 +11,7 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 {
 	// Abstract methods
 	abstract public function get_comments($post_ids = NULL, $reload_cache = NULL);
-	abstract public function separate(& $comments, & $pingbacks, & $trackbacks);
+	abstract public function separate(& $comments, & $trackbacks);
 
 	/**
 	 * @var boolean comment approved?

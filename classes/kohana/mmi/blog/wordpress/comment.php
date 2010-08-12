@@ -99,13 +99,11 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	 * Separate user comments from pingbacks and trackbacks.
 	 *
 	 * @param	array	user comments
-	 * @param	array	pingbacks
 	 * @param	array	trackbacks
 	 * @return	void
 	 */
-	public function separate(& $comments, & $pingbacks, & $trackbacks)
+	public function separate(& $comments, & $trackbacks)
 	{
-		$pingbacks = array();
 		$trackbacks = array();
 		if (empty($comments))
 		{
@@ -114,17 +112,11 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 
 		foreach ($comments as $id => $comment)
 		{
-			switch ($comment->type)
+			$type = $comment->type;
+			if ($type === self::TYPE_PINGBACK OR $type === self::TYPE_TRACKBACK)
 			{
-				case self::TYPE_PINGBACK:
-					$pingbacks[$id] = $comment;
-					unset($comments[$id]);
-					break;
-
-				case self::TYPE_TRACKBACK:
-					$trackbacks[$id] = $comment;
-					unset($comments[$id]);
-					break;
+				$trackbacks[$id] = $comment;
+				unset($comments[$id]);
 			}
 		}
 	}
