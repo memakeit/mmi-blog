@@ -24,7 +24,6 @@ class Controller_Blog_Post extends MMI_Template
 	 **/
 	protected $_features_config;
 
-
 	/**
 	 * Ensure the pagination module is loaded.
 	 * Load the blog settings from the configuration file.
@@ -59,8 +58,8 @@ class Controller_Blog_Post extends MMI_Template
 		unset($archive);
 
 		$mmi_comments = MMI_Blog_Comment::factory($this->_driver);
-		$comments = $mmi_comments->get_comments($post->id);;
-		$mmi_comments->separate($comments, $pingbacks, $trackbacks);
+		$comments = $mmi_comments->get_comments($post->id);
+		$mmi_comments->separate($comments, $trackbacks);
 
 		// Inject CSS and JavaScript
 		$this->_inject_media();
@@ -81,7 +80,7 @@ class Controller_Blog_Post extends MMI_Template
 		;
 		if (Arr::get($this->_features_config, 'comment', TRUE))
 		{
-			$view->set('comments', $this->_get_comments($comments, $post));
+			$view->set('comments', $this->_get_comments($comments, $trackbacks, $post));
 		}
 
 		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
@@ -107,7 +106,7 @@ class Controller_Blog_Post extends MMI_Template
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
 	}
 
-	protected function _get_comments($comments, $post)
+	protected function _get_comments($comments, $trackbacks, $post)
 	{
 		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
 		$default_img = Arr::get($defaults, 'img');
@@ -119,6 +118,7 @@ class Controller_Blog_Post extends MMI_Template
 			->set('default_img_size', $default_img_size)
 			->set('feed_url', $post->comments_feed_guid)
 			->set('trackback_url', $post->trackback_guid)
+			->set('trackbacks', $trackbacks)
 		;
 		return $view->render();
 	}

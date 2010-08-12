@@ -16,12 +16,9 @@ else
 {
 	$output[] =  $header;
 }
-if ( ! empty($trackback_url))
-{
-	$output[] = '<small>Trackback: '.$trackback_url.'</small>';
-}
 $output[] = '</header>';
 
+// Comments
 if ($num_comments > 0)
 {
 	$i = 0;
@@ -54,7 +51,8 @@ if ($num_comments > 0)
 		$output[] = '</figure>';
 
 		// Header
-		$output[] = '<header class="omega grid_6">By ';
+		$output[] = '<header class="omega grid_6">';
+		$output[] = 'By ';
 		if (empty($author_url))
 		{
 			$output[] = HTML::chars($author, FALSE);
@@ -73,5 +71,27 @@ if ($num_comments > 0)
 	}
 }
 $output[] = '</section>';
+
+// Pingbacks and trackbacks
+if (is_array($trackbacks) AND count($trackbacks) > 0)
+{
+	$output[] = '<section id="trackbacks" class="alpha omega grid_8">';
+	$output[] = '<header>';
+	$output[] = '<span>Pingbacks &amp; Trackbacks</span>';
+	if ( ! empty($trackback_url))
+	{
+		$output[] = '<small>Trackback URL: '.$trackback_url.'</small>';
+	}
+	$output[] = '</header>';
+	$output[] = '<ol class="alpha omega push_1 grid_7">';
+	foreach ($trackbacks as $comment)
+	{
+		$output[] = '<li>';
+		$output[] = HTML::anchor($comment->author_url, $comment->author, array('rel' => 'external nofollow'));
+		$output[] = '</li>';
+	}
+	$output[] = '</ol>';
+	$output[] = '</section>';
+}
 echo implode(PHP_EOL, $output);
 unset($output);
