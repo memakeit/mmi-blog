@@ -1,14 +1,12 @@
 /* mmi-blog/comments.css */
 
-#comments
-{
-}
-
 /*	header
  ******************************************************************************/
-#comments_hdr a
+#comments_hdr
 {
-	font-size: 2.571em;
+	border-bottom: 1px solid #CCC;
+	font-size: 2.571em; /* 36px */
+	padding-bottom: 5px;
 }
 
 #comments_hdr a
@@ -18,26 +16,15 @@
 	display: block;
 	height: 48px;
 	line-height: 48px;
-	width: 100%;
 }
 
-#comments_hdr small
+#comments_hdr a:hover
 {
-	border-top: 1px solid #CCC;
-	color: #999;
-	display: block;
-	font-size: .857; /* 12px */
-	margin: 4px 4px 0 0;
-	text-align: right;
+	color: #000;
 }
 
 /*	comments
  ******************************************************************************/
-#comments figure
-{
-	height: 120px;
-}
-
 #comments img
 {
 	margin-left: 10px;
@@ -47,7 +34,12 @@
 {
 	border-bottom: 1px solid #CCC;
 	float: left;
-	padding: 20px 0;
+	padding-top: 20px;
+}
+
+#comments figure
+{
+	padding-bottom: 20px;
 }
 
 #comments article.last
@@ -59,12 +51,45 @@
 {
 	float: right;
 	font-size: 1.286em; /* 18px */
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 #comments article p
 {
 	float: right;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	width: 460px;
+}
+
+/*	trackbacks
+ ******************************************************************************/
+#trackbacks header
+{
+	margin-bottom: 5px;
+}
+
+#trackbacks span
+{
+	display: block;
+	line-height: 1;
+	font-size: 2.571em; /* 36px */
+}
+
+#trackbacks small
+{
+	color: #999;
+	display: block;
+	font-size: .857em; /* 12px */
+}
+
+#trackbacks ol
+{
+	list-style-type: decimal;
+	margin-bottom: 15px;
+}
+
+#trackbacks li
+{
+	display: list-item;
+	margin-bottom: 5px;
 }
