@@ -76,7 +76,7 @@ class Controller_Blog_Post extends MMI_Template
 		 	->set('bookmarks', $this->_get_bookmarks($post_title, $post_url))
 			->set('is_homepage', FALSE)
 			->set('post', $post)
-			->set('toolbox', $this->_get_toolbox($post_title, $post_url))
+			->set('toolbox', $this->_get_mini_toolbox($post_title, $post_url))
 		;
 		if (Arr::get($this->_features_config, 'comment', TRUE))
 		{
@@ -93,16 +93,14 @@ class Controller_Blog_Post extends MMI_Template
 	 */
 	protected function _inject_media()
 	{
-		$addthis_username = MMI_Social_AddThis::get_config()->get('username');
 		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-social_addthis.toolbox', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-social_addthis.mini', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-social_addthis.bookmarks', array('bundle' => 'blog'));
 		if (Arr::get($this->_features_config, 'comment', TRUE))
 		{
 			$this->add_css_url('mmi-blog_comments', array('bundle' => 'blog'));
 		}
 
-		$this->add_js_url('http://s7.addthis.com/js/250/addthis_widget.js#async=1&username='.$addthis_username);
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
 	}
 
@@ -139,9 +137,9 @@ class Controller_Blog_Post extends MMI_Template
 	}
 
 
-	protected function _get_toolbox($title, $url, $description = NULL)
+	protected function _get_mini_toolbox($title, $url, $description = NULL)
 	{
-		$addthis = Request::factory('mmi/social/addthis/toolbox');
+		$addthis = Request::factory('mmi/social/addthis/mini');
 		$addthis->post = array
 		(
 			'title'	=> $title,
@@ -150,12 +148,6 @@ class Controller_Blog_Post extends MMI_Template
 		if ( ! empty($description))
 		{
 			$addthis->post['description'] = $description;
-		}
-
-		$config = MMI_Blog::get_post_config()->get('toolbox');
-		if (is_array($config) AND count($config) > 0)
-		{
-			$addthis->post['config'] = $config;
 		}
 		return $addthis->execute()->response;
 	}

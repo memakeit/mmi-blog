@@ -89,7 +89,7 @@ article section div.last
 	width: 100%;
 }
 
-/*	more
+/*	read more
  ******************************************************************************/
 a.more
 {
@@ -97,7 +97,7 @@ a.more
 	float: right;
 	height: 24px;
 	line-height: 24px;
-	padding-right: 32px;
+	padding-right: 28px;
 	vertical-align: middle;
 }
 

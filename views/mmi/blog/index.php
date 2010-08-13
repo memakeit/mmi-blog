@@ -98,7 +98,7 @@ else
 
 		// Toolbox
 		$output[] = '<div class="last">';
-		$toolbox = Request::factory('mmi/social/addthis/toolbox');
+		$toolbox = Request::factory('mmi/social/addthis/mini');
 		$toolbox->post = array
 		(
 			'description'	=> $excerpt,
@@ -110,7 +110,7 @@ else
 		// Read more
 		if ( ! empty($body))
 		{	$link_title = 'read the article about '.HTML::chars($post_title, FALSE);
-			$output[] = '<a class="more" href="'.$post_guid.'" rel="nofollow" title="'.$link_title.'"><strong>Read more &hellip;</strong></a>';
+			$output[] = '<a class="more" href="'.$post_guid.'" rel="nofollow" title="'.$link_title.'"><strong>Read more</strong></a>';
 		}
 		$output[] = '</div>';
 
