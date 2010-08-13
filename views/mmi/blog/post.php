@@ -14,8 +14,15 @@ if (count($post) > 0)
 
 	$post_date = $post->timestamp_created;
 	$post_guid = $post->guid;
-	MMI_Blog_Post::parse_content($post, $excerpt, $img, $body, TRUE);
+	$post_content = $content = Text::auto_p($post->content);
+//	MMI_Blog_Post::parse_content($post, $excerpt, $img, $body, FALSE);
 
+	// Begin article
+	$output[] = '<article id="post_'.$post->id.'">';
+
+	// Begin header
+	$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
+	$output[] = '<header class="alpha omega grid_8">';
 	if ($is_homepage)
 	{
 		$output[] = '<h2>'.Text::widont(HTML::chars($post_title, FALSE)).'</h2>';
@@ -25,15 +32,25 @@ if (count($post) > 0)
 		$output[] = '<h1>'.Text::widont(HTML::chars($post_title, FALSE)).'</h1>';
 	}
 
-	// Begin intro
-//	$output[] = '<div class="content first">';
-//	$output[] = '<div id="intro">';
-//
-//	// Image
-//	if ( ! empty($img))
-//	{
-//		$output[] = '<p id="img">'.$img.'</p>';
-//	}
+	$output[] = '<p>';
+	$output[] = '<span class="comments omega grid_2"><a href="#comments" title="'.$link_title.'">'.$comment_count.' '.Inflector::plural('comment', $comment_count).'</a></span>';
+	$output[] = '<span class="meta alpha grid_6">';
+	$output[] = 'By '.$author;
+	$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.gmdate('F j, Y', $post_date).'</time>';
+
+	// Categories
+	if (count($categories) > 0)
+	{
+		$temp = array();
+		foreach ($categories as $category)
+		{
+			$cat_name = $category->name;
+			$temp[] = HTML::anchor($category->guid, $cat_name, array('title' => 'articles for'.$cat_name));
+		}
+		$output[] = ' in: '.implode(', ', $temp);
+	}
+	$output[] = '</span>';
+	$output[] = '</p>';
 
 	// Toolbox
 	if ( ! empty($toolbox))
@@ -41,100 +58,47 @@ if (count($post) > 0)
 		$output[] = $toolbox;
 	}
 
-//	// Author
-//	$author = blog::get_author($post->author_name);
-//	$output[] = '<p id="author">';
-//	$output[] = '<strong>By:</strong> <span>'.$author.'</span>';
-//	$output[] = '</p>';
+	// End header
+	$output[] = '</header>';
 
-//	// Categories
-//	if (count($category_links) > 0)
+//	// Figure
+//	$output[] = '<figure>';
+//	if (empty($img))
 //	{
-//		$output[] = '<p id="categories">';
-//		$output[] = '<strong>Posted in:</strong>';
-//		$output[] = '<span class="links">';
-//		$output[] = implode(', ', $category_links);
-//		$output[] = '</span>';
-//		$output[] = '</p>';
+//		$output[] = '<img src="'.URL::site('media/img/icons/48px/Picture.png').'" alt="'.$post_title.'">';
 //	}
-//
-//	// Excerpt
+//	else
+//	{
+//		$output[] = $img;
+//	}
+//	$output[] = '</figure>';
+
+
+
+	// Content
 //	if ( ! empty($excerpt))
 //	{
-//		$output[] = '<div id="excerpt" class="wp_content">'.$excerpt.'</div>';
+//		$body = '<p>'.$excerpt.'</p>'.$body;
 //	}
-//
-//	// Begin meta
-//	$output[] = '<div id="meta">';
-//
-//	// Calendar
-//	$post_date = $post->timestamp_created;
-//	$output[] = '<div id="cal">';
-//	$output[] = '<div class="date">'.date('j', $post_date).'</div>';
-//	$output[] = '<div class="month">'.date('M Y', $post_date).'</div>';
-//	$output[] = '</div>';
-//
-//	// Comments
-//	$comment_url = '#comments';
-//	if ($use_full_comment_url)
-//	{
-//		$slug = $post->slug;
-//		$comment_url = MMI_Blog::get_post_guid($year, $month, $slug).'/#comments';
-//	}
-//	$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
-//	$output[] = '<div id="comment_ct">';
-//	$output[] = '<a class="comment" href="'.$comment_url.'" title="'.$link_title.'">comments</a>';
-//	$output[] = '<a class="count" href="'.$comment_url.'" title="'.$link_title.'">'.$post['comment_count'].'</a>';
-//	$output[] = '</div>';
-//
-//	// End meta
-//	$output[] = '</div>';
-//
-//	// End intro
-//	$output[] = '</div>';
-//	$output[] = '</div>';
-//
-//	// Body
-//	if ( ! empty($body))
-//	{
-//		$last_html = '';
-//		$last_paragraph = MMI_Blog_Post::get_last_paragraph($body);
-//
-//		$last_class = 'wp_content';
-//		if (empty($prev_next) OR ( ! empty($prev_next) AND trim($prev_next->render()) === ''))
-//		{
-//			$last_class .= ' wp_last';
-//		}
-//		elseif ( ! empty($retweet))
-//		{
-//			$last_class .= ' wp_retweet';
-//		}
-//
-//		if ( ! empty($last_paragraph))
-//		{
-//			if (empty($retweet))
-//			{
-//				$retweet  = '';
-//			}
-//
-//			// Insert retweet
-//			$last_html = $last_paragraph[0];
-//			$last_inner = $last_paragraph[1];
-//			$temp = '<div class="'.$last_class.'">'.$retweet.$last_inner.'</div>';
-//			$body = str_replace($last_html, '', $body);
-//			$last_html = $temp;
-//		}
-//
-//		if (empty($last_html))
-//		{
-//			$output[] = '<div class="'.$last_class.'">'.$body.'</div>';
-//		}
-//		else
-//		{
-//			$output[] = '<div class="wp_content">'.$body.'</div>';
-//			$output[] = $last_html;
-//		}
-//	}
+	$output[] = '<div class="content">';
+	if ( ! empty($post_content))
+	{
+		if (is_bool($insert_retweet) AND $insert_retweet)
+		{
+			$last_paragraph = MMI_Blog_Post::get_last_paragraph($post_content);
+			if ( ! empty($last_paragraph))
+			{
+				// Insert retweet
+				$html = $last_paragraph[0];
+				$inner = $last_paragraph[1];
+				$retweet ='<span class="retweet"><strong>RT</strong><span>';
+				$post_content = str_replace($html, '', $post_content).'<p>'.$retweet.$inner.'</p>';
+			}
+		}
+		$output[] = $post_content;
+	}
+	$output[] = '</div>';
+
 //
 //	// Prev next links
 //	if ( ! empty($prev_next))
@@ -142,6 +106,10 @@ if (count($post) > 0)
 //		$output[] = $prev_next;
 //	}
 //
+
+	// End article
+	$output[] = '</article>';
+
 	// Bookmarks
 	if ( ! empty($bookmarks))
 	{

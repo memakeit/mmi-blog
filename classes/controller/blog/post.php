@@ -74,6 +74,7 @@ class Controller_Blog_Post extends MMI_Template
 		$post_url = $post->guid;
 		$view = View::factory('mmi/blog/post')
 		 	->set('bookmarks', $this->_get_bookmarks($post_title, $post_url))
+		 	->set('insert_retweet', TRUE)
 			->set('is_homepage', FALSE)
 			->set('post', $post)
 			->set('toolbox', $this->_get_mini_toolbox($post_title, $post_url))
