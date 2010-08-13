@@ -79,13 +79,13 @@ else
 
 		// Figure
 		$output[] = '<figure class="alpha grid_3">';
-		if ( ! empty($img))
+		if (empty($img))
 		{
-			$output[] = '<p class="img">'.$img.'</p>';
+			$output[] = '<img src="'.URL::site('media/img/icons/48px/Picture.png').'" alt="'.$post_title.'">';
 		}
 		else
 		{
-			$output[] = '<img src="'.URL::site('media/img/icons/48px/Picture.png').'" alt="'.$post_title.'">';
+			$output[] = $img;
 		}
 		$output[] = '</figure>';
 
