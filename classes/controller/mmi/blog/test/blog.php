@@ -30,7 +30,7 @@ class Controller_MMI_Blog_Test_Blog extends Controller
 		$data = MMI_Blog_Post::get_trackback_guid(2010, 4, 'test 123');
 		MMI_Debug::dump($data, 'trackback guid');
 
-		$data = MMI_Blog_Post::get_feed_guid(2010, 4, 'test abc');
+		$data = MMI_Blog_Post::get_comments_feed_guid(2010, 4, 'test abc');
 		MMI_Debug::dump($data, 'feed guid');
 
 		$data = MMI_Blog_Post::get_archive_guid(2009, 1, 3);
