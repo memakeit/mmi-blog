@@ -130,7 +130,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('blog/post')->uri($parms);
+		$url = Route::get('mmi/blog/post')->uri($parms);
 		return URL::site($url, $absolute);
 	}
 
@@ -154,7 +154,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 		{
 			$parms['page'] = $page;
 		}
-		$url = Route::get('blog/archive')->uri($parms);
+		$url = Route::get('mmi/blog/archive')->uri($parms);
 		return $url = URL::site($url, $absolute);
 	}
 
@@ -175,7 +175,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('blog/comments')->uri($parms);
+		$url = Route::get('mmi/blog/comments')->uri($parms);
 		return $url = URL::site($url, $absolute);
 	}
 
@@ -196,7 +196,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('blog/trackback')->uri($parms);
+		$url = Route::get('mmi/blog/trackback')->uri($parms);
 		return $url = URL::site($url, $absolute);
 	}
 

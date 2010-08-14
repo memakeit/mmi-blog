@@ -47,7 +47,7 @@ class Kohana_MMI_Blog
 		{
 			$parms['page'] = $page;
 		}
-		$url = Route::get('blog/index')->uri($parms);
+		$url = Route::get('mmi/blog/index')->uri($parms);
 		if ($absolute)
 		{
 			$url = URL::site($url, TRUE);
