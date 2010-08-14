@@ -75,9 +75,11 @@ $output[] = '</section>';
 // Pingbacks and trackbacks
 if (is_array($trackbacks) AND count($trackbacks) > 0)
 {
+	$num_trackbacks = count($trackbacks);
+	$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Pingback', $num_trackbacks)).' &amp; '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
 	$output[] = '<section id="trackbacks" class="alpha omega grid_8">';
 	$output[] = '<header>';
-	$output[] = '<span>Pingbacks &amp; Trackbacks</span>';
+	$output[] = '<span>'.$header.'</span>';
 	if ( ! empty($trackback_url))
 	{
 		$output[] = '<small>Trackback URL: '.$trackback_url.'</small>';
