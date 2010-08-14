@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Blog_Post extends MMI_Template
+class Controller_MMI_Blog_Post extends MMI_Template
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -107,6 +107,8 @@ class Controller_Blog_Post extends MMI_Template
 
 	protected function _get_comments($comments, $trackbacks, $post)
 	{
+		$this->_add_comments_ajax($post->id);
+
 		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
 		$default_img = Arr::get($defaults, 'img');
 		$default_img_size = Arr::get($defaults, 'size');
@@ -152,4 +154,39 @@ class Controller_Blog_Post extends MMI_Template
 		}
 		return $addthis->execute()->response;
 	}
-} // End Controller_Blog_Post
+
+	protected function _get_tweet($title, $url, $description = NULL)
+	{
+		$addthis = Request::factory('mmi/social/addthis/tweet');
+		$addthis->post = array
+		(
+			'title'	=> $title,
+			'url'	=> $url,
+		);
+		if ( ! empty($description))
+		{
+			$addthis->post['description'] = $description;
+		}
+		return $addthis->execute()->response;
+	}
+
+	protected function _add_comments_ajax($post_id)
+	{
+
+//		MMI_Debug::dead(file_get_contents(MODPATH.'mmi-blog\media\js\post.js'));
+		$this->add_js_url('mmi-blog_jquery.nje.tmpl', array('bundle' => 'blog'));
+		$url = URL::site(Route::get('mmi/blog/rest/comments')->uri(array
+		(
+			'driver'	=> $this->_driver,
+			'post_id'	=> $post_id,
+		)), TRUE);
+$js = <<< EOJS
+$(window).load(function(){
+	$.getJSON('$url', function(data){
+		alert(data[1].content);
+	});
+});
+EOJS;
+		$this->add_js_inline('ajax_comments', $js);
+	}
+} // End Controller_MMI_Blog_Post

@@ -1,13 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Comments test controller.
+ * Gravatar test controller.
  *
  * @package		MMI Blog
  * @author		Me Make It
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Test_Blog_Comments extends Controller
+class Controller_MMI_Blog_Test_Gravatar extends Controller
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -15,13 +15,13 @@ class Controller_Test_Blog_Comments extends Controller
 	public $debug = TRUE;
 
 	/**
-	 * Test comments functionality.
+	 * Test gravatar functionality.
 	 *
 	 * @return	void
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_Comment::factory(MMI_Blog::DRIVER_WORDPRESS)->get_comments(array(1,2));
-		MMI_Debug::dead($data, 'comments');
+		$data = MMI_Gravatar::get_gravatar_url('memakeit@gmail.com', 256, 'x', 'wavatar');
+		MMI_Debug::dump($data, 'gravatar url');
 	}
-} // End Controller_Test_Blog_Comments
+} // End Controller_MMI_Blog_Test_Gravatar

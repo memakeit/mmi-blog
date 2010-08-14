@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Test_Blog_Posts extends Controller
+class Controller_MMI_Blog_Test_Posts extends Controller
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -27,4 +27,4 @@ class Controller_Test_Blog_Posts extends Controller
 		$data = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_pages(array(2), TRUE);
 		MMI_Debug::dead($data, 'pages');
 	}
-} // End Controller_Test_Blog_Posts
+} // End Controller_MMI_Blog_Test_Posts

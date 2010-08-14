@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Blog_Index extends MMI_Template
+class Controller_MMI_Blog_Index extends MMI_Template
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -267,4 +267,4 @@ class Controller_Blog_Index extends MMI_Template
 			$controller = $slug;
 		}
 	}
-} // End Controller_Blog_Index
+} // End Controller_MMI_Blog_Index

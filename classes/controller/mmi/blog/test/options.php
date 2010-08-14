@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Test_Blog_Options extends Controller
+class Controller_MMI_Blog_Test_Options extends Controller
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -27,4 +27,4 @@ class Controller_Test_Blog_Options extends Controller
 		$data = MMI_Blog_WordPress::factory()->get_options(NULL, NULL, TRUE);
 		MMI_Debug::dead($data, 'options');
 	}
-} // End Controller_Test_Blog_Options
+} // End Controller_MMI_Blog_Test_Options

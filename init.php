@@ -1,68 +1,76 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// Test route
-if (Kohana::$environment !== Kohana::PRODUCTION)
-{
-	Route::set('test/blog', 'test/blog/<controller>(/<action>)')
-	->defaults(array
-	(
-		'directory' => 'test/blog',
-	));
-}
+// REST routes (used for AJAX requests)
+Route::set('mmi/blog/rest/comments', 'mmi/blog/rest/comments/<driver>/<post_id>', array('id' => '\d+'))
+->defaults(array
+(
+	'controller' 	=> 'comments',
+	'directory'		=> 'mmi/blog/rest',
+));
 
 // Blog routes
-Route::set('blog/index', 'blog(/<page>)', array('page' => '\d+'))
+Route::set('mmi/blog/index', 'blog(/<page>)', array('page' => '\d+'))
 ->defaults(array
 (
 	'controller' 	=> 'index',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
-Route::set('blog/archive', 'archive/<year>/<month>(/<page>)', array('year' => '\d{4}', 'month' => '\d{2}', 'page' => '\d+'))
+Route::set('mmi/blog/archive', 'archive/<year>/<month>(/<page>)', array('year' => '\d{4}', 'month' => '\d{2}', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'archive',
 	'controller' 	=> 'index',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
-Route::set('blog/category', 'category/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
+Route::set('mmi/blog/category', 'category/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'category',
 	'controller' 	=> 'index',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
-Route::set('blog/tag', 'tag/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
+Route::set('mmi/blog/tag', 'tag/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'tag',
 	'controller' 	=> 'index',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
 
-Route::set('blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('mmi/blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
 	'controller' 	=> 'post',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
 
-Route::set('blog/trackback', 'trackback/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('mmi/blog/trackback', 'trackback/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
 	'controller'	=> 'trackback',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
 
-Route::set('blog/feed', 'feed')
+Route::set('mmi/blog/feed', 'feed')
 ->defaults(array
 (
 	'controller'	=> 'feed',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
-Route::set('blog/comments', 'comments/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('mmi/blog/comments', 'comments/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
 	'action'		=> 'comments',
 	'controller'	=> 'feed',
-	'directory'		=> 'blog',
+	'directory'		=> 'mmi/blog',
 ));
+
+// Test routes
+if (Kohana::$environment !== Kohana::PRODUCTION)
+{
+	Route::set('mmi/blog/test', 'mmi/blog/test/<controller>(/<action>)')
+	->defaults(array
+	(
+		'directory' => 'mmi/blog/test',
+	));
+}

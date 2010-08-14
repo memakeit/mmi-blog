@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Test_Blog_Terms extends Controller
+class Controller_MMI_Blog_Test_Terms extends Controller
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -27,4 +27,4 @@ class Controller_Test_Blog_Terms extends Controller
 		$data = MMI_Blog_Term::factory(MMI_Blog::DRIVER_WORDPRESS)->get_tags(NULL, TRUE);
 		MMI_Debug::dead($data, 'tags');
 	}
-} // End Controller_Test_Blog_Terms
+} // End Controller_MMI_Blog_Test_Terms

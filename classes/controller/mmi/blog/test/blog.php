@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_Test_Blog_Blog extends Controller
+class Controller_MMI_Blog_Test_Blog extends Controller
 {
 	/**
 	 * @var boolean turn debugging on?
@@ -42,4 +42,4 @@ class Controller_Test_Blog_Blog extends Controller
 		$data = MMI_Blog_Term::get_tag_guid('tag shawn', 2);
 		MMI_Debug::dead($data, 'tag guid');
 	}
-} // End Controller_Test_Blog_Blog
+} // End Controller_MMI_Blog_Test_Blog
