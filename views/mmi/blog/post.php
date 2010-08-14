@@ -89,9 +89,21 @@ if (count($post) > 0)
 			if ( ! empty($last_paragraph))
 			{
 				// Insert retweet
+				$route = Route::get('mmi/social/hmvc')->uri(array
+				(
+					'action' 		=> 'tweet',
+					'controller'	=> 'addthis'
+				));
+				$retweet = Request::factory($route);
+				$retweet->post = array
+				(
+					'title'	=> $post_title,
+					'url'	=> $post_guid,
+				);
+
 				$html = $last_paragraph[0];
 				$inner = $last_paragraph[1];
-				$retweet ='<span class="retweet"><strong>RT</strong><span>';
+				$retweet = $retweet->execute()->response;
 				$post_content = str_replace($html, '', $post_content).'<p>'.$retweet.$inner.'</p>';
 			}
 		}

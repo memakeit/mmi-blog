@@ -126,7 +126,12 @@ class Controller_MMI_Blog_Post extends MMI_Template
 
 	protected function _get_bookmarks($title, $url, $description = NULL)
 	{
-		$addthis = Request::factory('mmi/social/addthis/bookmarks');
+		$route = Route::get('mmi/social/hmvc')->uri(array
+		(
+			'action' 		=> 'bookmarks',
+			'controller'	=> 'addthis'
+		));
+		$addthis = Request::factory($route);
 		$addthis->post = array
 		(
 			'title'	=> $title,
@@ -142,7 +147,12 @@ class Controller_MMI_Blog_Post extends MMI_Template
 
 	protected function _get_mini_toolbox($title, $url, $description = NULL)
 	{
-		$addthis = Request::factory('mmi/social/addthis/mini');
+		$route = Route::get('mmi/social/hmvc')->uri(array
+		(
+			'action' 		=> 'mini',
+			'controller'	=> 'addthis'
+		));
+		$addthis = Request::factory($route);
 		$addthis->post = array
 		(
 			'title'	=> $title,
@@ -157,7 +167,12 @@ class Controller_MMI_Blog_Post extends MMI_Template
 
 	protected function _get_tweet($title, $url, $description = NULL)
 	{
-		$addthis = Request::factory('mmi/social/addthis/tweet');
+		$route = Route::get('mmi/social/hmvc')->uri(array
+		(
+			'action' 		=> 'tweet',
+			'controller'	=> 'addthis'
+		));
+		$addthis = Request::factory($route);
 		$addthis->post = array
 		(
 			'title'	=> $title,

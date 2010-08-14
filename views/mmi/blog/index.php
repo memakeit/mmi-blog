@@ -16,6 +16,13 @@ if (count($posts) === 0)
 }
 else
 {
+	$route = Route::get('mmi/social/hmvc')->uri(array
+	(
+		'action' 		=> 'mini',
+		'controller'	=> 'addthis'
+	));
+	$toolbox = Request::factory($route);
+
 	$i = 0;
 	$last = count($posts) - 1;
 	foreach ($posts as $post)
@@ -98,7 +105,6 @@ else
 
 		// Toolbox
 		$output[] = '<div class="last">';
-		$toolbox = Request::factory('mmi/social/addthis/mini');
 		$toolbox->post = array
 		(
 			'description'	=> $excerpt,
