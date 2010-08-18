@@ -15,7 +15,7 @@ return array
 	(
 		'pingbacks'		=> TRUE,
 		'trackbacks'	=> TRUE,
-		'use_ajax'		=> FALSE,
+		'use_ajax'		=> TRUE,
 	),
 	'driver' => MMI_Blog::DRIVER_WORDPRESS,
 	'features' => array

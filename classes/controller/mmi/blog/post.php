@@ -85,22 +85,24 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$nav_type = MMI_Blog::get_nav_type();
 		MMI_Blog::set_nav_type($nav_type);
 
-		$this->_title = $post->title;
-
+		$ajax_comments = $this->_ajax_comments;
 		$post_title = $post->title;
 		$post_url = $post->guid;
+
 		$view = View::factory('mmi/blog/post')
+		 	->set('ajax_comments', $ajax_comments)
 		 	->set('bookmarks', $this->_get_bookmarks($post_title, $post_url))
 		 	->set('insert_retweet', TRUE)
 			->set('is_homepage', FALSE)
 			->set('post', $post)
 			->set('toolbox', $this->_get_mini_toolbox($post_title, $post_url))
 		;
+		$this->_title = $post_title;
 
 		$allow_comments = Arr::get($this->_features_config, 'comments', TRUE);
 		if ($allow_comments)
 		{
-			if ($this->_ajax_comments)
+			if ($ajax_comments)
 			{
 				$view->set('comments', $this->_get_comments_ajax($post));
 				if ($this->_allow_pingbacks OR $this->_allow_trackbacks)
@@ -138,6 +140,10 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		{
 			$this->add_css_url('mmi-blog_comments', array('bundle' => 'blog'));
 		}
+		if ($this->_allow_pingbacks OR $this->_allow_trackbacks)
+		{
+			$this->add_css_url('mmi-blog_trackbacks', array('bundle' => 'blog'));
+		}
 
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
 	}
@@ -154,6 +160,33 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			->set('default_img', $default_img)
 			->set('default_img_size', $default_img_size)
 			->set('feed_url', $post->comments_feed_guid)
+		;
+		return $view->render();
+	}
+
+	protected function _get_comments_ajax($post)
+	{
+		$this->add_js_url('mmi-blog_jquery.tmpl', array('bundle' => 'blog'));
+		$this->add_js_url('mmi-blog_innershiv.min', array('bundle' => 'blog'));
+		$this->add_js_url('mmi-blog_comments-ajax', array('bundle' => 'blog'));
+
+		$template_comments = MMI_Text::normalize_spaces(View::factory('mmi/blog/js/comment')->render());
+		$template_trackbacks = MMI_Text::normalize_spaces(View::factory('mmi/blog/js/trackback')->render());
+		$url = URL::site(Route::get('mmi/blog/rest/comments')->uri(array
+		(
+			'driver'	=> $this->_driver,
+			'post_id'	=> $post->id,
+		)), TRUE);
+		$js = "$(window).load(load_comments('$url', '$template_comments', '$template_trackbacks', {$this->_allow_pingbacks}, {$this->_allow_trackbacks}));";
+		$this->add_js_inline('ajax_comments', $js);
+
+		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
+		$default_img = Arr::get($defaults, 'img');
+		$default_img_size = Arr::get($defaults, 'size');
+
+		$view = View::factory('mmi/blog/content/ajax/comments')
+			->set('feed_url', $post->comments_feed_guid)
+			->set('trackback_url', $post->trackback_guid)
 		;
 		return $view->render();
 	}
@@ -181,7 +214,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	{
 		if (empty($trackbacks))
 		{
-			$num_trackbacks = 0;
+			$num_trackbacks = '';
 			$header = '';
 		}
 		else
@@ -204,72 +237,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		{
 			$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
 		}
-		return $header;
-	}
-
-	protected function _get_comments_ajax($post)
-	{
-		$this->add_js_url('mmi-blog_jquery.tmpl', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-blog_innershiv.min', array('bundle' => 'blog'));
-
-		$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/js/comment')->render());
-		$url = URL::site(Route::get('mmi/blog/rest/comments')->uri(array
-		(
-			'driver'	=> $this->_driver,
-			'post_id'	=> $post->id,
-		)), TRUE);
-$js = <<< EOJS
-$(window).load(function(){
-	$.ajax({
-		cache: false,
-		dataType: 'json',
-		url: '$url',
-		success: function(data){
-			// Comments
-			var div = $('<div></div>').hide();
-			var tmpl = '$template';
-			var html = div.append(tmpl, data.comments).html();
-			$('#comments').append(innerShiv(html));
-
-			// Comment header
-			var count = data.comments.length;
-			var header = 'Comment';
-			header = count + ' ' + (count === 1 ? header : header + 's');
-			$('#comments_hdr > a').text(header);
-EOJS;
-if ($this->_allow_pingbacks OR $this->_allow_trackbacks)
-{
-	$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/js/trackback')->render());
-$js .= <<< EOJS
-			// Trackbacks
-			div.html('');
-			tmpl = '$template';
-			html = div.append(tmpl, data.trackbacks).html();
-			$('#trackbacks > ol').append(innerShiv(html));
-
-			// Trackback header
-			count = data.trackbacks.length;
-			header = 'Trackback';
-			header = count + ' ' + (count === 1 ? header : header + 's');
-			$('#trackbacks_hdr > span').text(header);
-EOJS;
-}
-$js .= <<< EOJS
-		}
-	});
-});
-EOJS;
-		$this->add_js_inline('ajax_comments', $js);
-
-		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
-		$default_img = Arr::get($defaults, 'img');
-		$default_img_size = Arr::get($defaults, 'size');
-
-		$view = View::factory('mmi/blog/content/ajax/comments')
-			->set('feed_url', $post->comments_feed_guid)
-			->set('trackback_url', $post->trackback_guid)
-		;
-		return $view->render();
+		return trim($header);
 	}
 
 	protected function _get_bookmarks($title, $url, $description = NULL)
