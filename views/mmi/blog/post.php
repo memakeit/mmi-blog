@@ -134,6 +134,12 @@ if (count($post) > 0)
 		$output[] = '<a name="comments"></a>';
 		$output[] = $comments;
 	}
+
+	// Trackbacks
+	if ( ! empty($trackbacks))
+	{
+		$output[] = $trackbacks;
+	}
 //
 //	// Comment form
 //	if ( ! empty($comment_form))
