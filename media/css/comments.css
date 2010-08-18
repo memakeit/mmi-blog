@@ -1,7 +1,5 @@
 /* mmi-blog/comments.css */
 
-/*	comments
- ******************************************************************************/
 #comments_hdr
 {
 	border-bottom: 1px solid #CCC;
@@ -59,39 +57,20 @@
 	width: 460px;
 }
 
-/*	trackbacks
+/*	comments loading
  ******************************************************************************/
-#trackbacks header
+#comments_loading
 {
-	margin-bottom: 10px;
+	font-size: 1.286em; /* 18px*/
+	margin: 0 auto;
+	padding: 20px;
+	text-align: center;
 }
 
-#trackbacks span
+#comments_loading img
 {
-	border-bottom: 1px solid #CCC;
 	display: block;
-	font-size: 2.571em; /* 36px */
-	line-height: 1;
-	margin-bottom: 2px;
-	padding-bottom: 2px;
-}
-
-#trackbacks small
-{
-	color: #999;
-	display: block;
-	font-size: .857em; /* 12px */
-	line-height: 1;
-}
-
-#trackbacks ol
-{
-	list-style-type: decimal;
-	margin-bottom: 15px;
-}
-
-#trackbacks li
-{
-	display: list-item;
-	margin-bottom: 5px;
+	margin: 0 auto;
+	padding-bottom: 10px;
+	width: 128px;
 }
