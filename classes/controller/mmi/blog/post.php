@@ -178,7 +178,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			'post_id'	=> $post->id,
 		)), TRUE);
 		$js = "$(window).load(load_comments('$url', '$template_comments', '$template_trackbacks', {$this->_allow_pingbacks}, {$this->_allow_trackbacks}));";
-		$this->add_js_inline('ajax_comments', $js);
+		$this->add_js_inline('comments-ajax', $js);
 
 		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
 		$default_img = Arr::get($defaults, 'img');
