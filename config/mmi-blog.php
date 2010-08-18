@@ -11,6 +11,12 @@ return array
 		'tag'		=> 1 * Date::HOUR,
 		'user'		=> 1 * Date::HOUR,
 	),
+	'comments' => array
+	(
+		'pingbacks'		=> TRUE,
+		'trackbacks'	=> TRUE,
+		'use_ajax'		=> FALSE,
+	),
 	'driver' => MMI_Blog::DRIVER_WORDPRESS,
 	'features' => array
 	(
