@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// mmi/blog/comments
+// mmi/blog/content/comments
 
 $num_comments = count($comments);
 $output[] = '<section id="comments" class="alpha omega grid_8">';
@@ -10,7 +10,7 @@ $header = $num_comments.' '.ucfirst(Inflector::plural('Comment', $num_comments))
 $output[] = '<header id="comments_hdr">';
 if ( ! empty($feed_url))
 {
-	$output[] = HTML::anchor($feed_url, $header, array('title' => 'subscribe to this article\'s comments'));
+	$output[] = HTML::anchor($feed_url, $header, array('title' => 'subscribe to this article\'s comment feed'));
 }
 else
 {
@@ -72,28 +72,5 @@ if ($num_comments > 0)
 }
 $output[] = '</section>';
 
-// Pingbacks and trackbacks
-if (is_array($trackbacks) AND count($trackbacks) > 0)
-{
-	$num_trackbacks = count($trackbacks);
-	$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Pingback', $num_trackbacks)).' &amp; '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
-	$output[] = '<section id="trackbacks" class="alpha omega grid_8">';
-	$output[] = '<header>';
-	$output[] = '<span>'.$header.'</span>';
-	if ( ! empty($trackback_url))
-	{
-		$output[] = '<small>Trackback URL: '.$trackback_url.'</small>';
-	}
-	$output[] = '</header>';
-	$output[] = '<ol class="alpha omega push_1 grid_7">';
-	foreach ($trackbacks as $comment)
-	{
-		$output[] = '<li>';
-		$output[] = HTML::anchor($comment->author_url, $comment->author, array('rel' => 'external nofollow'));
-		$output[] = '</li>';
-	}
-	$output[] = '</ol>';
-	$output[] = '</section>';
-}
 echo implode(PHP_EOL, $output);
 unset($output);
