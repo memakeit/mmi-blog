@@ -33,7 +33,15 @@ if (count($post) > 0)
 	}
 
 	$output[] = '<p>';
-	$output[] = '<span class="comments omega grid_2"><a href="#comments" title="'.$link_title.'">'.$comment_count.' '.Inflector::plural('comment', $comment_count).'</a></span>';
+	if ($ajax_comments)
+	{
+		$link_text = '';
+	}
+	else
+	{
+		$link_text = $comment_count.' '.Inflector::plural('comment', $comment_count);
+	}
+	$output[] = '<a href="#comments" id="comment_ct" title="'.$link_title.'">'.$link_text.'</a>';
 	$output[] = '<span class="meta alpha grid_6">';
 	$output[] = 'By '.$author;
 	$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.gmdate('F j, Y', $post_date).'</time>';

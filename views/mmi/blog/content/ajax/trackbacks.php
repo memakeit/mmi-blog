@@ -10,10 +10,9 @@ if ( ! empty($trackback_url))
 	$output[] = '<small>Trackback URL: '.$trackback_url.'</small>';
 }
 $output[] = '</header>';
+
 $output[] = '<ol class="alpha omega push_1 grid_7">';
-
 // AJAX trackback template goes here
-
 $output[] = '</ol>';
 $output[] = '</section>';
 

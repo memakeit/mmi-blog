@@ -17,8 +17,13 @@ else
 }
 $output[] = '</header>';
 
-// AJAX comment template goes here
+// Comments loading
+$output[] = '<div id="comments_loading">';
+$output[] = '<img src="'.URL::site('media/img/animated/loading15x128.gif').'" height="15" width="128" alt="loading comments ..."/>';
+$output[] = 'Loading comments &hellip;';
+$output[] = '</div>';
 
+// AJAX comment template goes here
 $output[] = '</section>';
 
 echo implode(PHP_EOL, $output);

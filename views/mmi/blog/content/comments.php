@@ -6,7 +6,8 @@ $num_comments = count($comments);
 $output[] = '<section id="comments" class="alpha omega grid_8">';
 
 // Header
-$header = $num_comments.' '.ucfirst(Inflector::plural('Comment', $num_comments));
+$header = 'Comment';
+$header = $num_comments.' '.ucfirst(Inflector::plural($header, $num_comments));
 $output[] = '<header id="comments_hdr">';
 if ( ! empty($feed_url))
 {
@@ -45,7 +46,14 @@ if ($num_comments > 0)
 		$output[] = '<article id="comment-'.$comment->id.'"'.$class.'>';
 
 		// Gravatar
-		$gravatar_url = ( ! empty($author_email)) ? MMI_Gravatar::get_gravatar_url($author_email) : $default_img;
+		if (empty($author_email))
+		{
+			$gravatar_url = $default_img;
+		}
+		else
+		{
+			$gravatar_url = MMI_Gravatar::get_gravatar_url($author_email);
+		}
 		$output[] = '<figure class="alpha grid_2">';
 		$output[] = '<img src="'.$gravatar_url.'" alt="'.HTML::chars($author, FALSE).'" height="'.$default_img_size.'" width="'.$default_img_size.'" />';
 		$output[] = '</figure>';
@@ -66,7 +74,6 @@ if ($num_comments > 0)
 
 		// Content
 		$output[] = Text::auto_p($comment->content);
-
 		$output[] = '</article>';
 	}
 }
