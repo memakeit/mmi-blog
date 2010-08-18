@@ -1,3 +1,5 @@
+/* mmi-blog/comments-ajax.js */
+
 function load_comments(url, tmpl_comments, tmpl_trackbacks, allow_pingbacks, allow_trackbacks)
 {
 	$.ajax({
