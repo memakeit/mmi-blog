@@ -23,25 +23,30 @@ article header p
 	width: 100%;
 }
 
-article header .meta a
+header .meta a
 {
 	font-weight: bold;
 	margin-left: 4px;
 }
 
-article header .comments
-{
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-article header .comments a
+#comment_ct
 {
 	background: url('../../img/icons/24px/Discuss.png') no-repeat 100% 0;
 	float: right;
 	height: 24px;
 	padding-right: 32px;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+/*	content
+ ******************************************************************************/
+.tweet
+{
+	display: inline;
+	float: left;
+	margin: 5px 15px 5px 0;
 }
 
 
@@ -166,6 +171,7 @@ div.body div.last
 }
 
 /* comment count */
+/*
 #comment_ct
 {
 	float: left;
@@ -174,6 +180,7 @@ div.body div.last
 	position: relative;
 	width: 128px;
 }
+*/
 
 #comment_ct a.comment
 {
