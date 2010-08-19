@@ -73,7 +73,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		}
 		if ( ! isset($comments))
 		{
-			$data = Model_WP_Comments::select_by_post_id(NULL, self::$_db_mappings);
+			$data = Model_WP_Comments::select_comments_by_post_id(NULL, self::$_db_mappings);
 			$comments = array();
 			foreach ($data as $fields)
 			{
@@ -96,29 +96,43 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	}
 
 	/**
-	 * Separate user comments from pingbacks and trackbacks.
+	 * Get trackbacks. If no post id is specified, all trackbacks are returned.
 	 *
-	 * @param	array	user comments
-	 * @param	array	trackbacks
-	 * @return	void
+	 * @param	mixed	post id's being selected
+	 * @param	boolean	reload cache from database?
+	 * @return	array
 	 */
-	public function separate(& $comments, & $trackbacks)
+	public function get_trackbacks($post_ids = NULL, $reload_cache = TRUE)
 	{
-		$trackbacks = array();
-		if (empty($comments))
-		{
-			return;
-		}
+		$driver = self::$_driver;
+		$config = MMI_Blog::get_config(TRUE);
+		$cache_id = $this->_get_cache_id($driver, 'trackbacks');
+		$cache_lifetime = Arr::path($config, 'cache_lifetimes.comment', 0);
+		$load_meta = Arr::path($config, 'features.comment_meta', FALSE);
 
-		foreach ($comments as $id => $comment)
+		$trackbacks = NULL;
+		if ( ! $reload_cache AND $cache_lifetime > 0)
 		{
-			$type = $comment->type;
-			if ($type === self::TYPE_PINGBACK OR $type === self::TYPE_TRACKBACK)
+			$trackbacks = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
+		}
+		if ( ! isset($trackbacks))
+		{
+			$data = Model_WP_Comments::select_trackbacks_by_post_id(NULL, self::$_db_mappings);
+			$trackbacks = array();
+			foreach ($data as $fields)
 			{
-				$trackbacks[$id] = $comment;
-				unset($comments[$id]);
+				$trackbacks[] = self::factory($driver)->_load($fields, $load_meta);
+			}
+			if ($load_meta)
+			{
+				self::_load_meta($comments);
+			}
+			if ($cache_lifetime > 0)
+			{
+				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $trackbacks, $cache_lifetime);
 			}
 		}
+		return $this->_extract_results($trackbacks, $post_ids, TRUE, 'id', 'post_id');
 	}
 
 	/**

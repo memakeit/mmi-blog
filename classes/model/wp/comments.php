@@ -130,6 +130,38 @@ class Model_WP_Comments extends Jelly_Model
 	}
 
 	/**
+	 * Select one or more comments from the database by post id.
+	 *
+	 * @param	mixed	one or more post id's
+	 * @param	array	an associative array of columns names
+	 * @param	boolean	return the data as an array?
+	 * @param	string	if specified, the key to be used when returning an associative array
+	 * @param	integer	the maximum number of results
+	 * @return	mixed
+	 */
+	public static function select_comments_by_post_id($post_ids, $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
+	{
+		$type = '';
+		return self::_select_by_post_id($post_ids, $type, $columns, $as_array, $array_key, $limit);
+	}
+
+	/**
+	 * Select one or more trackbacks from the database by post id.
+	 *
+	 * @param	mixed	one or more post id's
+	 * @param	array	an associative array of columns names
+	 * @param	boolean	return the data as an array?
+	 * @param	string	if specified, the key to be used when returning an associative array
+	 * @param	integer	the maximum number of results
+	 * @return	mixed
+	 */
+	public static function select_trackbacks_by_post_id($post_ids, $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
+	{
+		$type = array('pingback', 'trackback');
+		return self::_select_by_post_id($post_ids, $type, $columns, $as_array, $array_key, $limit);
+	}
+
+	/**
 	 * Select one or more rows from the database by post id.
 	 *
 	 * @param	mixed	one or more post id's
@@ -139,9 +171,10 @@ class Model_WP_Comments extends Jelly_Model
 	 * @param	integer	the maximum number of results
 	 * @return	mixed
 	 */
-	public static function select_by_post_id($post_ids, $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
+	protected static function _select_by_post_id($post_ids, $type = '', $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
 	{
 		$where_parms['comment_approved'] = 1;
+		$where_parms['comment_type'] = $type;
 		if (MMI_Util::is_set($post_ids))
 		{
 			$where_parms['comment_post_id'] = $post_ids;
