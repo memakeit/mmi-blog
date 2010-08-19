@@ -1,11 +1,17 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// REST routes (used for AJAX requests)
-Route::set('mmi/blog/rest/comments', 'mmi/blog/rest/comments/<driver>/<post_id>', array('id' => '\d+'))
+// HMVC routes
+Route::set('mmi/blog/hmvc', 'mmi/blog/hmvc/<controller>(/<action>)')
 ->defaults(array
 (
-	'controller' 	=> 'comments',
-	'directory'		=> 'mmi/blog/rest',
+	'directory' => 'mmi/blog/hmvc',
+));
+
+// REST routes (used for AJAX requests)
+Route::set('mmi/blog/rest', 'mmi/blog/rest/<controller>/<post_id>', array('id' => '\d+'))
+->defaults(array
+(
+	'directory' => 'mmi/blog/rest',
 ));
 
 // Blog routes
