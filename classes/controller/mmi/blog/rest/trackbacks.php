@@ -27,7 +27,7 @@ class Controller_MMI_Blog_Rest_Trackbacks extends MMI_REST_JSON
 	 */
 	public function action_index()
 	{
-		$driver = $this->request->param('driver');
+		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$post_id = intval($this->request->param('post_id'));
 		$trackbacks = MMI_Blog_Comment::factory($driver)->get_trackbacks($post_id);
 

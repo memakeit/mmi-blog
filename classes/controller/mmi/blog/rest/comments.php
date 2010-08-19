@@ -27,7 +27,7 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 	 */
 	public function action_index()
 	{
-		$driver = $this->request->param('driver');
+		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$post_id = intval($this->request->param('post_id'));
 		$comments = MMI_Blog_Comment::factory($driver)->get_comments($post_id);
 
