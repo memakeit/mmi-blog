@@ -72,7 +72,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 			$users = array();
 			foreach ($data as $id => $fields)
 			{
-				$users[$id] = $this->_load($fields, $load_meta);
+				$users[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$users[$id]->driver = $driver;
 			}
 			if ($load_meta)

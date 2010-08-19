@@ -77,7 +77,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			$comments = array();
 			foreach ($data as $id => $fields)
 			{
-				$comments[$id] = $this->_load($fields, $load_meta);
+				$comments[] = self::factory($driver)->_load($fields, $load_meta);
 				$comments[$id]->driver = $driver;
 			}
 			if ($load_gravatar)
@@ -122,7 +122,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			$trackbacks = array();
 			foreach ($data as $id => $fields)
 			{
-				$trackbacks[$id] = $this->_load($fields, $load_meta);
+				$trackbacks[] = self::factory($driver)->_load($fields, $load_meta);
 				$trackbacks[$id]->driver = $driver;
 			}
 			if ($load_meta)
