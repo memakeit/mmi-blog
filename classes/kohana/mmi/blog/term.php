@@ -18,6 +18,11 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	const TYPE_TAG = 'tag';
 
 	/**
+	 * @var string the blog driver
+	 **/
+	public $driver;
+
+	/**
 	 * @var string post guid
 	 */
 	public $guid;

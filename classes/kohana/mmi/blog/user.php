@@ -18,6 +18,11 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	public $display_name;
 
 	/**
+	 * @var string the blog driver
+	 **/
+	public $driver;
+
+	/**
 	 * @var string user email
 	 */
 	public $email;

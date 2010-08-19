@@ -54,6 +54,11 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	public $content;
 
 	/**
+	 * @var string the blog driver
+	 **/
+	public $driver;
+
+	/**
 	 * @var string post excerpt
 	 */
 	public $excerpt;

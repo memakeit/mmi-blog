@@ -139,7 +139,8 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$posts = array();
 			foreach ($data as $id => $fields)
 			{
-				$posts[$id] = self::factory($driver)->_load($fields, $load_meta);
+				$posts[$id] = $this->_load($fields, $load_meta);
+				$posts[$id]->driver = $driver;
 
 				// Set the guids
 				$post_date = $posts[$id]->timestamp_created;

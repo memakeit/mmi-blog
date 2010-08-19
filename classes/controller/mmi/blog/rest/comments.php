@@ -64,6 +64,7 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 				(
 					$comments[$idx]->approved,
 					$comments[$idx]->author_email,
+					$comments[$idx]->driver,
 					$comments[$idx]->meta,
 					$comments[$idx]->parent_id,
 					$comments[$idx]->post_id,

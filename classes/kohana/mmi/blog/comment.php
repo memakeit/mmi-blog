@@ -38,6 +38,11 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 	public $content;
 
 	/**
+	 * @var string the blog driver
+	 **/
+	public $driver;
+
+	/**
 	 * @var string gravatar url
 	 */
 	public $gravatar_url;

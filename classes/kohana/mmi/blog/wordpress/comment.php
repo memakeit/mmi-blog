@@ -75,9 +75,10 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		{
 			$data = Model_WP_Comments::select_comments_by_post_id(NULL, self::$_db_mappings);
 			$comments = array();
-			foreach ($data as $fields)
+			foreach ($data as $id => $fields)
 			{
-				$comments[] = self::factory($driver)->_load($fields, $load_meta);
+				$comments[$id] = $this->_load($fields, $load_meta);
+				$comments[$id]->driver = $driver;
 			}
 			if ($load_gravatar)
 			{
@@ -119,9 +120,10 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		{
 			$data = Model_WP_Comments::select_trackbacks_by_post_id(NULL, self::$_db_mappings);
 			$trackbacks = array();
-			foreach ($data as $fields)
+			foreach ($data as $id => $fields)
 			{
-				$trackbacks[] = self::factory($driver)->_load($fields, $load_meta);
+				$trackbacks[$id] = $this->_load($fields, $load_meta);
+				$trackbacks[$id]->driver = $driver;
 			}
 			if ($load_meta)
 			{
