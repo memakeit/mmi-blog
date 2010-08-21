@@ -174,10 +174,10 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			$post_id;
 			$taxonomy_id;
 			$taxonomy_ids_post_ids = array();
-			foreach ($relationships as $item)
+			foreach ($relationships as $relationship)
 			{
-				$post_id = intval($item['post_id']);
-				$taxonomy_id = intval($item['taxonomy_id']);
+				$post_id = intval($relationship['post_id']);
+				$taxonomy_id = intval($relationship['taxonomy_id']);
 				if (array_key_exists($taxonomy_id, $taxonomy_ids_post_ids))
 				{
 					$taxonomy_ids_post_ids[$taxonomy_id][] = $post_id;

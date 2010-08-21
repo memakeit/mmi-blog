@@ -93,7 +93,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $comments, $cache_lifetime);
 			}
 		}
-		return $this->_extract_results($comments, $post_ids, TRUE, 'id', 'post_id');
+		return $this->_extract_results($comments, $post_ids, FALSE, 'id', 'post_id');
 	}
 
 	/**
@@ -134,7 +134,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $trackbacks, $cache_lifetime);
 			}
 		}
-		return $this->_extract_results($trackbacks, $post_ids, TRUE, 'id', 'post_id');
+		return $this->_extract_results($trackbacks, $post_ids, FALSE, 'id', 'post_id');
 	}
 
 	/**
@@ -225,13 +225,13 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	{
 		if (is_array($comments) AND count($comments) > 0)
 		{
-			foreach ($comments as $idx => $item)
+			foreach ($comments as $idx => $comment)
 			{
-				$author_email = $item->author_email;
+				$author_email = $comment->author_email;
 				if ( ! empty($author_email))
 				{
-					$item->gravatar_url = MMI_Gravatar::get_gravatar_url($author_email);
-					$comments[$idx] = $item;
+					$comment->gravatar_url = MMI_Gravatar::get_gravatar_url($author_email);
+					$comments[$idx] = $comment;
 				}
 			}
 		}
@@ -246,9 +246,9 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	protected static function _load_meta($comments)
 	{
 		$ids = array();
-		foreach ($comments as $item)
+		foreach ($comments as $comment)
 		{
-			$ids[] = $item->id;
+			$ids[] = $comment->id;
 		}
 		$meta = Model_WP_CommentMeta::select_by_comment_id($ids, self::$_db_meta_mappings);
 

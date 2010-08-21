@@ -84,7 +84,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $users, $cache_lifetime);
 			}
 		}
-		return $this->_extract_results($users, $ids, TRUE);
+		return $this->_extract_results($users, $ids, FALSE);
 	}
 
 	/**
@@ -118,9 +118,9 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	protected static function _load_meta($users)
 	{
 		$ids = array();
-		foreach ($users as $item)
+		foreach ($users as $user)
 		{
-			$ids[] = $item->id;
+			$ids[] = $user->id;
 		}
 		$meta = Model_WP_UserMeta::select_by_user_id($ids, self::$_db_meta_mappings);
 		$old_id = -1;

@@ -60,6 +60,11 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	 */
 	public static function format_user($user)
 	{
+		if ( ! $user instanceof MMI_Blog_User)
+		{
+			return $user;
+		}
+
 		$author = $user->display_name;
 		$url = $user->url;
 		if ( ! empty($url))

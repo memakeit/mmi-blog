@@ -170,7 +170,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $posts, $cache_lifetime);
 			}
 		}
-		return $this->_extract_results($posts, $ids, TRUE);
+		return $this->_extract_results($posts, $ids, FALSE);
 	}
 
 	/**
@@ -185,7 +185,14 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		if ($value > 0)
 		{
 			$users = MMI_Blog_User::factory(self::$_driver)->get_users($value);
-			$this->author = Arr::get($users, $value);
+			foreach ($users as $user)
+			{
+				if ($value === $user->id)
+				{
+					$this->author = $user;
+					break;
+				}
+			}
 		}
 		return $value;
 	}
@@ -248,9 +255,9 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		}
 
 		$ids = array();
-		foreach ($posts as $item)
+		foreach ($posts as $post)
 		{
-			$ids[] = $item->id;
+			$ids[] = $post->id;
 		}
 		$meta = Model_WP_PostMeta::select_by_post_id($ids, self::$_db_meta_mappings);
 
@@ -295,12 +302,12 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		foreach ($posts as $id => $item)
+		foreach ($posts as $idx => $post)
 		{
-			$posts[$id]->categories = array();
+			$posts[$idx]->categories = array();
 		}
 		$terms = MMI_Blog_Term::factory(self::$_driver)->get_categories(NULL, $reload_cache);
-		self::_load_terms($posts, $terms);
+		self::_load_terms($posts, $terms, MMI_Blog_Term::TYPE_CATEGORY);
 	}
 
 	/**
@@ -322,12 +329,12 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		foreach ($posts as $id => $item)
+		foreach ($posts as $idx => $post)
 		{
-			$posts[$id]->tags = array();
+			$posts[$idx]->tags = array();
 		}
 		$terms = MMI_Blog_Term::factory(self::$_driver)->get_tags(NULL, $reload_cache);
-		self::_load_terms($posts, $terms);
+		self::_load_terms($posts, $terms, MMI_Blog_Term::TYPE_TAG);
 	}
 
 	/**
@@ -335,9 +342,10 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 *
 	 * @param	array	array of blog post objects
 	 * @param	array	array of blog term objects
+	 * @param	string	type of term to load (category | tag)
 	 * @return	void
 	 */
-	protected static function _load_terms($posts, $terms)
+	protected static function _load_terms($posts, $terms, $type = MMI_Blog_Term::TYPE_CATEGORY)
 	{
 		if ( ! is_array($terms))
 		{
@@ -346,21 +354,30 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 
 		// Get post-ids
 		$post_ids = array();
-		foreach ($posts as $item)
+		foreach ($posts as $post)
 		{
-			$post_ids[] = $item->id;
+			$post_ids[] = $post->id;
 		}
 
 		if (is_array($terms) AND count($terms) > 0)
 		{
-			foreach ($terms as $item)
+			foreach ($terms as $term)
 			{
-				$found = array_intersect($item->post_ids, $post_ids);
+				$found = array_intersect($term->post_ids, $post_ids);
 				if (is_array($found) AND count($found) > 0)
 				{
 					foreach ($found as $found_id)
 					{
-						$posts[$found_id]->categories[] = $item;
+						switch ($type)
+						{
+							case MMI_Blog_Term::TYPE_TAG:
+								$posts[$found_id]->tags[] = $term;
+								break;
+
+							default:
+								$posts[$found_id]->categories[] = $term;
+								break;
+						}
 					}
 				}
 			}
