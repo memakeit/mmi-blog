@@ -8,6 +8,7 @@ $output[] = '<section id="comments" class="alpha omega grid_8">';
 $output[] = '<header id="comments_hdr">';
 if ( ! empty($feed_url))
 {
+	$header .= '<span>subscribe</span>';
 	$output[] = HTML::anchor($feed_url, $header, array('title' => 'subscribe to this article\'s comment feed'));
 }
 else
