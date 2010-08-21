@@ -5,7 +5,6 @@
 $output[] = '<section id="comments" class="alpha omega grid_8">';
 
 // Header
-$header = 'Comments';
 $output[] = '<header id="comments_hdr">';
 if ( ! empty($feed_url))
 {

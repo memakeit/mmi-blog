@@ -90,6 +90,7 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller
 		// Set response
 		$view = View::factory('mmi/blog/content/comments')
 			->set('comments', $comments)
+			->set('header', $this->_get_header($comments))
 			->set('default_img', $default_img)
 			->set('default_img_size', $default_img_size)
 			->set('feed_url', $post->comments_feed_guid)
@@ -124,7 +125,20 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller
 		// Set response
 		$view = View::factory('mmi/blog/content/ajax/comments')
 			->set('feed_url', $post->comments_feed_guid)
+			->set('header', $this->_get_header())
 		;
 		$this->request->response = $view->render();
+	}
+
+	/**
+	 * Get the comments header.
+	 *
+	 * @param	array	an array of comments
+	 * @return	string
+	 */
+	protected function _get_header($comments = NULL)
+	{
+		$num_comments = empty($comments) ? 0 : count($comments);
+		return $num_comments.' '.ucfirst(Inflector::plural('Comment', $num_comments));
 	}
 } // End Controller_MMI_Blog_HMVC_Comments

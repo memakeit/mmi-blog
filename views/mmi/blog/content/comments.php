@@ -3,12 +3,12 @@
 // mmi/blog/content/comments
 
 $num_comments = count($comments);
+$output = array();
 $output[] = '<section id="comments" class="alpha omega grid_8">';
 
 // Header
-$header = 'Comment';
-$header = $num_comments.' '.ucfirst(Inflector::plural($header, $num_comments));
-$output[] = '<header id="comments_hdr">';
+$class = (count($comments) === 0) ? ' class="zero"': '';
+$output[] = '<header id="comments_hdr"'.$class.'>';
 if ( ! empty($feed_url))
 {
 	$output[] = HTML::anchor($feed_url, $header, array('title' => 'subscribe to this article\'s comment feed'));

@@ -6,7 +6,13 @@ function load_trackbacks(url, template, allow_pingbacks, allow_trackbacks)
 		cache: false,
 		dataType: 'json',
 		url: url,
-		success: function(data){
+		success: function(data)
+		{
+			if (data.length === 0)
+			{
+				$('#trackbacks').remove();
+				return;
+			}
 			if (allow_pingbacks || allow_trackbacks)
 			{
 				// Trackback header
@@ -30,6 +36,11 @@ function load_trackbacks(url, template, allow_pingbacks, allow_trackbacks)
 				var div = $('<div></div>').hide();
 				var html = div.append(template, data).html();
 				$('#trackbacks > ol').append(innerShiv(html));
+				$('#trackbacks').show();
+			}
+			else
+			{
+				$('#trackbacks').remove();
 			}
 		}
 	});

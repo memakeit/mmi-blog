@@ -89,6 +89,10 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller
 
 		// Get trackbacks
 		$trackbacks = MMI_Blog_Comment::factory($this->_driver)->get_trackbacks($post->id);
+		if (count($trackbacks) === 0)
+		{
+			return;
+		}
 
 		// Inject media
 		$parent = Request::instance();
@@ -143,19 +147,9 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller
 	 */
 	protected function _get_header($trackbacks = NULL)
 	{
-		if (empty($trackbacks))
-		{
-			$num_trackbacks = '';
-			$header = '';
-		}
-		else
-		{
-			$num_trackbacks = count($trackbacks);
-			$header = $num_trackbacks.' ';
-		}
-
 		$allow_pingbacks = $this->_allow_pingbacks;
 		$allow_trackbacks = $this->_allow_trackbacks;
+		$num_trackbacks = empty($trackbacks) ? 0 : count($trackbacks);
 		if ($allow_pingbacks AND $allow_trackbacks)
 		{
 			$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Pingback', $num_trackbacks)).' &amp; '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
@@ -168,6 +162,6 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller
 		{
 			$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
 		}
-		return trim($header);
+		return $header;
 	}
 } // End Controller_MMI_Blog_HMVC_Trackbacks

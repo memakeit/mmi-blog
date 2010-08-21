@@ -2,7 +2,7 @@
 
 // mmi/blog/content/ajax/trackbacks
 
-$output[] = '<section id="trackbacks" class="alpha omega grid_8">';
+$output[] = '<section id="trackbacks" class="hidden alpha omega grid_8">';
 $output[] = '<header id ="trackbacks_hdr">';
 $output[] = '<span>'.$header.'</span>';
 if ( ! empty($trackback_url))

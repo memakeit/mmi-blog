@@ -1,11 +1,16 @@
 /* mmi-blog/trackbacks.css */
 
-#trackbacks header
+#trackbacks.hidden
+{
+	display: none;
+}
+
+#trackbacks_hdr
 {
 	margin-bottom: 10px;
 }
 
-#trackbacks span
+#trackbacks_hdr span
 {
 	border-bottom: 1px solid #CCC;
 	display: block;
@@ -15,7 +20,7 @@
 	padding-bottom: 2px;
 }
 
-#trackbacks small
+#trackbacks_hdr small
 {
 	color: #999;
 	display: block;

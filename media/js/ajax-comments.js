@@ -6,7 +6,8 @@ function load_comments(url, template)
 		cache: false,
 		dataType: 'json',
 		url: url,
-		success: function(data){
+		success: function(data)
+		{
 			$('#comments_loading').remove();
 
 			// Comment header
@@ -15,6 +16,10 @@ function load_comments(url, template)
 			header = count + ' ' + (count === 1 ? header : header + 's');
 			$('#comments_hdr > a').text(header);
 			$('#comment_ct').text(header.toLowerCase());
+			if (count === 0)
+			{
+				$('#comments_hdr').addClass('zero');
+			}
 
 			// Comments
 			var div = $('<div></div>').hide();
