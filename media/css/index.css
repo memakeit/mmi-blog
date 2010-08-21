@@ -24,10 +24,9 @@ article header p
 	width: 100%;
 }
 
-article header .meta a
+article header span a
 {
 	font-weight: bold;
-	margin-left: 4px;
 }
 
 article header .comments
