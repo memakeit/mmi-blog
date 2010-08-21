@@ -148,6 +148,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				$month = gmdate('m', $post_date);
 				$slug = $posts[$id]->slug;
 				$posts[$id]->guid = self::get_guid($year, $month, $slug);
+				$posts[$id]->archive_guid = self::get_archive_guid($year, $month);
 				$posts[$id]->comments_feed_guid = self::get_comments_feed_guid($year, $month, $slug);
 				$posts[$id]->trackback_guid = self::get_trackback_guid($year, $month, $slug);
 			}

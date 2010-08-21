@@ -19,6 +19,11 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	const TYPE_POST = 'post';
 
 	/**
+	 * @var string archive guid
+	 */
+	public $archive_guid;
+
+	/**
 	 * @var MMI_Blog_User author
 	 */
 	public $author;
