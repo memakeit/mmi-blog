@@ -42,9 +42,10 @@ if (count($post) > 0)
 		$link_text = $comment_count.' '.Inflector::plural('comment', $comment_count);
 	}
 	$output[] = '<a href="#comments" id="comment_ct" title="'.$link_title.'">'.$link_text.'</a>';
-	$output[] = '<span class="meta alpha grid_6">';
+	$output[] = '<span class="alpha grid_6">';
 	$output[] = 'By '.$author;
-	$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.gmdate('F j, Y', $post_date).'</time>';
+	$date = HTML::anchor($post->archive_guid, gmdate('F j, Y', $post_date), array('rel' => 'archive index', 'title' => 'articles for '.gmdate('F Y', $post_date)));
+	$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.$date.'</time>';
 
 	// Categories
 	if (count($categories) > 0)
@@ -53,9 +54,9 @@ if (count($post) > 0)
 		foreach ($categories as $category)
 		{
 			$cat_name = $category->name;
-			$temp[] = HTML::anchor($category->guid, $cat_name, array('title' => 'articles for'.$cat_name));
+			$temp[] = HTML::anchor($category->guid, $cat_name, array('rel' => 'index tag', 'title' => 'articles categorized '.$cat_name));
 		}
-		$output[] = ' in: '.implode(', ', $temp);
+		$output[] = ' in '.implode(', ', $temp);
 	}
 	$output[] = '</span>';
 	$output[] = '</p>';
@@ -112,12 +113,14 @@ if (count($post) > 0)
 				$html = $last_paragraph[0];
 				$inner = $last_paragraph[1];
 				$retweet = $retweet->execute()->response;
-				$post_content = str_replace($html, '', $post_content).'<p>'.$retweet.$inner.'</p>';
+				$post_content = str_replace($html, '', $post_content).'<div>'.$retweet.$inner.'</div>';
 			}
 		}
 		$output[] = $post_content;
 	}
 	$output[] = '</div>';
+
+	// Tags
 
 //
 //	// Prev next links
@@ -139,7 +142,6 @@ if (count($post) > 0)
 	// Comments
 	if ( ! empty($comments))
 	{
-		$output[] = '<a name="comments"></a>';
 		$output[] = $comments;
 	}
 

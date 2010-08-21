@@ -28,7 +28,7 @@ else
 	foreach ($posts as $post)
 	{
 		// Set content class
-		$class = 'content alpha omega grid_8';
+		$class = 'alpha omega grid_8';
 		if ($i === 0)
 		{
 			$class .= ' first';
@@ -63,9 +63,10 @@ else
 		$output[] = '<h2><a href="'.$post_guid.'" title="'.$post_title.'">'.Text::widont($post_title).'</a></h2>';
 		$output[] = '<p>';
 		$output[] = '<span class="comments omega grid_2"><a href="'.$post_guid.'/#comments" title="'.$link_title.'">'.$comment_count.' '.Inflector::plural('comment', $comment_count).'</a></span>';
-		$output[] = '<span class="meta alpha grid_6">';
+		$output[] = '<span class="alpha grid_6">';
 		$output[] = 'By '.$author;
-		$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.gmdate('F j, Y', $post_date).'</time>';
+		$date = HTML::anchor($post->archive_guid, gmdate('F j, Y', $post_date), array('rel' => 'archive index', 'title' => 'articles for '.gmdate('F Y', $post_date)));
+		$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.$date.'</time>';
 
 		// Categories
 		if (count($categories) > 0)
@@ -74,9 +75,9 @@ else
 			foreach ($categories as $category)
 			{
 				$cat_name = $category->name;
-				$temp[] = HTML::anchor($category->guid, $cat_name, array('title' => 'articles for'.$cat_name));
+				$temp[] = HTML::anchor($category->guid, $cat_name, array('rel' => 'index tag', 'title' => 'articles categorized '.$cat_name));
 			}
-			$output[] = ' in: '.implode(', ', $temp);
+			$output[] = ' in '.implode(', ', $temp);
 		}
 		$output[] = '</span>';
 		$output[] = '</p>';
@@ -114,35 +115,29 @@ else
 		$output[] = $toolbox->execute()->response;
 
 		// Read more
-		if ( ! empty($body))
-		{	$link_title = 'read the article about '.HTML::chars($post_title, FALSE);
-			$output[] = '<a class="more" href="'.$post_guid.'" rel="nofollow" title="'.$link_title.'"><strong>Read more</strong></a>';
-		}
+		$link_title = 'read the article about '.HTML::chars($post_title, FALSE);
+		$output[] = '<a class="more" href="'.$post_guid.'" rel="nofollow" title="'.$link_title.'"><strong>Read more</strong></a>';
 		$output[] = '</div>';
 
 		// End section
 		$output[] = '</section>';
 
-		// Begin footer
-		$output[] = '<footer class="omega grid_5">';
-
 		// Tags
 		if (count($tags) > 0)
 		{
+			$output[] = '<footer class="omega grid_5">';
 			$output[] = '<p class="tags">';
 			$output[] = '<strong>Tags:</strong>';
 			$temp = array();
 			foreach ($tags as $tag)
 			{
 				$tag_name = $tag->name;
-				$temp[] = HTML::anchor($tag->guid, $tag_name, array('title' => 'articles for'.$tag_name));
+				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged '.$tag_name));
 			}
 			$output[] = implode(', ', $temp);
 			$output[] = '</p>';
+			$output[] = '</footer>';
 		}
-
-		// End footer
-		$output[] = '</footer>';
 
 		// End article
 		$output[] = '</article>';

@@ -1,5 +1,10 @@
 /* mmi-blog/index.css */
 
+article
+{
+	margin-bottom: 20px;
+}
+
 p.hdr
 {
 	font-size: 1.286em; /* 18px */
@@ -7,6 +12,11 @@ p.hdr
 
 /*	header
  ******************************************************************************/
+article header
+{
+	margin-bottom: 20px;
+}
+
 article header h2
 {
 	font-size: 2.571em; /* 32px */
@@ -19,21 +29,20 @@ article header p
 	display: block;
 	float: left;
 	line-height: 24px;
-	margin-bottom: 20px;
 	position: relative;
 	width: 100%;
 }
 
 article header span a
 {
-	font-weight: bold;
+	font-size: 1.143em; /* 16px */
 }
 
 article header .comments
 {
+	bottom: 0;
 	position: absolute;
 	right: 0;
-	top: 0;
 }
 
 article header .comments a
@@ -50,6 +59,7 @@ article figure
 {
 	height: 220px;
 	width: 220px;
+	padding-bottom: 20px;
 }
 
 article figure img
@@ -72,6 +82,7 @@ article figure img:hover
 article section
 {
 	float: right;
+	padding-bottom: 20px;
 }
 
 article section p
@@ -84,12 +95,16 @@ article section p
 article section div.last
 {
 	float: left;
-	margin: 16px 0 20px 0;
 	width: 100%;
 }
 
-/*	read more
+/*	sharing and read more
  ******************************************************************************/
+div.mini
+{
+	margin: 2px 0;
+}
+
 a.more
 {
 	background: url('../../img/icons/24px/Arrow1 Right.png') no-repeat 100% 0;
