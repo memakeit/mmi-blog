@@ -65,6 +65,11 @@
 	margin-bottom: 20px;
 }
 
+#comments article header a
+{
+	font-size: 1em;
+}
+
 #comments article p
 {
 	float: right;
