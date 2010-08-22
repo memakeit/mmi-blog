@@ -88,11 +88,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$this->_inject_media();
 
 		// Get and re-set the nav type
-		$this->_nav_type = MMI_Blog::get_nav_type();
-		MMI_Blog::set_nav_type($this->_nav_type);
-
-		//
-		$this->_meta();
+		$nav_type = MMI_Blog::get_nav_type();
+		MMI_Blog::set_nav_type($nav_type);
 
 		$view = View::factory('mmi/blog/post')
 		 	->set('ajax_comments', $this->_ajax_comments)
@@ -100,6 +97,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		 	->set('insert_retweet', TRUE)
 			->set('is_homepage', FALSE)
 			->set('post', $post)
+			->set('prev_next', $this->_get_prev_next())
 			->set('toolbox', $this->_get_mini_toolbox())
 		;
 
@@ -131,213 +129,19 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
 	}
 
-	protected function _meta()
-	{
-		$prev_next = $this->_get_prev_next();
-		$prev = Arr::get($prev_next, 'prev');
-		if ( ! empty($prev))
-		{
-			$url = $prev['url'];
-			$rel = 'prefetch prev';
-			if ($prev['is_last'])
-			{
-				$rel = 'last '.$rel;
-			}
-			if ($prev['is_first'])
-			{
-				$rel = 'first '.$rel;
-			}
-			$this->add_meta_link($url, array('rel' => $rel));
-		}
-
-		$next = Arr::get($prev_next, 'next');
-		if ( ! empty($next))
-		{
-			$url = $next['url'];
-			$rel = 'prefetch next';
-			if ($next['is_last'])
-			{
-				$rel = 'last '.$rel;
-			}
-			if ($next['is_first'])
-			{
-				$rel = 'first '.$rel;
-			}
-			$this->add_meta_link($url, array('rel' => $rel));
-		}
-
-		// Get navigation settings
-		$nav_parm = NULL;
-		$nav_type = $this->_nav_type;
-		if (is_array($nav_type) AND count($nav_type) > 0)
-		{
-			$nav_type = key($this->_nav_type);
-			$nav_parm = Arr::get($this->_nav_type, $nav_type);
-		}
-
-		switch ($nav_type)
-		{
-			case MMI_Blog::NAV_CATEGORY:
-			case MMI_Blog::NAV_TAG:
-				if ( ! empty($nav_parm))
-				{
-					$this->add_meta_link
-					(
-						MMI_Blog_Term::get_category_guid($nav_parm),
-						array('rel' => 'index tag up')
-					);
-				}
-				break;
-
-			case MMI_Blog::NAV_ARCHIVE:
-				$month = substr($nav_parm, -2);
-				$year = substr($nav_parm, 0, 4);
-				$this->add_meta_link
-				(
-					MMI_Blog_Post::get_archive_guid($year, $month),
-					array('rel' => 'archives index up')
-				);
-				break;
-
-			default:
-				$this->add_meta_link
-				(
-					MMI_Blog::get_guid(),
-					array('rel' => 'index up')
-				);
-				break;
-		}
-
-		// Set response
-		$view = View::factory('mmi/blog/content/prev_next')
-			->set('prev', $prev)
-			->set('next', $next)
-		;
-		$this->add_view('prev_next', 'content', 'prev_next', $view);
-		$this->add_css_url('mmi-blog_prev-next', array('bundle' => 'blog'));
-//		MMI_Debug::mdead($this->_mgr_meta);
-	}
-
-	/**
-	 * Get the previous and next item settings.
-	 *
-	 * @return	array
-	 */
 	protected function _get_prev_next()
 	{
-		$post_id = $this->_post->id;
-		$posts = $this->_get_all_nav__posts();
-
-		$prev = NULL;
-		$next = NULL;
-		if (is_array($posts) AND count($posts) > 0)
-		{
-			$last = end($posts);
-			$first = reset($posts);
-			$post = $first;
-			while ($post !== FALSE)
-			{
-				if ($post_id === $post->id)
-				{
-					// Get previous item
-					$prev = prev($posts);
-					if ($prev === FALSE)
-					{
-						$prev = NULL;
-						reset($posts);
-					}
-					else
-					{
-						$prev = array
-						(
-							'title'		=> $prev->title,
-							'url'		=> $prev->guid,
-							'is_first'	=> ($prev->id === $first->id),
-							'is_last'	=> ($prev->id === $last->id),
-						);
-
-						// Return to current item
-						next($posts);
-					}
-
-					// Get next item
-					$next = next($posts);
-					if ($next === FALSE)
-					{
-						$next = NULL;
-					}
-					else
-					{
-						$is_first = ($next === $first);
-						$is_last = ($next === $last);
-						$next = array
-						(
-							'title'		=> $next->title,
-							'url'		=> $next->guid,
-							'is_first'	=> ($next->id === $first->id),
-							'is_last'	=> ($next->id === $last->id),
-						);
-					}
-					break;
-				}
-				$post = next($posts);
-			}
-		}
-		return array('prev' => $prev, 'next' => $next);
+		$route = Route::get('mmi/blog/hmvc')->uri(array
+		(
+			'controller' => 'prevnext'
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'post' => $this->_post,
+		);
+		return $hmvc->execute()->response;
 	}
-
-	/**
-	 * Return an array of all posts for the current navigation settings.
-	 *
-	 * @return	array
-	 */
-	protected function _get_all_nav__posts()
-	{
-		// Get navigation settings
-		$nav_parm = NULL;
-		$nav_type = $this->_nav_type;
-		if (is_array($nav_type) AND count($nav_type) > 0)
-		{
-			$nav_type = key($this->_nav_type);
-			$nav_parm = Arr::get($this->_nav_type, $nav_type);
-		}
-
-		// Get posts
-		$posts = NULL;
-		switch ($nav_type)
-		{
-			case MMI_Blog::NAV_CATEGORY:
-			case MMI_Blog::NAV_TAG:
-				$method = ($nav_type === MMI_Blog::NAV_CATEGORY) ? 'get_categories_by_slug' : 'get_tags_by_slug';
-				$terms = MMI_Blog_Term::factory($this->_driver)->$method($nav_parm);
-				$term = Arr::get($terms, $nav_parm);
-				$post_ids = empty($term) ? NULL : $term->post_ids;
-				if ( ! empty($post_ids))
-				{
-					$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($post_ids);
-				}
-				break;
-
-			case MMI_Blog::NAV_ARCHIVE:
-				$month = substr($nav_parm, -2);
-				$year = substr($nav_parm, 0, 4);
-				$posts = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
-				$posts = Arr::get($posts, $nav_parm, array());
-				break;
-
-			default:
-				$posts = MMI_Blog_Post::factory($this->_driver)->get_posts();
-				break;
-		}
-		return $posts;
-	}
-
-
-
-
-
-
-
 
 	protected function _get_comments()
 	{
