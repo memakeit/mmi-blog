@@ -103,7 +103,11 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller
 			{
 				$rel = 'first '.$rel;
 			}
-			$parent->meta->add_link($url, array('rel' => $rel));
+			$parent->meta->add_link($url, array
+			(
+				'rel'	=> $rel,
+				'title'	=> HTML::chars($prev['title']),
+			));
 		}
 
 		$next = $this->_next;
@@ -119,7 +123,11 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller
 			{
 				$rel = 'first '.$rel;
 			}
-			$parent->meta->add_link($url, array('rel' => $rel));
+			$parent->meta->add_link($url, array
+			(
+				'rel'	=> $rel,
+				'title'	=> HTML::chars($next['title']),
+			));
 		}
 	}
 
@@ -143,33 +151,80 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller
 
 		switch ($nav_type)
 		{
+			case MMI_Blog::NAV_ARCHIVE:
+				$month = substr($nav_parm, -2);
+				$year = substr($nav_parm, 0, 4);
+				$date = mktime(0, 0, 0, $month, 1, $year);
+				$parent->meta->add_link
+				(
+					MMI_Blog_Post::get_archive_guid($year, $month),
+					array
+					(
+						'rel'	=> 'archives index up',
+						'title'	=> 'articles for '.gmdate('F Y', $date)
+					)
+				);
+				break;
+
 			case MMI_Blog::NAV_CATEGORY:
-			case MMI_Blog::NAV_TAG:
 				if ( ! empty($nav_parm))
 				{
+					$categories = $this->_post->categories;
+					$name = '';
+					foreach ($categories as $category)
+					{
+						if ($nav_parm === $category->slug)
+						{
+							$name = $category->name;
+							break;
+						}
+					}
 					$parent->meta->add_link
 					(
 						MMI_Blog_Term::get_category_guid($nav_parm),
-						array('rel' => 'index tag up')
+						array
+						(
+							'rel'	=> 'index tag up',
+							'title'	=> 'articles categorized as '.$name,
+						)
 					);
 				}
 				break;
 
-			case MMI_Blog::NAV_ARCHIVE:
-				$month = substr($nav_parm, -2);
-				$year = substr($nav_parm, 0, 4);
-				$parent->meta->add_link
-				(
-					MMI_Blog_Post::get_archive_guid($year, $month),
-					array('rel' => 'archives index up')
-				);
+			case MMI_Blog::NAV_TAG:
+				if ( ! empty($nav_parm))
+				{
+					$tags = $this->_post->tags;
+					$name = '';
+					foreach ($tags as $tag)
+					{
+						if ($nav_parm === $tag->slug)
+						{
+							$name = $tag->name;
+							break;
+						}
+					}
+					$parent->meta->add_link
+					(
+						MMI_Blog_Term::get_category_guid($nav_parm),
+						array
+						(
+							'rel'	=> 'index tag up',
+							'title'	=> 'articles tagged as '.$name,
+						)
+					);
+				}
 				break;
 
 			default:
 				$parent->meta->add_link
 				(
 					MMI_Blog::get_guid(),
-					array('rel' => 'index up')
+					array
+					(
+						'rel'	=> 'index up',
+						'title'	=> 'recent articles',
+					)
 				);
 				break;
 		}
