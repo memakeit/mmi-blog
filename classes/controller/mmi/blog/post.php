@@ -207,6 +207,14 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				);
 				break;
 		}
+
+		// Set response
+		$view = View::factory('mmi/blog/content/prev_next')
+			->set('prev', $prev)
+			->set('next', $next)
+		;
+		$this->add_view('prev_next', 'content', 'prev_next', $view);
+		$this->add_css_url('mmi-blog_prev-next', array('bundle' => 'blog'));
 //		MMI_Debug::mdead($this->_mgr_meta);
 	}
 
@@ -235,6 +243,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 					$prev = prev($posts);
 					if ($prev === FALSE)
 					{
+						$prev = NULL;
 						reset($posts);
 					}
 					else
@@ -253,7 +262,11 @@ class Controller_MMI_Blog_Post extends MMI_Template
 
 					// Get next item
 					$next = next($posts);
-					if ($next !== FALSE)
+					if ($next === FALSE)
+					{
+						$next = NULL;
+					}
+					else
 					{
 						$is_first = ($next === $first);
 						$is_last = ($next === $last);

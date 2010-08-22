@@ -122,13 +122,12 @@ if (count($post) > 0)
 
 	// Tags
 
-//
-//	// Prev next links
-//	if ( ! empty($prev_next))
-//	{
-//		$output[] = $prev_next;
-//	}
-//
+
+	// Prev next links
+	if ( ! empty($prev_next))
+	{
+		$output[] = $prev_next;
+	}
 
 	// End article
 	$output[] = '</article>';

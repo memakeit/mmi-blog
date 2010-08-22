@@ -9,4 +9,12 @@ $(window).load(function()
 		.delegate('a', 'mouseout', function(){
 			$(this).find('span').hide();
 		});
+
+	$('#prev_post, #next_post')
+		.delegate('a', 'mouseover', function(){
+			$(this).parent().find('small').show();
+		})
+		.delegate('a', 'mouseout', function(){
+			$(this).parent().find('small').hide();
+		});
 });
