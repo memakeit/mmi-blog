@@ -54,7 +54,7 @@ if (count($post) > 0)
 		foreach ($categories as $category)
 		{
 			$cat_name = $category->name;
-			$temp[] = HTML::anchor($category->guid, $cat_name, array('rel' => 'index tag', 'title' => 'articles categorized '.$cat_name));
+			$temp[] = HTML::anchor($category->guid, $cat_name, array('rel' => 'index tag', 'title' => 'articles categorized as '.$cat_name));
 		}
 		$output[] = ' in '.implode(', ', $temp);
 	}

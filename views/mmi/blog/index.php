@@ -75,7 +75,7 @@ else
 			foreach ($categories as $category)
 			{
 				$cat_name = $category->name;
-				$temp[] = HTML::anchor($category->guid, $cat_name, array('rel' => 'index tag', 'title' => 'articles categorized '.$cat_name));
+				$temp[] = HTML::anchor($category->guid, $cat_name, array('rel' => 'index tag', 'title' => 'articles categorized as '.$cat_name));
 			}
 			$output[] = ' in '.implode(', ', $temp);
 		}
@@ -132,7 +132,7 @@ else
 			foreach ($tags as $tag)
 			{
 				$tag_name = $tag->name;
-				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged '.$tag_name));
+				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
 			}
 			$output[] = implode(', ', $temp);
 			$output[] = '</p>';
