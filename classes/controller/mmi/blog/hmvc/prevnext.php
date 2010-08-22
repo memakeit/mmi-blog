@@ -65,6 +65,11 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller
 	{
 		// Initialize the previous and next post settings
 		$this->_set_prev_next();
+		if (empty($this->_prev) AND empty($this->_next))
+		{
+			$this->request->response = '';
+			return;
+		}
 
 		// Set the meta tags
 		$this->_meta();
