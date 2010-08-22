@@ -2,6 +2,7 @@
 
 // mmi/blog/content/ajax/comments
 
+$output = array();
 $output[] = '<section id="comments" class="alpha omega grid_8">';
 
 // Header

@@ -2,8 +2,8 @@
 
 // mmi/blog/content/comments
 
-$num_comments = count($comments);
 $output = array();
+$num_comments = count($comments);
 $output[] = '<section id="comments" class="alpha omega grid_8">';
 
 // Header
