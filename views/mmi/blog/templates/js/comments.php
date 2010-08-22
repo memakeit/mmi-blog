@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// mmi/blog/js/comment
+// mmi/blog/templates/js/comments
 
 ?>
 <article class="comment{{if is_first}} first{{/if}}{{if is_last}} last{{/if}}" id="comment-${id}">

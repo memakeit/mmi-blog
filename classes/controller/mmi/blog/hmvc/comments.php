@@ -106,7 +106,7 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller
 	protected function _comments_ajax()
 	{
 		$post = $this->_post;
-		$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/js/comments')->render());
+		$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/templates/js/comments')->render());
 		$url = URL::site(Route::get('mmi/blog/rest')->uri(array
 		(
 			'controller'	=> 'comments',

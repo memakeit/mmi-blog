@@ -115,7 +115,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller
 	public function _trackbacks_ajax()
 	{
 		$post = $this->_post;
-		$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/js/trackbacks')->render());
+		$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/templates/js/trackbacks')->render());
 		$url = URL::site(Route::get('mmi/blog/rest')->uri(array
 		(
 			'controller'	=> 'trackbacks',

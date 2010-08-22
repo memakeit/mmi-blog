@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// mmi/blog/js/trackback
+// mmi/blog/templates/js/trackbacks
 
 ?>
 
