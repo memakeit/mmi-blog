@@ -122,15 +122,14 @@ if (count($post) > 0)
 
 	// Tags
 
+	// End article
+	$output[] = '</article>';
 
-	// Prev next links
+	// Previous and next post links
 	if ( ! empty($prev_next))
 	{
 		$output[] = $prev_next;
 	}
-
-	// End article
-	$output[] = '</article>';
 
 	// Bookmarks
 	if ( ! empty($bookmarks))
