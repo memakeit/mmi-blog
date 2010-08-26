@@ -275,8 +275,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected function _init_page_meta( & $controller, & $directory)
 	{
 		$request = $this->request;
-		$directory = $request->directory;
 		$controller = $request->controller;
+		$directory = $request->directory;
 
 		$params = $request->param();
 		$month = Arr::get($params, 'month');

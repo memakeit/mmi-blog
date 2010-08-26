@@ -247,8 +247,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	protected function _init_page_meta( & $controller, & $directory)
 	{
 		$request = $this->request;
-		$directory = $request->directory;
 		$controller = $request->action;
+		$directory = $request->directory;
 
 		$slug = $request->param('slug');
 		if (empty($slug))
