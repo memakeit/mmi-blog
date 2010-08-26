@@ -171,8 +171,6 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 
 			// Load relationship data
 			$relationships = Model_WP_Term_Relationships::select_by_term_taxonomy_id(array_values($term_ids_taxonomy_ids), self::$_db_relationship_mappings);
-			$post_id;
-			$taxonomy_id;
 			$taxonomy_ids_post_ids = array();
 			foreach ($relationships as $relationship)
 			{
@@ -204,17 +202,11 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			if (is_array($terms) AND count($terms) > 0)
 			{
 				// Associate terms with post ids
-				$post_ids;
-				$taxonomy_id;
-				$term_id;
 				foreach ($terms as $term_id => $term)
 				{
 					$taxonomy_id = $term_ids_taxonomy_ids[$term_id];
-					$post_ids = Arr::get($taxonomy_ids_post_ids, $taxonomy_id);
-					if ( ! empty($post_ids))
-					{
-						$term->post_ids = $post_ids;
-					}
+					$post_ids = Arr::get($taxonomy_ids_post_ids, $taxonomy_id, array());
+					$term->post_ids = $post_ids;
 					$terms[$term_id] = $term;
 				}
 			}
