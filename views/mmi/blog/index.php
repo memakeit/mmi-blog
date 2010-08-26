@@ -104,6 +104,21 @@ else
 			$output[] = '<p>'.$excerpt.'</p>';
 		}
 
+		// Tags
+		if (count($tags) > 0)
+		{
+			$output[] = '<p class="tags">';
+			$output[] = '<strong>Tags:</strong>';
+			$temp = array();
+			foreach ($tags as $tag)
+			{
+				$tag_name = $tag->name;
+				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			}
+			$output[] = implode(', ', $temp);
+			$output[] = '</p>';
+		}
+
 		// Toolbox
 		$output[] = '<div class="last">';
 		$toolbox->post = array
@@ -121,23 +136,6 @@ else
 
 		// End section
 		$output[] = '</section>';
-
-		// Tags
-		if (count($tags) > 0)
-		{
-			$output[] = '<footer class="omega grid_5">';
-			$output[] = '<p class="tags">';
-			$output[] = '<strong>Tags:</strong>';
-			$temp = array();
-			foreach ($tags as $tag)
-			{
-				$tag_name = $tag->name;
-				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
-			}
-			$output[] = implode(', ', $temp);
-			$output[] = '</p>';
-			$output[] = '</footer>';
-		}
 
 		// End article
 		$output[] = '</article>';

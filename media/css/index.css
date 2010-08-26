@@ -92,14 +92,21 @@ article section p
 	width: 100%;
 }
 
-article section div.last
+/*	tags
+ ******************************************************************************/
+article p.tags a
+{
+	font-size: 1.143em; /* 16px */
+}
+
+/*	sharing and read more
+ ******************************************************************************/
+article div.last
 {
 	float: left;
 	width: 100%;
 }
 
-/*	sharing and read more
- ******************************************************************************/
 div.mini
 {
 	margin: 2px 0;
@@ -113,28 +120,4 @@ a.more
 	line-height: 24px;
 	padding-right: 28px;
 	vertical-align: middle;
-}
-
-/*	article footer
- ******************************************************************************/
-article footer
-{
-	float: right;
-}
-
-article footer p
-{
-	margin-bottom: 20px;
-}
-
-article footer .tags
-{
-	background: url('../../img/icons/24px/Tag.png') no-repeat 0 0;
-	padding-left: 32px;
-}
-
-article footer .tags strong,
-article footer .tags a
-{
-	padding-left: 4px;
 }
