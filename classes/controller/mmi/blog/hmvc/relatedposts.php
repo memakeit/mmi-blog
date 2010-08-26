@@ -72,7 +72,7 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller
 	 */
 	protected function _get_related()
 	{
-		$num_related = MMI_Blog::get_post_config()->get('num_related', 0);
+		$num_related = MMI_Blog::get_post_config()->get('num_related_posts', 0);
 		if ($num_related === 0)
 		{
 			return array();

@@ -132,9 +132,9 @@ if (count($post) > 0)
 	}
 
 	// Related post links
-	if ( ! empty($related))
+	if ( ! empty($related_posts))
 	{
-		$output[] = $related;
+		$output[] = $related_posts;
 	}
 
 	// Bookmarks

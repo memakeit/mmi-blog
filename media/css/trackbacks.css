@@ -1,5 +1,10 @@
 /* mmi-blog/trackbacks.css */
 
+#trackbacks
+{
+	margin-bottom: 35px;
+}
+
 #trackbacks.hidden
 {
 	display: none;
@@ -30,7 +35,6 @@
 #trackbacks ol
 {
 	list-style-type: decimal;
-	margin-bottom: 15px;
 }
 
 #trackbacks li

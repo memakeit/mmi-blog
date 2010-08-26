@@ -28,6 +28,11 @@ article header a
 	font-size: 1.143em; /* 16px */
 }
 
+article div.content
+{
+	margin-bottom: 40px;
+}
+
 #comment_ct
 {
 	background: url('../../img/icons/24px/Discuss.png') no-repeat 100% 0;

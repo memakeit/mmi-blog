@@ -97,7 +97,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		 	->set('insert_retweet', TRUE)
 			->set('is_homepage', FALSE)
 			->set('post', $post)
-			->set('prev_next', $this->_get_prev_next())
 			->set('toolbox', $this->_get_mini_toolbox())
 		;
 
@@ -111,7 +110,15 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			}
 		}
 
-		$view->set('related', $this->_get_related());
+		$post_features = MMI_Blog::get_post_config()->get('features', array());
+		if (Arr::get($post_features, 'prev_next', FALSE))
+		{
+			$view->set('prev_next', $this->_get_prev_next());
+		}
+		if (Arr::get($post_features, 'related_posts', FALSE))
+		{
+			$view->set('related_posts', $this->_get_related_posts());
+		}
 
 		$this->_title = $post->title;
 		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
@@ -131,7 +138,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
 	}
 
-	protected function _get_related()
+	protected function _get_related_posts()
 	{
 		$route = Route::get('mmi/blog/hmvc')->uri(array
 		(
