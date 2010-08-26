@@ -3,6 +3,7 @@
 // MMI blog post configuration
 return array
 (
+	'num_related' => 5,
 	'toolbox' => array
 	(
 		'after_links' => '<em></em>',

@@ -111,6 +111,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			}
 		}
 
+		$view->set('related', $this->_get_related());
+
 		$this->_title = $post->title;
 		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
 	}
@@ -127,6 +129,20 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$this->add_css_url('mmi-social_addthis.bookmarks', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-blog_post', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
+	}
+
+	protected function _get_related()
+	{
+		$route = Route::get('mmi/blog/hmvc')->uri(array
+		(
+			'controller' => 'relatedposts'
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'post' => $this->_post,
+		);
+		return $hmvc->execute()->response;
 	}
 
 	protected function _get_prev_next()

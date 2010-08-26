@@ -54,6 +54,110 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		'meta_value'	=> 'value',
 	);
 
+	public function get_popular($reload_cache = NULL)
+	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+	}
+
+	public function get_recent($reload_cache = NULL)
+	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+	}
+
+	/**
+	 * Get related posts for the post id specified.
+	 *
+	 * @param	integer	the post id to find related posts for
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_related($id, $reload_cache = NULL)
+	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
+		$id = intval($id);
+		$cat_ids = array();
+		$tag_ids = array();
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$temp = array();
+		foreach ($posts as $post)
+		{
+			$post_id = $post->id;
+			if ($post_id === $id)
+			{
+				// Category and tag ids for the post id specified
+				foreach ($post->categories as $category)
+				{
+					$cat_ids[] = $category->id;
+				}
+				foreach ($post->tags as $tag)
+				{
+					$tag_ids[] = $tag->id;
+				}
+			}
+			else
+			{
+				// Data for the other posts
+				$temp[$post_id] = array
+				(
+					'cat_ids'	=> array(),
+					'created'	=> $post->timestamp_created,
+					'guid'		=> $post->guid,
+					'tag_ids'	=> array(),
+					'title'		=> $post->title,
+				);
+				foreach ($post->categories as $category)
+				{
+					$temp[$post_id]['cat_ids'][] = $category->id;
+				}
+				foreach ($post->tags as $tag)
+				{
+					$temp[$post_id]['tag_ids'][] = $tag->id;
+				}
+			}
+		}
+
+		if (empty($temp))
+		{
+			// Only one posts exists
+			return array();
+		}
+		elseif (empty($cat_ids) AND empty($tag_ids))
+		{
+			// No categories or tags found for the post
+			return array();
+		}
+
+		$related = array();
+		foreach ($temp as $post_id => $item)
+		{
+			$cat_matches = array_intersect($cat_ids, Arr::get($item, 'cat_ids', array()));
+			$tag_matches = array_intersect($tag_ids, Arr::get($item, 'tag_ids', array()));
+			if ( ! empty($cat_matches) OR ! empty($tag_matches))
+			{
+				$related[] = array
+				(
+					'cat_count'	=> count($cat_matches),
+					'created'	=> $item['created'],
+					'guid'		=> $item['guid'],
+					'id'		=> $post_id,
+					'tag_count'	=> count($tag_matches),
+					'title'		=> $item['title'],
+				);
+			}
+		}
+		return $related;
+	}
+
 	/**
 	 * Get posts for a month and year.
 	 *
@@ -158,7 +262,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			}
 			if ($load_tags)
 			{
-				self::_load_tags($posts, ! $load_categories);
+				self::_load_tags($posts);
 			}
 			if ($load_meta)
 			{

@@ -131,6 +131,12 @@ if (count($post) > 0)
 		$output[] = $prev_next;
 	}
 
+	// Related post links
+	if ( ! empty($related))
+	{
+		$output[] = $related;
+	}
+
 	// Bookmarks
 	if ( ! empty($bookmarks))
 	{
