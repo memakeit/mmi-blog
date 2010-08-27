@@ -54,7 +54,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		'meta_value'	=> 'value',
 	);
 
-	public function get_popular($reload_cache = NULL)
+	public function get_popular($max_num_items = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
@@ -62,7 +62,15 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		}
 	}
 
-	public function get_recent($reload_cache = NULL)
+	public function get_random($max_num_items = 10, $reload_cache = NULL)
+	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+	}
+
+	public function get_recent($max_num_items = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
@@ -74,10 +82,11 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get related posts for the post id specified.
 	 *
 	 * @param	integer	the post id to find related posts for
+	 * @param	integer	the maximum number of related posts to return
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_related($id, $reload_cache = NULL)
+	public function get_related($id, $max_num_items = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
@@ -137,6 +146,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			return array();
 		}
 
+		// Match related posts based on category and / or tag ids
 		$related = array();
 		foreach ($temp as $post_id => $item)
 		{
@@ -149,13 +159,27 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 					'cat_count'	=> count($cat_matches),
 					'created'	=> $item['created'],
 					'guid'		=> $item['guid'],
-					'id'		=> $post_id,
 					'tag_count'	=> count($tag_matches),
 					'title'		=> $item['title'],
 				);
 			}
 		}
-		return $related;
+
+		// Sort the related posts by category + tag count and by date created
+		$temp = $related;
+		$related = array();
+		foreach ($temp as $item)
+		{
+			$weight = $item['cat_count'] + $item['tag_count'];
+			$weight = str_pad($weight, 4, '0', STR_PAD_LEFT).'_'.$item['created'];
+			$related[$weight] = array
+			(
+				'guid'	=> $item['guid'],
+				'title'	=> $item['title'],
+			);
+		}
+		krsort($related);
+		return array_values(array_slice($related, 0, $max_num_items));
 	}
 
 	/**
