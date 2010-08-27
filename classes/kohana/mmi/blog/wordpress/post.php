@@ -78,7 +78,8 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$max_num = count($posts);
 		}
 
-
+		$page_views = Model_MMI_Page_Views::select_by_route_name('mmi/blog/post', TRUE);
+		MMI_Debug::dead($page_views);
 	}
 
 	/**
@@ -354,10 +355,11 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		if ( ! isset($posts))
 		{
 			// Load all data
-			$data = Model_WP_Posts::select_by_id(NULL, $post_type, self::$_db_mappings, TRUE, 'ID');
+			$data = Model_WP_Posts::select_by_id(NULL, $post_type, self::$_db_mappings, TRUE);
 			$posts = array();
-			foreach ($data as $id => $fields)
+			foreach ($data as $fields)
 			{
+				$id = $fields['ID'];
 				$posts[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$posts[$id]->driver = $driver;
 

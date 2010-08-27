@@ -68,10 +68,11 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 		}
 		if ( ! isset($users))
 		{
-			$data = Model_WP_Users::select_by_id(NULL, self::$_db_mappings, TRUE, 'ID');
+			$data = Model_WP_Users::select_by_id(NULL, self::$_db_mappings, TRUE);
 			$users = array();
-			foreach ($data as $id => $fields)
+			foreach ($data as $fields)
 			{
+				$id = $fields['ID'];
 				$users[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$users[$id]->driver = $driver;
 			}

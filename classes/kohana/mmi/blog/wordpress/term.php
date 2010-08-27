@@ -190,12 +190,13 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			$term_ids = array_keys($term_ids_taxonomy_ids);
 			if (count($term_ids) > 0)
 			{
-				$data = Model_WP_Terms::select_by_term_id($term_ids, self::$_db_mappings, TRUE, 'term_id');
+				$data = Model_WP_Terms::select_by_term_id($term_ids, self::$_db_mappings, TRUE);
 			}
 
 			$terms = array();
-			foreach ($data as $id => $fields)
+			foreach ($data as $fields)
 			{
+				$id = $fields['term_id'];
 				$terms[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$terms[$id]->driver = $driver;
 			}

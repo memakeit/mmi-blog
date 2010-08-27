@@ -60,10 +60,11 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 				$blog_id = 0;
 			}
 			// Load all data
-			$data = Model_WP_Options::select_by_option_id(NULL, $blog_id, self::$_db_option_mappings, TRUE, 'option_name');
+			$data = Model_WP_Options::select_by_option_id(NULL, $blog_id, self::$_db_option_mappings, TRUE);
 			$options = array();
-			foreach ($data as $id => $fields)
+			foreach ($data as $fields)
 			{
+				$id = $fields['option_name'];
 				$options[$id] = Arr::get($fields, 'value');
 			}
 			if ($cache_lifetime > 0)
