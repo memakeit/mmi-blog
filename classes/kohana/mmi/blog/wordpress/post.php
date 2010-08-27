@@ -359,7 +359,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$posts = array();
 			foreach ($data as $fields)
 			{
-				$id = $fields['ID'];
+				$id = $fields[self::$_db_mappings['ID']];
 				$posts[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$posts[$id]->driver = $driver;
 

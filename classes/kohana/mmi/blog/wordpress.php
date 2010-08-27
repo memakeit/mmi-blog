@@ -64,7 +64,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 			$options = array();
 			foreach ($data as $fields)
 			{
-				$id = $fields['option_name'];
+				$id = $fields[self::$_db_option_mappings['option_name']];
 				$options[$id] = Arr::get($fields, 'value');
 			}
 			if ($cache_lifetime > 0)

@@ -196,7 +196,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			$terms = array();
 			foreach ($data as $fields)
 			{
-				$id = $fields['term_id'];
+				$id = $fields[self::$_db_mappings['term_id']];
 				$terms[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$terms[$id]->driver = $driver;
 			}
