@@ -55,7 +55,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
-	 * Get popular (most frequently viewed) posts.
+	 * Get popular (most-viewed) posts.
 	 *
 	 * @param	integer	the maximum number of popular posts to return
 	 * @param	mixed	reload cache from database?
@@ -68,18 +68,56 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
-		if (count($posts) === 0)
+		// Get page views
+		$page_views = Model_MMI_Page_Views::select_by_route_name('mmi/blog/post', TRUE);
+		if (count($page_views) === 0)
 		{
 			return array();
 		}
-		elseif ($max_num > count($posts))
+		elseif ($max_num > count($page_views))
 		{
-			$max_num = count($posts);
+			$max_num = count($page_views);
 		}
 
-		$page_views = Model_MMI_Page_Views::select_by_route_name('mmi/blog/post', TRUE);
-		MMI_Debug::dead($page_views);
+		// Process page views
+		$temp = array();
+		foreach ($page_views as $view)
+		{
+			$num = str_pad($view['num_page_views'], 8, '0', STR_PAD_LEFT);
+			$temp[$num] = Arr::get($view, 'request_parms', array());
+		}
+		krsort($temp);
+		$temp = array_slice($temp, 0 , $max_num);
+
+		$popular = array();
+		foreach ($temp as $item)
+		{
+			$slug = $item['year'].'/'.$item['month'].'/'.$item['slug'];
+			$popular[$slug] = array();
+		}
+		unset($temp);
+
+		// Find post guid and title
+		$count = 0;
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		foreach ($posts as $post)
+		{
+			$timestamp = $post->timestamp_created;
+			$month = date('m', $timestamp);
+			$year = date('Y', $timestamp);
+			$slug = $year.'/'.$month.'/'.$post->slug;
+			if (array_key_exists($slug, $popular))
+			{
+				$popular[$slug]['guid'] = $post->guid;
+				$popular[$slug]['title'] = $post->title;
+				if (++$count === $max_num)
+				{
+					break;
+				}
+			}
+		}
+		unset($posts);
+		return array_values($popular);
 	}
 
 	/**
