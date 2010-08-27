@@ -21,10 +21,12 @@ class Controller_MMI_Blog_Test_Options extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_WordPress::factory()->get_options(array('active_plugins', 'admin_email'), NULL, TRUE);
+		$mmi_wp = MMI_Blog_WordPress::factory();
+
+		$data = $mmi_wp->get_options(array('active_plugins', 'admin_email'), NULL, TRUE);
 		MMI_Debug::dump($data, 'options');
 
-		$data = MMI_Blog_WordPress::factory()->get_options(NULL, NULL, TRUE);
+		$data = $mmi_wp->get_options(NULL, NULL, TRUE);
 		MMI_Debug::dead($data, 'options');
 	}
 } // End Controller_MMI_Blog_Test_Options

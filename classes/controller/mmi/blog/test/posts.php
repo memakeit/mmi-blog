@@ -21,10 +21,24 @@ class Controller_MMI_Blog_Test_Posts extends Controller
 	 */
 	public function action_index()
 	{
-		$data = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_posts(1, TRUE);
-		MMI_Debug::dump($data, 'posts');
+		$mmi_post = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS);
 
-		$data = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_pages(array(2), TRUE);
-		MMI_Debug::dead($data, 'pages');
+		$data = $mmi_post->get_posts(1, TRUE);
+//		MMI_Debug::dump($data, 'posts');
+
+		$data = $mmi_post->get_pages(array(2), TRUE);
+//		MMI_Debug::dump($data, 'pages');
+
+		$data = $mmi_post->get_popular();
+		MMI_Debug::dump($data, 'popular');
+
+		$data = $mmi_post->get_random();
+		MMI_Debug::dump($data, 'random');
+
+		$data = $mmi_post->get_recent();
+		MMI_Debug::dump($data, 'recent');
+
+		$data = $mmi_post->get_related(1);
+		MMI_Debug::dump($data, 'related');
 	}
 } // End Controller_MMI_Blog_Test_Posts
