@@ -24,10 +24,10 @@ class Controller_MMI_Blog_Test_Posts extends Controller
 		$mmi_post = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS);
 
 		$data = $mmi_post->get_posts(1, TRUE);
-//		MMI_Debug::dump($data, 'posts');
+		MMI_Debug::dump($data, 'posts');
 
 		$data = $mmi_post->get_pages(array(2), TRUE);
-//		MMI_Debug::dump($data, 'pages');
+		MMI_Debug::dump($data, 'pages');
 
 		$data = $mmi_post->get_popular();
 		MMI_Debug::dump($data, 'popular');

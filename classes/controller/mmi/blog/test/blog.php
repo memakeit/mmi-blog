@@ -40,6 +40,6 @@ class Controller_MMI_Blog_Test_Blog extends Controller
 		MMI_Debug::dump($data, 'category guid');
 
 		$data = MMI_Blog_Term::get_tag_guid('tag shawn', 2);
-		MMI_Debug::dead($data, 'tag guid');
+		MMI_Debug::dump($data, 'tag guid');
 	}
 } // End Controller_MMI_Blog_Test_Blog

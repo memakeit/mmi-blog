@@ -24,6 +24,6 @@ class Controller_MMI_Blog_Test_Users extends Controller
 		$mmi_user = MMI_Blog_User::factory(MMI_Blog::DRIVER_WORDPRESS);
 
 		$data = $mmi_user->get_users(NULL, TRUE);
-		MMI_Debug::dead($data, 'users');
+		MMI_Debug::dump($data, 'users');
 	}
 } // End Controller_MMI_Blog_Test_Users

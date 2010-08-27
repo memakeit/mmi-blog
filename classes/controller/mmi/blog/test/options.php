@@ -27,6 +27,6 @@ class Controller_MMI_Blog_Test_Options extends Controller
 		MMI_Debug::dump($data, 'options');
 
 		$data = $mmi_wp->get_options(NULL, NULL, TRUE);
-		MMI_Debug::dead($data, 'options');
+		MMI_Debug::dump($data, 'options');
 	}
 } // End Controller_MMI_Blog_Test_Options

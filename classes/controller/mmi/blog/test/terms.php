@@ -27,6 +27,6 @@ class Controller_MMI_Blog_Test_Terms extends Controller
 		MMI_Debug::dump($data, 'categories');
 
 		$data = $mmi_term->get_tags(NULL, TRUE);
-		MMI_Debug::dead($data, 'tags');
+		MMI_Debug::dump($data, 'tags');
 	}
 } // End Controller_MMI_Blog_Test_Terms
