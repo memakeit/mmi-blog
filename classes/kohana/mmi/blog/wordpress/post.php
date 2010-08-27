@@ -54,28 +54,108 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		'meta_value'	=> 'value',
 	);
 
-	public function get_popular($max_num_items = 10, $reload_cache = NULL)
+	/**
+	 * Get popular (most frequently viewed) posts.
+	 *
+	 * @param	integer	the maximum number of popular posts to return
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_popular($max_num = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
 			$reload_cache = MMI_Blog::reload_cache();
 		}
+
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		if (count($posts) === 0)
+		{
+			return array();
+		}
+		elseif ($max_num > count($posts))
+		{
+			$max_num = count($posts);
+		}
+
+
 	}
 
-	public function get_random($max_num_items = 10, $reload_cache = NULL)
+	/**
+	 * Get random posts.
+	 *
+	 * @param	integer	the maximum number of random posts to return
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_random($max_num = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
 			$reload_cache = MMI_Blog::reload_cache();
 		}
+
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		if (count($posts) === 0)
+		{
+			return array();
+		}
+		elseif ($max_num > count($posts))
+		{
+			$max_num = count($posts);
+		}
+
+		$random = array();
+		$keys =  array_rand($posts, $max_num);
+		foreach ($keys as $key)
+		{
+			$post = $posts[$key];
+			$random[] = array
+			(
+				'guid'	=> $post->guid,
+				'title'	=> $post->title,
+			);
+		}
+		unset($posts);
+		return $random;
 	}
 
-	public function get_recent($max_num_items = 10, $reload_cache = NULL)
+	/**
+	 * Get recent posts.
+	 *
+	 * @param	integer	the maximum number of recent posts to return
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_recent($max_num = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
 			$reload_cache = MMI_Blog::reload_cache();
 		}
+
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		if (count($posts) === 0)
+		{
+			return array();
+		}
+		elseif ($max_num > count($posts))
+		{
+			$max_num = count($posts);
+		}
+
+		$recent = array();
+		foreach ($posts as $post)
+		{
+			$recent[$post->timestamp_created] = array
+			(
+				'guid'	=> $post->guid,
+				'title'	=> $post->title,
+			);
+		}
+		unset($posts);
+		krsort($recent);
+		return array_slice($recent, 0 , $max_num);
 	}
 
 	/**
@@ -86,17 +166,26 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_related($id, $max_num_items = 10, $reload_cache = NULL)
+	public function get_related($id, $max_num = 10, $reload_cache = NULL)
 	{
 		if ( ! isset($reload_cache))
 		{
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		if (count($posts) === 0)
+		{
+			return array();
+		}
+		elseif ($max_num > count($posts))
+		{
+			$max_num = count($posts) - 1;
+		}
+
 		$id = intval($id);
 		$cat_ids = array();
 		$tag_ids = array();
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
 		$temp = array();
 		foreach ($posts as $post)
 		{
@@ -134,6 +223,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				}
 			}
 		}
+		unset($posts);
 
 		if (empty($temp))
 		{
@@ -178,8 +268,9 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				'title'	=> $item['title'],
 			);
 		}
+		unset($temp);
 		krsort($related);
-		return array_values(array_slice($related, 0, $max_num_items));
+		return array_values(array_slice($related, 0, $max_num));
 	}
 
 	/**

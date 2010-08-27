@@ -12,11 +12,11 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	// Abstract methods
 	abstract public function get_archive($year, $month, $reload_cache = NULL);
 	abstract public function get_pages($ids = NULL, $reload_cache = NULL);
-	abstract public function get_popular($max_num_items = 10, $reload_cache = NULL);
+	abstract public function get_popular($max_num = 10, $reload_cache = NULL);
 	abstract public function get_posts($ids = NULL, $reload_cache = NULL);
-	abstract public function get_random($max_num_items = 10, $reload_cache = NULL);
-	abstract public function get_recent($max_num_items = 10, $reload_cache = NULL);
-	abstract public function get_related($id, $max_num_items = 10, $reload_cache = NULL);
+	abstract public function get_random($max_num = 10, $reload_cache = NULL);
+	abstract public function get_recent($max_num = 10, $reload_cache = NULL);
+	abstract public function get_related($id, $max_num = 10, $reload_cache = NULL);
 
 	// Type constants
 	const TYPE_PAGE = 'page';
