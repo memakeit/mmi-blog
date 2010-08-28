@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Blog index controller (used for the archive, category, index, and tag pages).
+ * Blog controller (used for the archive, category, index, and tag pages).
  *
  * @package		MMI Blog
  * @author		Me Make It

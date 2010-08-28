@@ -60,15 +60,14 @@ Route::set('mmi/blog/trackback', 'trackback/<year>/<month>/<slug>', array('year'
 Route::set('mmi/blog/feed', 'feed')
 ->defaults(array
 (
-	'controller'	=> 'feed',
-	'directory'		=> 'mmi/blog',
+	'controller'	=> 'index',
+	'directory'		=> 'mmi/blog/feeds',
 ));
 Route::set('mmi/blog/comments', 'comments/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
-	'action'		=> 'comments',
-	'controller'	=> 'feed',
-	'directory'		=> 'mmi/blog',
+	'controller'	=> 'comments',
+	'directory'		=> 'mmi/blog/feeds',
 ));
 
 // Test routes
