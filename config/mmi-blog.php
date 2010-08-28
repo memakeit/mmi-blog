@@ -33,9 +33,9 @@ return array
 	),
 	'titles' => array
 	(
-		'archive'	=> 'Articles for %s',
-		'category'	=> 'Articles in %s',
-		'index'		=> 'Recent Articles',
-		'tag'		=> 'Articles Tagged: %s',
+		'archive'	=> '%s',
+		'category'	=> 'Categorized \'%s\'',
+		'index'		=> '',
+		'tag'		=> 'Tagged \'%s\'',
 	),
 );
