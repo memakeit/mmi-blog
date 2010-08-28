@@ -55,7 +55,9 @@ article div.content
 {
 	display: inline;
 	float: left;
+	height: 68px;
 	margin: 5px 15px 5px 0;
+	width: 55px;
 }
 
 /*	tags
