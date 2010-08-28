@@ -23,6 +23,9 @@ class Controller_MMI_Blog_Test_Posts extends Controller
 	{
 		$mmi_post = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS);
 
+		$data = $mmi_post->get_archive_frequencies(TRUE);
+		MMI_Debug::dump($data, 'archive frequencies');
+
 		$data = $mmi_post->get_posts(1, TRUE);
 		MMI_Debug::dump($data, 'posts');
 

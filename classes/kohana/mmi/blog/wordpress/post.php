@@ -322,11 +322,15 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	public function get_archive($year, $month, $reload_cache = NULL)
 	{
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		if (count($posts) === 0)
+		{
+			return array();
+		}
+
 		$year = intval($year);
 		$month = intval($month);
-
 		$archive = array();
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
 		foreach ($posts as $post)
 		{
 			$created = $post->timestamp_created;
@@ -336,6 +340,58 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			}
 		}
 		return $archive;
+	}
+
+	/**
+	 * Get archive frequencies (the number of posts per month and year).
+	 *
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_archive_frequencies($reload_cache = NULL)
+	{
+		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		if (count($posts) === 0)
+		{
+			return array();
+		}
+
+		$archives = array();
+		foreach ($posts as $post)
+		{
+			$timestamp = $post->timestamp_created;
+			$key = date('Ym', $timestamp);
+			if (array_key_exists($key, $archives))
+			{
+				$archives[$key]['count']++;
+			}
+			else
+			{
+				$archives[$key] = array
+				(
+					'count'	=> 1,
+					'guid'	=> $post->guid,
+					'name'	=> date('F Y', $timestamp),
+				);
+			}
+		}
+		unset($posts);
+
+		$frequencies= array();
+		foreach ($archives as $slug => $archive)
+		{
+			$count = $archive['count'];
+			$key = strtolower(str_pad($count, 4, 0, STR_PAD_LEFT).'_'.$slug);
+			$frequencies[$key] = array
+			(
+				'count'	=> $count,
+				'guid'	=> $archive['guid'],
+				'name'	=> $archive['name'],
+			);
+		}
+		unset($archives);
+		krsort($frequencies);
+		return array_values($frequencies);
 	}
 
 	/**
