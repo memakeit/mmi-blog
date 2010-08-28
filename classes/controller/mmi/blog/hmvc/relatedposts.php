@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller
+class Controller_MMI_Blog_HMVC_RelatedPosts extends MMI_HMVC
 {
 	/**
 	 * @var string the blog driver
@@ -27,11 +27,6 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller
 	 */
 	public function __construct($request)
 	{
-		// Only accept internal requests
-		if ( ! $request->internal)
-		{
-			throw new Kohana_Request_Exception('Invalid external request.');
-		}
 		parent::__construct($request);
 
 		// Load parameters
