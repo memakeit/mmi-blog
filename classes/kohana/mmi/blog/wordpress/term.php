@@ -73,6 +73,17 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	}
 
 	/**
+	 * Get category frequencies.
+	 *
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_category_frequencies($reload_cache = NULL)
+	{
+		return $this->_get_term_frequencies(self::TYPE_CATEGORY, $reload_cache);
+	}
+
+	/**
 	 * Get tags. If no id is specified, all tags are returned.
 	 *
 	 * @param	mixed	id's being selected
@@ -97,33 +108,14 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	}
 
 	/**
-	 * Get terms by slug. If no slug is specified, all terms are returned.
+	 * Get tag frequencies.
 	 *
-	 * @param	mixed	slugs being selected
-	 * @param	string	term type (category | tag)
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	protected function _get_terms_by_slug($slugs = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = NULL)
+	public function get_tag_frequencies($reload_cache = NULL)
 	{
-		$matches = array();
-		$terms = $this->_get_terms(NULL, $term_type, $reload_cache);
-		if (is_array($terms) AND count($terms) > 0)
-		{
-			foreach ($terms as $term)
-			{
-				$term_slug = $term->slug;
-				if (is_string($slugs) AND $term_slug === $slugs)
-				{
-					$matches[$term_slug] = $term;
-				}
-				elseif (is_array($slugs) AND in_array($term_slug, $slugs, TRUE))
-				{
-					$matches[$term_slug] = $term;
-				}
-			}
-		}
-		return $matches;
+		return $this->_get_term_frequencies(self::TYPE_TAG, $reload_cache);
 	}
 
 	/**
@@ -232,6 +224,66 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 			}
 		}
 		return $this->_extract_results($terms, $ids, FALSE);
+	}
+
+	/**
+	 * Get terms by slug. If no slug is specified, all terms are returned.
+	 *
+	 * @param	mixed	slugs being selected
+	 * @param	string	term type (category | tag)
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	protected function _get_terms_by_slug($slugs = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = NULL)
+	{
+		$matches = array();
+		$terms = $this->_get_terms(NULL, $term_type, $reload_cache);
+		if (is_array($terms) AND count($terms) > 0)
+		{
+			foreach ($terms as $term)
+			{
+				$term_slug = $term->slug;
+				if (is_string($slugs) AND $term_slug === $slugs)
+				{
+					$matches[$term_slug] = $term;
+				}
+				elseif (is_array($slugs) AND in_array($term_slug, $slugs, TRUE))
+				{
+					$matches[$term_slug] = $term;
+				}
+			}
+		}
+		return $matches;
+	}
+
+	/**
+	 * Get term frequencies.
+	 *
+	 * @param	string	term type (category | tag)
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	protected function _get_term_frequencies($type= self::TYPE_CATEGORY, $reload_cache = NULL)
+	{
+		$terms = $this->_get_terms(NULL, $type, $reload_cache);
+		$frequencies = array();
+		foreach ($terms as $term)
+		{
+			$count = count($term->post_ids);
+			if ($count > 0)
+			{
+				$slug = $term->slug;
+				$key = strtolower(str_pad($count, 4, 0, STR_PAD_LEFT).'_'.$slug);
+				$frequencies[$key] = array
+				(
+					'count'	=> $count,
+					'guid'	=> $term->guid,
+					'name'	=> $term->name,
+				);
+			}
+		}
+		krsort($frequencies);
+		return array_values($frequencies);
 	}
 
 	/**
