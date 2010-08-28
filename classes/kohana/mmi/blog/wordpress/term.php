@@ -73,7 +73,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	}
 
 	/**
-	 * Get category frequencies.
+	 * Get category frequencies (the number of posts per category).
 	 *
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -108,7 +108,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	}
 
 	/**
-	 * Get tag frequencies.
+	 * Get tag frequencies (the number of posts per tag).
 	 *
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -236,28 +236,30 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	 */
 	protected function _get_terms_by_slug($slugs = NULL, $term_type = self::TYPE_CATEGORY, $reload_cache = NULL)
 	{
-		$matches = array();
 		$terms = $this->_get_terms(NULL, $term_type, $reload_cache);
-		if (is_array($terms) AND count($terms) > 0)
+		if (count($terms) === 0)
 		{
-			foreach ($terms as $term)
+			return array();
+		}
+
+		$matches = array();
+		foreach ($terms as $term)
+		{
+			$term_slug = $term->slug;
+			if (is_string($slugs) AND $term_slug === $slugs)
 			{
-				$term_slug = $term->slug;
-				if (is_string($slugs) AND $term_slug === $slugs)
-				{
-					$matches[$term_slug] = $term;
-				}
-				elseif (is_array($slugs) AND in_array($term_slug, $slugs, TRUE))
-				{
-					$matches[$term_slug] = $term;
-				}
+				$matches[$term_slug] = $term;
+			}
+			elseif (is_array($slugs) AND in_array($term_slug, $slugs, TRUE))
+			{
+				$matches[$term_slug] = $term;
 			}
 		}
 		return $matches;
 	}
 
 	/**
-	 * Get term frequencies.
+	 * Get term frequencies (the number of posts per term).
 	 *
 	 * @param	string	term type (category | tag)
 	 * @param	mixed	reload cache from database?
@@ -266,6 +268,11 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	protected function _get_term_frequencies($type= self::TYPE_CATEGORY, $reload_cache = NULL)
 	{
 		$terms = $this->_get_terms(NULL, $type, $reload_cache);
+		if (count($terms) === 0)
+		{
+			return array();
+		}
+
 		$frequencies = array();
 		foreach ($terms as $term)
 		{
