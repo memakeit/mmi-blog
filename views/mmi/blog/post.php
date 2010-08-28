@@ -113,7 +113,7 @@ if (count($post) > 0)
 			$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
 		}
 		$output[] = implode(', ', $temp);
-		$output[]
+		$output[] = '</p>';
 	}
 
 	// End content
