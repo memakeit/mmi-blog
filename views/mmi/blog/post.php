@@ -70,25 +70,7 @@ if (count($post) > 0)
 	// End header
 	$output[] = '</header>';
 
-//	// Figure
-//	$output[] = '<figure>';
-//	if (empty($img))
-//	{
-//		$output[] = '<img src="'.URL::site('media/img/icons/48px/Picture.png').'" alt="'.$post_title.'">';
-//	}
-//	else
-//	{
-//		$output[] = $img;
-//	}
-//	$output[] = '</figure>';
-
-
-
-	// Content
-//	if ( ! empty($excerpt))
-//	{
-//		$body = '<p>'.$excerpt.'</p>'.$body;
-//	}
+	// Begin content
 	$output[] = '<div class="content">';
 	if ( ! empty($post_content))
 	{
@@ -118,9 +100,24 @@ if (count($post) > 0)
 		}
 		$output[] = $post_content;
 	}
-	$output[] = '</div>';
 
 	// Tags
+	if (count($tags) > 0)
+	{
+		$output[] = '<p id="tags">';
+		$output[] = '<strong>Tags:</strong>';
+		$temp = array();
+		foreach ($tags as $tag)
+		{
+			$tag_name = $tag->name;
+			$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+		}
+		$output[] = implode(', ', $temp);
+		$output[]
+	}
+
+	// End content
+	$output[] = '</div>';
 
 	// End article
 	$output[] = '</article>';
@@ -154,7 +151,7 @@ if (count($post) > 0)
 	{
 		$output[] = $trackbacks;
 	}
-//
+
 //	// Comment form
 //	if ( ! empty($comment_form))
 //	{

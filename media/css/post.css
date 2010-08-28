@@ -28,11 +28,6 @@ article header a
 	font-size: 1.143em; /* 16px */
 }
 
-article div.content
-{
-	margin-bottom: 40px;
-}
-
 #comment_ct
 {
 	background: url('../../img/icons/24px/Discuss.png') no-repeat 100% 0;
@@ -51,12 +46,34 @@ div.mini
 
 /*	content
  ******************************************************************************/
+article div.content
+{
+	margin-bottom: 40px;
+}
+
 .tweet
 {
 	display: inline;
 	float: left;
 	margin: 5px 15px 5px 0;
 }
+
+/*	tags
+ ******************************************************************************/
+#tags
+{
+	margin-top: 20px;
+}
+
+#tags a
+{
+	font-size: 1.143em; /* 16px */
+}
+
+
+
+
+
 
 
 
