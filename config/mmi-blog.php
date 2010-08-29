@@ -33,16 +33,16 @@ return array
 	),
 	'headers' => array
 	(
-		'archive'	=> '%s',
-		'category'	=> 'Categorized \'%s\'',
+		'archive'	=> 'Articles for %s',
+		'category'	=> '%s Articles',
 		'index'		=> '',
-		'tag'		=> 'Tagged \'%s\'',
+		'tag'		=> '%s Articles',
 	),
 	'titles' => array
 	(
 		'archive'	=> 'Articles for %s',
-		'category'	=> 'Articles Categorized \'%s\'',
+		'category'	=> '%s Articles',
 		'index'		=> 'Recent Articles',
-		'tag'		=> 'Articles Tagged \'%s\'',
+		'tag'		=> '%s Articles',
 	),
 );
