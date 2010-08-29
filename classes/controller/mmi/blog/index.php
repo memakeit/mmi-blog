@@ -20,7 +20,12 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	protected $_driver;
 
 	/**
-	 * @var array the blog title settings
+	 * @var array the blog page header settings
+	 **/
+	protected $_headers_config;
+
+	/**
+	 * @var array the blog HTML title settings
 	 **/
 	protected $_titles_config;
 
@@ -37,6 +42,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		MMI_Util::load_module('pagination', MODPATH.'pagination');
 		$config = MMI_Blog::get_config();
 		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
+		$this->_headers_config = $config->get('headers', array());
 		$this->_titles_config = $config->get('titles', array());
 	}
 
@@ -49,6 +55,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	{
 		$request = $this->request;
 		$page = $request->param('page', 1);
+		$header = Arr::get($this->_headers_config, 'index', '');
 		$title = Arr::get($this->_titles_config, 'index', 'Recent Articles');
 
 		// Get the data
@@ -61,7 +68,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title);
+		$this->_process_posts($posts, $title, $header);
 	}
 
 	/**
@@ -77,6 +84,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$year = $request->param('year');
 		$timestamp = mktime(0, 0, 0, $month, 1, $year);
 		$slug = gmdate('Ym', $timestamp);
+		$header = sprintf(Arr::get($this->_headers_config, 'archive', '%s'), date('F Y', $timestamp));
 		$title = sprintf(Arr::get($this->_titles_config, 'archive', 'Articles for %s'), date('F Y', $timestamp));
 
 		// Get the data
@@ -94,7 +102,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title);
+		$this->_process_posts($posts, $title, $header);
 	}
 
 	/**
@@ -107,7 +115,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$request = $this->request;
 		$page = $request->param('page', 1);
 		$slug = $request->param('slug');
-		$title = sprintf(Arr::get($this->_titles_config, 'category', 'Articles in %s'), ucwords($slug));
+		$header= sprintf(Arr::get($this->_headers_config, 'category', 'Categorized \'%s\''), ucwords($slug));
+		$title = sprintf(Arr::get($this->_titles_config, 'category', 'Articles Categorized \'%s\''), ucwords($slug));
 
 		// Get the data
 		$data = MMI_Blog_Term::factory($this->_driver)->get_categories_by_slug($slug);
@@ -116,7 +125,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		{
 			$data = $data[$slug];
 			$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($data->post_ids);
-			$title = sprintf(Arr::get($this->_titles_config, 'category', 'Articles in %s'), $data->name);
+			$header= sprintf(Arr::get($this->_headers_config, 'category', 'Categorized \'%s\''), $data->name);
+			$title = sprintf(Arr::get($this->_titles_config, 'category', 'Articles Categorized \'%s\''), $data->name);
 		}
 
 		// Set the nav type
@@ -126,7 +136,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title);
+		$this->_process_posts($posts, $title, $header);
 	}
 
 	/**
@@ -139,7 +149,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$request = $this->request;
 		$page = $request->param('page', 1);
 		$slug = $request->param('slug');
-		$title = sprintf(Arr::get($this->_titles_config, 'tag', 'Articles Tagged: %s'), ucwords($slug));
+		$header = sprintf(Arr::get($this->_headers_config, 'tag', 'Tagged \'%s\''), ucwords($slug));
+		$title = sprintf(Arr::get($this->_titles_config, 'tag', 'Articles Tagged \'%s\''), ucwords($slug));
 
 		// Get the data
 		$data = MMI_Blog_Term::factory($this->_driver)->get_tags_by_slug($slug);
@@ -148,7 +159,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		{
 			$data = $data[$slug];
 			$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($data->post_ids);
-			$title = sprintf(Arr::get($this->_titles_config, 'tag', 'Articles Tagged: %s'), $data->name);
+			$header = sprintf(Arr::get($this->_headers_config, 'tag', 'Tagged \'%s\''), $data->name);
+			$title = sprintf(Arr::get($this->_titles_config, 'tag', 'Articles Tagged \'%s\''), $data->name);
 		}
 
 		// Set the nav type
@@ -158,17 +170,18 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title);
+		$this->_process_posts($posts, $title, $header);
 	}
 
 	/**
 	 * Create and add the index view.
 	 *
 	 * @param	array	an array of MMI_Post objects
-	 * @param	string	the page title
+	 * @param	string	the HTML page title
+	 * @param	string	the page header
 	 * @return	void
 	 */
-	protected function _process_posts($posts, $title)
+	protected function _process_posts($posts, $title, $header)
 	{
 		$this->_title = $title;
 
@@ -181,9 +194,9 @@ class Controller_MMI_Blog_Index extends MMI_Template
 
 		// Configure and add the view
 		$view = View::factory('mmi/blog/index')
+			->set('header', $header)
 			->set('pagination', $pagination->render())
 			->set('posts', $posts)
-			->set('title', $title)
 		;
 		$this->add_view('blog_all', self::LAYOUT_ID, 'content', $view);
 	}

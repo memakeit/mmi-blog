@@ -3,9 +3,9 @@
 // mmi/blog/index
 
 $output = array();
-if ( ! empty($title))
+if ( ! empty($header))
 {
-	$output[] = '<header><h1>'.HTML::chars($title, FALSE).'</h1></header>';
+	$output[] = '<header><h1>'.HTML::chars($header, FALSE).'</h1></header>';
 }
 
 if (count($posts) === 0)

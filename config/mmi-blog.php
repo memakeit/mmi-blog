@@ -31,11 +31,18 @@ return array
 		'user'				=> TRUE,
 		'user_meta'			=> FALSE,
 	),
-	'titles' => array
+	'headers' => array
 	(
 		'archive'	=> '%s',
 		'category'	=> 'Categorized \'%s\'',
 		'index'		=> '',
 		'tag'		=> 'Tagged \'%s\'',
+	),
+	'titles' => array
+	(
+		'archive'	=> 'Articles for %s',
+		'category'	=> 'Articles Categorized \'%s\'',
+		'index'		=> 'Recent Articles',
+		'tag'		=> 'Articles Tagged \'%s\'',
 	),
 );
