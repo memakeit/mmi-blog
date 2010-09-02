@@ -16,7 +16,7 @@ if ( ! empty($feed_url))
 }
 else
 {
-	$output[] =  $header;
+	$output[] = $header;
 }
 $output[] = '</header>';
 

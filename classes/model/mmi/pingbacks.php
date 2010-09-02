@@ -38,7 +38,7 @@ class Model_MMI_Pingbacks extends Jelly_Model
 				(
 					'choices' => array
 					(
-						'pingback'  => 'pingback',
+						'pingback' => 'pingback',
 						'trackback' => 'trackback',
 					),
 					'default' => 'pingback',

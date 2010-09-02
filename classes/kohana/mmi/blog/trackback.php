@@ -12,7 +12,7 @@ class Kohana_MMI_Blog_Trackback
 	/**
 	 * Create a trackback instance.
 	 *
-	 * @return  MMI_Blog_Trackback
+	 * @return	MMI_Blog_Trackback
 	 */
 	public static function factory()
 	{

@@ -28,7 +28,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 	/**
 	 * Create a WordPress instance.
 	 *
-	 * @return  MMI_Blog_WordPress
+	 * @return	MMI_Blog_WordPress
 	 */
 	public static function factory()
 	{

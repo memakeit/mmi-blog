@@ -145,7 +145,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		}
 
 		$random = array();
-		$keys =  array_rand($posts, $max_num);
+		$keys = array_rand($posts, $max_num);
 		foreach ($keys as $key)
 		{
 			$post = $posts[$key];

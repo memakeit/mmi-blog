@@ -12,7 +12,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Create a pingback instance.
 	 *
-	 * @return  MMI_Blog_Pingback
+	 * @return	MMI_Blog_Pingback
 	 */
 	public static function factory()
 	{
