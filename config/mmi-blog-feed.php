@@ -35,6 +35,11 @@ return array
 			'type'		=> 'html',
 		),
 		'subtitle' => 'building websites so you don\'t have to',
+		'summary' => array
+		(
+			'enabled'			=> FALSE,
+			'num_paragraphs'	=> 3,
+		),
 		'title' => 'Me Make It',
 	),
 	'post-comments' => array

@@ -12,7 +12,7 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 	/**
 	 * @var boolean turn debugging on?
 	 **/
-	public $debug = FALSE;
+	public $debug = TRUE;
 
 	/**
 	 * @var array an associative array of feed defaults
@@ -146,14 +146,26 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 		$author = $post->author;
 		$content = Text::auto_p($post->content);
 		$email = $this->_include_emails ? $author->email : '';
-		$summary = MMI_Blog_Post::get_first_paragraph($content);
-		$summary = $summary[0];
 		$entry
 			->add_author($author->name, $author->url, $email)
 			->add_link($guid, array('rel' => 'alternate', 'type' => File::mime_by_ext('html')))
-			->content(array('_value' => $content, 'type' => 'html'))
-			->summary(array('_value' => $summary, 'type' => 'html'))
 		;
+
+		$summary_config = Arr::get($this->_defaults, 'summary', array());
+		if (Arr::get($summary_config, 'enabled', FALSE))
+		{
+			$temp = MMI_Blog_Post::get_beginning_paragraphs($content, Arr::get($summary_config, 'num_paragraphs', 3));
+			$summary = array();
+			foreach ($temp as $item)
+			{
+				$summary[] = $item['html'];
+			}
+			$entry->summary(array('_value' => implode(PHP_EOL, $summary), 'type' => 'html'));
+		}
+		else
+		{
+			$entry->content(array('_value' => $content, 'type' => 'html'));
+		}
 
 		$comment_count = $post->comment_count;
 		$url = Route::get('mmi/blog/feed/comment')->uri(array
