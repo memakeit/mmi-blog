@@ -24,9 +24,9 @@ class Kohana_MMI_Blog
 	protected static $_config;
 
 	/**
-	 * @var Kohana_Config the blog index settings
+	 * @var Kohana_Config the blog feed settings
 	 **/
-	protected static $_index_config;
+	protected static $_feed_config;
 
 	/**
 	 * @var Kohana_Config the blog post settings
@@ -115,6 +115,23 @@ class Kohana_MMI_Blog
 	{
 		(self::$_config === NULL) AND self::$_config = Kohana::config('mmi-blog');
 		$config = self::$_config;
+		if ($as_array)
+		{
+			$config = $config->as_array();
+		}
+		return $config;
+	}
+
+	/**
+	 * Get the feed configuration settings.
+	 *
+	 * @param	boolean	return the configuration as an array?
+	 * @return	mixed
+	 */
+	public static function get_feed_config($as_array = FALSE)
+	{
+		(self::$_feed_config === NULL) AND self::$_feed_config = Kohana::config('mmi-blog-feed');
+		$config = self::$_feed_config;
 		if ($as_array)
 		{
 			$config = $config->as_array();
