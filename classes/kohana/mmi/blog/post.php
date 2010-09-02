@@ -235,23 +235,24 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 		$content = str_replace(array("\n", "\r"), '', $content);
 
 		// Extract the first paragraph
-		$find = '';
+		$inner = '';
 		$first_paragraph = self::get_beginning_paragraphs($content, 1);
-		if ( ! empty($first_paragraph))
+		if (is_array($first_paragraph))
 		{
-			$find = $first_paragraph[0];
-			$first_paragraph = $first_paragraph[1];
+			$first_paragraph = $first_paragraph[0];
+			$html = $first_paragraph['html'];
+			$inner = $first_paragraph['inner'];
 		}
 
-		if ( ! empty($first_paragraph))
+		if ( ! empty($inner))
 		{
 			// Check for an initial image
 			$img_parts;
-			if (stripos($first_paragraph, '<img ') === 0)
+			if (stripos($inner, '<img ') === 0)
 			{
-				$img = $first_paragraph;
+				$img = $inner;
 			}
-			elseif (preg_match('/<a[^>]*><img[^>](.*?)\/><\/a>/i', $first_paragraph, $img_parts) === 1)
+			elseif (preg_match('/<a[^>]*><img[^>](.*?)\/><\/a>/i', $inner, $img_parts) === 1)
 			{
 				$img = $img_parts[0];
 			}
@@ -259,24 +260,26 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			if ( ! empty($img))
 			{
 				// Remove the initial image from the content
-				$content = str_ireplace($find, '', $content);
+				$content = str_ireplace($html, '', $content);
 
 				// Extract the first paragraph
+				$inner = '';
 				$first_paragraph = self::get_beginning_paragraphs($content, 1);
-				if ( ! empty($first_paragraph))
+				if (is_array($first_paragraph))
 				{
-					$find = $first_paragraph[0];
-					$first_paragraph = $first_paragraph[1];
+					$first_paragraph = $first_paragraph[0];
+					$html = $first_paragraph['html'];
+					$inner = $first_paragraph['inner'];
 				}
 			}
 		}
 
 		// Set the excerpt
-		if (empty($excerpt) AND ! empty($first_paragraph))
+		if (empty($excerpt) AND ! empty($inner))
 		{
 			// Remove the excerpt from the content
-			$content = str_ireplace($find, '', $content);
-			$excerpt = $first_paragraph;
+			$content = str_ireplace($html, '', $content);
+			$excerpt = $inner;
 		}
 		$body = $content;
 	}
@@ -296,15 +299,15 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 		{
 			$beginning_paragraphs = array();
 			$matches_html = $matches[0];
-			$matches_text = $matches[1];
+			$matches_inner = $matches[1];
 			$i = 0;
 			foreach ($matches_html as $idx => $html)
 			{
-				$text = $matches_text[$idx];
+				$inner = $matches_inner[$idx];
 				$beginning_paragraphs[] = array
 				(
 					'html'	=> $html,
-					'text'	=> $text,
+					'inner'	=> $inner
 				);
 				if (++$i === $num_paragraphs)
 				{
@@ -330,15 +333,15 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 		{
 			$ending_paragraphs = array();
 			$matches_html = array_reverse($matches[0]);
-			$matches_text = array_reverse($matches[1]);
+			$matches_inner = array_reverse($matches[1]);
 			$i = 0;
 			foreach ($matches_html as $idx => $html)
 			{
-				$text = $matches_text[$idx];
+				$inner = $matches_inner[$idx];
 				$ending_paragraphs[] = array
 				(
 					'html'	=> $html,
-					'text'	=> $text,
+					'inner'	=> $inner,
 				);
 				if (++$i === $num_paragraphs)
 				{

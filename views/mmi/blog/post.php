@@ -77,7 +77,7 @@ if (count($post) > 0)
 		if (is_bool($insert_retweet) AND $insert_retweet)
 		{
 			$last_paragraph = MMI_Blog_Post::get_ending_paragraphs($post_content, 1);
-			if ( ! empty($last_paragraph))
+			if (is_array($last_paragraph))
 			{
 				// Insert retweet
 				$route = Route::get('mmi/social/hmvc')->uri(array
@@ -92,8 +92,9 @@ if (count($post) > 0)
 					'url'	=> $post_guid,
 				);
 
-				$html = $last_paragraph[0];
-				$inner = $last_paragraph[1];
+				$last_paragraph = $last_paragraph[0];
+				$html = $last_paragraph['html'];
+				$inner = $last_paragraph['inner'];
 				$retweet = $retweet->execute()->response;
 				$post_content = str_replace($html, '', $post_content).'<div>'.$retweet.$inner.'</div>';
 			}
