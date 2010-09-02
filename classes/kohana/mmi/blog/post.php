@@ -236,7 +236,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 
 		// Extract the first paragraph
 		$find = '';
-		$first_paragraph = self::get_first_paragraph($content);
+		$first_paragraph = self::get_beginning_paragraphs($content, 1);
 		if ( ! empty($first_paragraph))
 		{
 			$find = $first_paragraph[0];
@@ -262,7 +262,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 				$content = str_ireplace($find, '', $content);
 
 				// Extract the first paragraph
-				$first_paragraph = self::get_first_paragraph($content);
+				$first_paragraph = self::get_beginning_paragraphs($content, 1);
 				if ( ! empty($first_paragraph))
 				{
 					$find = $first_paragraph[0];
@@ -282,48 +282,71 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	}
 
 	/**
-	 * Extract the first paragraph from a post's content.
+	 * Extract one or more beginning paragraphs from a post's content.
 	 *
 	 * @param	string	the post content
-	 * @return	string
+	 * @param	integer	the number of paragraphs to extract
+	 * @return	mixed
 	 */
-	public static function get_first_paragraph($content)
+	public static function get_beginning_paragraphs($content, $num_paragraphs = 1)
 	{
 		$content = str_replace(array("\n", "\r"), '', $content);
-		$first_paragraph = NULL;
-		if (preg_match('/<p[^>]*>(.*?)<\/p>/i', $content, $first_paragraph) === 0)
+		$beginning_paragraphs = NULL;
+		if (preg_match_all('/<p[^>]*>(.*?)<\/p>/i', $content, $matches))
 		{
-			$first_paragraph = NULL;
+			$beginning_paragraphs = array();
+			$matches_html = $matches[0];
+			$matches_text = $matches[1];
+			$i = 0;
+			foreach ($matches_html as $idx => $html)
+			{
+				$text = $matches_text[$idx];
+				$beginning_paragraphs[] = array
+				(
+					'html'	=> $html,
+					'text'	=> $text,
+				);
+				if (++$i === $num_paragraphs)
+				{
+					break;
+				}
+			}
 		}
-		return $first_paragraph;
+		return $beginning_paragraphs;
 	}
 
 	/**
-	 * Extract the last paragraph from a post's content.
+	 * Extract one or more ending paragraphs from a post's content.
 	 *
 	 * @param	string	the post content
-	 * @return	string
+	 * @param	integer	the number of paragraphs to extract
+	 * @return	mixed
 	 */
-	public static function get_last_paragraph($content)
+	public static function get_ending_paragraphs($content, $num_paragraphs = 1)
 	{
 		$content = str_replace(array("\n", "\r"), '', $content);
-		$last_paragraph = NULL;
-		$matches;
-		$num_matches = preg_match_all('/<p[^>]*>(.*?)<\/p>/i', $content, $matches);
-		if ($num_matches > 0)
+		$ending_paragraphs = NULL;
+		if (preg_match_all('/<p[^>]*>(.*?)<\/p>/i', $content, $matches))
 		{
-			$idx = $num_matches - 1;
-			$last_paragraph = array
-			(
-				$matches[0][$idx],
-				$matches[1][$idx]
-			);
+			$ending_paragraphs = array();
+			$matches_html = array_reverse($matches[0]);
+			$matches_text = array_reverse($matches[1]);
+			$i = 0;
+			foreach ($matches_html as $idx => $html)
+			{
+				$text = $matches_text[$idx];
+				$ending_paragraphs[] = array
+				(
+					'html'	=> $html,
+					'text'	=> $text,
+				);
+				if (++$i === $num_paragraphs)
+				{
+					break;
+				}
+			}
 		}
-		else
-		{
-			$last_paragraph = NULL;
-		}
-		return $last_paragraph;
+		return $ending_paragraphs;
 	}
 
 	/**

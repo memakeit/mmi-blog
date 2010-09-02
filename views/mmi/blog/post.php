@@ -76,7 +76,7 @@ if (count($post) > 0)
 	{
 		if (is_bool($insert_retweet) AND $insert_retweet)
 		{
-			$last_paragraph = MMI_Blog_Post::get_last_paragraph($post_content);
+			$last_paragraph = MMI_Blog_Post::get_ending_paragraphs($post_content, 1);
 			if ( ! empty($last_paragraph))
 			{
 				// Insert retweet
