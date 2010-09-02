@@ -190,7 +190,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('mmi/blog/comments')->uri($parms);
+		$url = Route::get('mmi/blog/feed/comment')->uri($parms);
 		return $url = URL::site($url, $absolute);
 	}
 
