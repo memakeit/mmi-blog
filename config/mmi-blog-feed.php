@@ -44,5 +44,12 @@ return array
 	),
 	'post-comments' => array
 	(
+		'_entry_title' => 'Comment by %s',
+		'base' => URL::base(FALSE, TRUE),
+		'namespaces' => array
+		(
+			'thr' => 'http://purl.org/syndication/thread/1.0',
+		),
+		'title' => 'Comments for %s',
 	),
 );
