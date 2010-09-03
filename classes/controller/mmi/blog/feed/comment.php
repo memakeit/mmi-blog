@@ -217,7 +217,7 @@ class Controller_MMI_Blog_Feed_Comment extends Controller_MMI_Blog_Feed_Atom
 		$entry
 			->add_author($author, $comment->author_url)
 			->add_link($guid, array('rel' => 'alternate', 'type' => File::mime_by_ext('html')))
-			->content($content)
+			->content(array('_value' => $content, 'type' => 'html'))
 		;
 
 		// Optional elements

@@ -42,7 +42,6 @@ return array
 			'_value'	=> '&copy; %d Me Make It',
 			'type'		=> 'html',
 		),
-		'subtitle' => 'building websites so you don\'t have to',
 		'summary' => array
 		(
 			'enabled'			=> FALSE,

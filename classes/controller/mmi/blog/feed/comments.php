@@ -54,7 +54,6 @@ class Controller_MMI_Blog_Feed_Comments extends Controller_MMI_Blog_Feed_Atom
 	public function action_index()
 	{
 		$num_entries = Arr::get($this->_defaults, '_num_entries', 10);
-MMI_Debug::dump($this->_include_trackbacks, '_include_trackbacks');
 		$comments = MMI_Blog_Comment::factory($this->_driver)->get_recent($this->_include_trackbacks, $num_entries, TRUE);
 
 		$this->_configure_feed();
@@ -165,7 +164,7 @@ MMI_Debug::dump($this->_include_trackbacks, '_include_trackbacks');
 		$entry
 			->add_author($author, $comment->author_url)
 			->add_link($guid, array('rel' => 'alternate', 'type' => File::mime_by_ext('html')))
-			->content($content)
+			->content(array('_value' => $content, 'type' => 'html'))
 		;
 
 		// Optional elements

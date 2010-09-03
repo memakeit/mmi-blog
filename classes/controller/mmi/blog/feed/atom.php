@@ -12,7 +12,7 @@ abstract class Controller_MMI_Blog_Feed_Atom extends Controller
 	/**
 	 * @var boolean turn debugging on?
 	 **/
-	public $debug = TRUE;
+	public $debug = FALSE;
 
 	/**
 	 * @var MMI_Atom_Feed the feed object
