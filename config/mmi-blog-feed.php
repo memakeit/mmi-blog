@@ -3,18 +3,26 @@
 // MMI blog feed configuration
 return array
 (
+	'_include_emails' => FALSE,
+	'_include_trackbacks' => FALSE,
 	'comments' => array
 	(
-		'subtitle'			=> '',
-		'title'				=> 'Me Make It Comments',
+		'_entry_title' => 'Comment by %s',
+		'_num_entries' => 10,
+		'base' => URL::base(FALSE, TRUE),
+		'namespaces' => array
+		(
+			'thr' => 'http://purl.org/syndication/thread/1.0',
+		),
+		'title' => 'Recent Comments',
 	),
-	'include_emails' => FALSE,
 	'index' => array
 	(
+		'_num_entries' => 10,
 		'base' => URL::base(FALSE, TRUE),
 		'links' => array
 		(
-			Route::get('mmi/blog/feed/index')->uri() => array
+			Route::url('mmi/blog/feed/index', NULL, TRUE) => array
 			(
 				'rel'	=> 'self',
 				'type'	=> File::mime_by_ext('atom'),
@@ -40,7 +48,7 @@ return array
 			'enabled'			=> FALSE,
 			'num_paragraphs'	=> 3,
 		),
-		'title' => 'Me Make It',
+		'title' => 'Recent Articles',
 	),
 	'post-comments' => array
 	(
