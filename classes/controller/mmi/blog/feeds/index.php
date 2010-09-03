@@ -132,17 +132,17 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 	 */
 	protected function _add_entry(MMI_Blog_Post $post)
 	{
-		// Required
+		// Required elements
 		$guid = $post->guid;
 		$published = $post->timestamp_created;
 		$id = MMI_Atom_Entry::create_id($guid, $published);
 		$entry = MMI_Atom_Entry::factory()
 			->id($id)
 			->title($post->title)
-			->updated($post->timestamp_created)
+			->updated($post->timestamp_updated)
 		;
 
-		// Recommended
+		// Recommended elements
 		$author = $post->author;
 		$content = Text::auto_p($post->content);
 		$email = $this->_include_emails ? $author->email : '';
@@ -189,7 +189,7 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 			))
 		;
 
-		// Optional
+		// Optional elements
 		$categories = $post->categories;
 		$scheme = URL::base(FALSE, TRUE);
 		foreach ($categories as $category)
@@ -203,7 +203,7 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 			$entry->rights($rights);
 		}
 
-		// Other
+		// Other elements
 		$entry->add_element('thr:total', $comment_count);
 		$this->_feed->add_entry($entry);
 	}
