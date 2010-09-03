@@ -51,6 +51,39 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	);
 
 	/**
+	 * Get recent comments.
+	 *
+	 * @param	boolean	include trackbacks?
+	 * @param	integer	the maximum number of comments to return
+	 * @param	boolean	reload cache from database?
+	 * @return	array
+	 */
+	public function get_recent($include_trackbacks = FALSE, $max_num = 10, $reload_cache = FALSE)
+	{
+		$driver = self::$_driver;
+		$config = MMI_Blog::get_config()->get('features', array());
+		$load_gravatar = Arr::get($config, 'comment_gravatar', FALSE);
+		$load_meta = Arr::get($config, 'comment_meta', FALSE);
+
+		$comments = array();
+		$data = Model_WP_Comments::recent_comments($include_trackbacks, self::$_db_mappings, TRUE, $max_num);;
+		foreach ($data as $id => $fields)
+		{
+			$comments[] = self::factory($driver)->_load($fields, $load_meta);
+			$comments[$id]->driver = $driver;
+		}
+		if ($load_gravatar)
+		{
+			self::_load_gravatars($comments);
+		}
+		if ($load_meta)
+		{
+			self::_load_meta($comments);
+		}
+		return $comments;
+	}
+
+	/**
 	 * Get comments. If no post id is specified, all comments are returned.
 	 *
 	 * @param	mixed	post id's being selected
