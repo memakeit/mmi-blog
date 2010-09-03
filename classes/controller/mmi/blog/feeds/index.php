@@ -61,9 +61,12 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 	{
 		$posts = MMI_Blog_Post::factory($this->_driver)->get_posts(NULL, TRUE);
 		$this->_configure_feed();
-		foreach ($posts as $post)
+		if (is_array($posts) AND count($posts) > 0)
 		{
-			$this->_add_entry($post);
+			foreach ($posts as $post)
+			{
+				$this->_add_entry($post);
+			}
 		}
 	}
 
