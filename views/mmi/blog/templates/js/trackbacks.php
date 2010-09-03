@@ -3,6 +3,6 @@
 // mmi/blog/templates/js/trackbacks
 
 ?>
-<li>
+<li id="comment-${id}">
 	<a href="${author_url}" rel="external nofollow" >${author}</a>
 </li>

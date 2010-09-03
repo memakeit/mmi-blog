@@ -19,7 +19,7 @@ if (is_array($trackbacks) AND count($trackbacks) > 0)
 	$output[] = '<ol class="alpha omega push_1 grid_7">';
 	foreach ($trackbacks as $trackback)
 	{
-		$output[] = '<li>';
+		$output[] = '<li id="comment-'.$trackback->id.'">';
 		$output[] = HTML::anchor($trackback->author_url, $trackback->author, array('rel' => 'external nofollow'));
 		$output[] = '</li>';
 	}
