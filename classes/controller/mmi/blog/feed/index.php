@@ -38,7 +38,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 
 		$config = MMI_Blog::get_feed_config();
 		$this->_defaults = $config->get('index', array());
-		$this->_include_emails = $config->get('include_emails', FALSE);
+		$this->_include_emails = $config->get('_include_emails', FALSE);
 	}
 
 	/**
@@ -160,12 +160,12 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 		}
 
 		$comment_count = $post->comment_count;
-		$url = Route::get('mmi/blog/feed/comment')->uri(array
+		$url = Route::url('mmi/blog/feed/comment', array
 		(
 			'year'	=> date('Y', $published),
 			'month'	=> date('m', $published),
 			'slug'	=> $guid,
-		));
+		), TRUE);
 		$entry
 			->add_link($url, array
 			(
@@ -183,11 +183,19 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 
 		// Optional elements
 		$categories = $post->categories;
-		$scheme = URL::base(FALSE, TRUE);
+		$scheme = Route::url('mmi/blog/category', array('slug' => ''), TRUE);
 		foreach ($categories as $category)
 		{
 			$entry->add_category($category->slug, $scheme, $category->name);
 		}
+
+		$tags = $post->tags;
+		$scheme = Route::url('mmi/blog/tag', array('slug' => ''), TRUE);
+		foreach ($tags as $tag)
+		{
+			$entry->add_category($tag->slug, $scheme, $tag->name);
+		}
+
 		$entry->published($published);
 		$rights = Arr::get($this->_defaults, 'rights');
 		if ( ! empty($rights))
