@@ -56,6 +56,7 @@ Route::set('mmi/blog/trackback', 'blog/<year>/<month>/<slug>/trackback', array('
 	'directory'		=> 'mmi/blog',
 ));
 
+// Feed routes
 Route::set('mmi/blog/feed/index', 'feed')
 ->defaults(array
 (
