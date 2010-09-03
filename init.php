@@ -35,6 +35,12 @@ Route::set('mmi/blog/category', 'category/<slug>(/<page>)', array('slug' => '[a-
 	'controller' 	=> 'index',
 	'directory'		=> 'mmi/blog',
 ));
+Route::set('mmi/blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+->defaults(array
+(
+	'controller' 	=> 'post',
+	'directory'		=> 'mmi/blog',
+));
 Route::set('mmi/blog/tag', 'tag/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]+', 'page' => '\d+'))
 ->defaults(array
 (
@@ -43,14 +49,7 @@ Route::set('mmi/blog/tag', 'tag/<slug>(/<page>)', array('slug' => '[a-zA-Z0-9\-]
 	'directory'		=> 'mmi/blog',
 ));
 
-Route::set('mmi/blog/post', 'blog/<year>/<month>/<slug>', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
-->defaults(array
-(
-	'controller' 	=> 'post',
-	'directory'		=> 'mmi/blog',
-));
-
-Route::set('mmi/blog/trackback', '<year>/<month>/<slug>/trackback', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('mmi/blog/trackback', 'blog/<year>/<month>/<slug>/trackback', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
 	'controller'	=> 'trackback',
@@ -63,10 +62,16 @@ Route::set('mmi/blog/feed/index', 'feed')
 	'controller'	=> 'index',
 	'directory'		=> 'mmi/blog/feeds',
 ));
-Route::set('mmi/blog/feed/comment', '<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+Route::set('mmi/blog/feed/comment', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
 	'controller'	=> 'comment',
+	'directory'		=> 'mmi/blog/feeds',
+));
+Route::set('mmi/blog/feed/comments', 'feed/comments')
+->defaults(array
+(
+	'controller'	=> 'comments',
 	'directory'		=> 'mmi/blog/feeds',
 ));
 
