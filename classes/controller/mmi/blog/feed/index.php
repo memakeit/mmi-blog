@@ -7,27 +7,17 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_Feeds_Index extends MMI_Template
+class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 {
-	/**
-	 * @var boolean turn debugging on?
-	 **/
-	public $debug = TRUE;
-
 	/**
 	 * @var array an associative array of feed defaults
 	 **/
-	public $_defaults;
+	protected $_defaults;
 
 	/**
 	 * @var string the blog driver
 	 **/
 	protected $_driver;
-
-	/**
-	 * @var MMI_Atom_Feed the feed object
-	 **/
-	protected $_feed;
 
 	/**
 	 * @var boolean include email addresses in the feed?
@@ -45,7 +35,6 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 		parent::__construct($request);
 		$config = MMI_Blog::get_config();
 		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
-		$this->_feed = MMI_Atom_Feed::factory();
 
 		$config = MMI_Blog::get_feed_config();
 		$this->_defaults = $config->get('index', array());
@@ -142,7 +131,7 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 		$entry = MMI_Atom_Entry::factory()
 			->id($id)
 			->title($post->title)
-			->updated($post->timestamp_updated)
+			->updated($post->timestamp_modified)
 		;
 
 		// Recommended elements
@@ -210,22 +199,4 @@ class Controller_MMI_Blog_Feeds_Index extends MMI_Template
 		$entry->add_element('thr:total', $comment_count);
 		$this->_feed->add_entry($entry);
 	}
-
-	/**
-	 * Set the content-type and response.
-	 *
-	 * @return	void
-	 */
-	public function after()
-	{
-		if ($this->debug)
-		{
-			MMI_Debug::dead_xml($this->_feed->render());
-		}
-		else
-		{
-			$this->request->headers['Content-Type'] = File::mime_by_ext('atom');
-			$this->request->response = $this->_feed->render();
-		}
-	}
-} // End Controller_MMI_Blog_Feeds_Index
+} // End Controller_MMI_Blog_Feed_Index

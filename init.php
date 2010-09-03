@@ -60,19 +60,19 @@ Route::set('mmi/blog/feed/index', 'feed')
 ->defaults(array
 (
 	'controller'	=> 'index',
-	'directory'		=> 'mmi/blog/feeds',
+	'directory'		=> 'mmi/blog/feed',
 ));
 Route::set('mmi/blog/feed/comment', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
 ->defaults(array
 (
 	'controller'	=> 'comment',
-	'directory'		=> 'mmi/blog/feeds',
+	'directory'		=> 'mmi/blog/feed',
 ));
 Route::set('mmi/blog/feed/comments', 'feed/comments')
 ->defaults(array
 (
 	'controller'	=> 'comments',
-	'directory'		=> 'mmi/blog/feeds',
+	'directory'		=> 'mmi/blog/feed',
 ));
 
 // Test routes
