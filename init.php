@@ -76,6 +76,14 @@ Route::set('mmi/blog/feed/comments', 'feed/comments')
 	'directory'		=> 'mmi/blog/feed',
 ));
 
+// XML-RPC routes
+Route::set('mmi/xmlrpc', 'xmlrpc')
+->defaults(array
+(
+	'controller'	=> 'xmlrpc',
+	'directory'		=> 'mmi/blog',
+));
+
 // Test routes
 if (Kohana::$environment !== Kohana::PRODUCTION)
 {
