@@ -170,4 +170,46 @@ class Model_WP_Posts extends Jelly_Model
 			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
 		}
 	}
+
+	/**
+	 * Select a post from the database using the post's year, month, and slug.
+	 *
+	 * @param	string	the post year
+	 * @param	string	the post month
+	 * @param	string	the post slug
+	 * @param	array	an associative array of columns names
+	 * @param	boolean	return the data as an array?
+	 * @return	array
+	 */
+	public static function get_post($year, $month, $slug, $columns = NULL)
+	{
+		$db = Database::instance();
+		$cols = array();
+		if (is_array($columns) AND count($columns) > 0)
+		{
+			foreach ($columns as $column => $alias)
+			{
+				$cols[] = $db->quote_identifier($column).' AS '.$db->quote_identifier($alias);
+			}
+			$cols = implode(','.PHP_EOL, $cols);
+		}
+		else
+		{
+			$cols = '*';
+		}
+
+		$month = str_pad($month, 2, '0', STR_PAD_LEFT);
+		$sql =<<<EOSQL
+SELECT
+$cols
+FROM {$db->quote_table(self::$_table_name)}
+WHERE
+	({$db->quote_identifier('post_name')} = {$db->quote($slug)})
+	AND ({$db->quote_identifier('post_status')} = {$db->quote('publish')})
+	AND ({$db->quote_identifier('post_type')} = {$db->quote('post')})
+	AND (EXTRACT(YEAR_MONTH FROM {$db->quote_identifier('post_date_gmt')}) = {$db->quote($year.$month)})
+LIMIT 1
+EOSQL;
+		return Arr::get(MMI_DB::sql_select($sql, TRUE, $db), '0');
+	}
 } // End Model_WP_Posts

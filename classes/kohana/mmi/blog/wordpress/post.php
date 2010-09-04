@@ -55,6 +55,19 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
+	 * Get a post using its year, month, and slug.
+	 *
+	 * @param	string	the post year
+	 * @param	string	the post month
+	 * @param	string	the post slug
+	 * @return	array
+	 */
+	public function get_post($year, $month, $slug)
+	{
+		return Model_WP_Posts::get_post($year, $month, $slug, self::$_db_mappings);
+	}
+
+	/**
 	 * Get popular (most-viewed) posts.
 	 *
 	 * @param	integer	the maximum number of popular posts to return

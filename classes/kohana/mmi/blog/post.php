@@ -14,6 +14,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	abstract public function get_archive_frequencies($reload_cache = NULL);
 	abstract public function get_pages($ids = NULL, $reload_cache = NULL);
 	abstract public function get_popular($max_num = 10, $reload_cache = NULL);
+	abstract public function get_post($year, $month, $slug);
 	abstract public function get_posts($ids = NULL, $reload_cache = NULL);
 	abstract public function get_random($max_num = 10, $reload_cache = NULL);
 	abstract public function get_recent($max_num = 10, $reload_cache = NULL);
