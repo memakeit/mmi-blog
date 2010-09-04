@@ -73,13 +73,7 @@ class Controller_MMI_Blog_Feed_Comment extends Controller_MMI_Blog_Feed_Atom
 	 */
 	public function action_index()
 	{
-		// Get the post
-		$month = $this->_month;
-		$year = $this->_year;
-		$archive = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
-		$this->_post = Arr::path($archive, $year.$month.'.'.$this->_slug);
-		unset($archive);
-
+		$this->_post = MMI_Blog_Post::factory($this->_driver)->get_post($this->_year, $this->_month, $this->_slug);
 		$this->_configure_feed();
 		$comments = $this->_get_comments();
 		if (is_array($comments) AND count($comments) > 0)

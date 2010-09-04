@@ -79,10 +79,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$slug = $request->param('slug');
 
 		// Get the post
-		$archive = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
-		$post = Arr::path($archive, $year.$month.'.'.$slug);
+		$post = MMI_Blog_Post::factory($this->_driver)->get_post($year, $month, $slug);
 		$this->_post = $post;
-		unset($archive);
 
 		// Inject CSS and JavaScript
 		$this->_inject_media();
