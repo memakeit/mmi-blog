@@ -64,7 +64,39 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	public function get_post($year, $month, $slug)
 	{
-		return Model_WP_Posts::get_post($year, $month, $slug, self::$_db_mappings);
+		$data = Model_WP_Posts::get_post($year, $month, $slug, self::$_db_mappings);
+		if (empty($data))
+		{
+			return NULL;
+		}
+
+		$config = MMI_Blog::get_config()->get('features', array());
+		$load_categories = Arr::get($config, 'category', FALSE);
+		$load_meta = Arr::get($config, 'post_meta', FALSE);
+		$load_tags = Arr::get($config, 'tag', FALSE);
+
+		$post = $this->_get_post($data, $load_meta);
+		if ( ! $post instanceof MMI_Blog_Post)
+		{
+			return NULL;
+		}
+
+		// Create a post object
+		$post_id = $post->id;
+		$post = array($post_id => $post);
+		if ($load_categories)
+		{
+			self::_load_categories($post);
+		}
+		if ($load_tags)
+		{
+			self::_load_tags($post);
+		}
+		if ($load_meta)
+		{
+			self::_load_meta($post);
+		}
+		return $post[$post_id];
 	}
 
 	/**
@@ -446,13 +478,13 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		$driver = self::$_driver;
 		$config = MMI_Blog::get_config(TRUE);
-		$cache_id = $this->_get_cache_id($driver, 'posts_'.$post_type);
+		$cache_id = $this->_get_cache_id(self::$_driver, 'posts_'.$post_type);
 		$cache_lifetime = Arr::path($config, 'cache_lifetimes.post', 0);
-		$load_categories = Arr::path($config, 'features.category', FALSE);
-		$load_meta = Arr::path($config, 'features.post_meta', FALSE);
-		$load_tags = Arr::path($config, 'features.tag', FALSE);
+		$features = Arr::get($config, 'features', array());
+		$load_categories = Arr::get($features, 'category', FALSE);
+		$load_meta = Arr::get($features, 'post_meta', FALSE);
+		$load_tags = Arr::get($features, 'tag', FALSE);
 
 		$posts = NULL;
 		if ( ! $reload_cache AND $cache_lifetime > 0)
@@ -467,18 +499,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			foreach ($data as $fields)
 			{
 				$id = $fields[self::$_db_mappings['ID']];
-				$posts[$id] = self::factory($driver)->_load($fields, $load_meta);
-				$posts[$id]->driver = $driver;
-
-				// Set the guids
-				$post_date = $posts[$id]->timestamp_created;
-				$year = gmdate('Y', $post_date);
-				$month = gmdate('m', $post_date);
-				$slug = $posts[$id]->slug;
-				$posts[$id]->guid = self::get_guid($year, $month, $slug);
-				$posts[$id]->archive_guid = self::get_archive_guid($year, $month);
-				$posts[$id]->comments_feed_guid = self::get_comments_feed_guid($year, $month, $slug);
-				$posts[$id]->trackback_guid = self::get_trackback_guid($year, $month, $slug);
+				$posts[$id] = $this->_get_post($fields, $load_meta);
 			}
 			if ($load_categories)
 			{
@@ -499,6 +520,32 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			}
 		}
 		return $this->_extract_results($posts, $ids, FALSE);
+	}
+
+	/**
+	 * Create a post object and set its driver and guid properties.
+	 *
+	 * @param	array	an associative array of post details
+	 * @param	boolean	load the meta-data (from the post details)?
+	 * @return	array
+	 */
+	protected function _get_post($data, $load_meta = FALSE)
+	{
+		$driver = self::$_driver;
+		$post = self::factory($driver)->_load($data, $load_meta);
+		$post->driver = $driver;
+
+		// Set the guids
+		$post_date = $post->timestamp_created;
+		$year = gmdate('Y', $post_date);
+		$month = gmdate('m', $post_date);
+		$slug = $post->slug;
+		$post->guid = self::get_guid($year, $month, $slug);
+		$post->archive_guid = self::get_archive_guid($year, $month);
+		$post->comments_feed_guid = self::get_comments_feed_guid($year, $month, $slug);
+		$post->trackback_guid = self::get_trackback_guid($year, $month, $slug);
+
+		return $post;
 	}
 
 	/**
@@ -624,7 +671,6 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		{
 			return;
 		}
-
 		if ( ! isset($reload_cache))
 		{
 			$reload_cache = MMI_Blog::reload_cache();
@@ -651,7 +697,6 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		{
 			return;
 		}
-
 		if ( ! isset($reload_cache))
 		{
 			$reload_cache = MMI_Blog::reload_cache();
