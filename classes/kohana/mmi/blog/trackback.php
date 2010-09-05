@@ -32,9 +32,10 @@ class Kohana_MMI_Blog_Trackback
 	 * @param	integer	the post id
 	 * @param	string	the trackback page title
 	 * @param	string	the trackback URL
+	 * @param	string	the remote IP address
 	 * @return	boolean
 	 */
-	public static function save($post_id, $title, $url)
+	public static function save($post_id, $title, $url, $ip = NULL)
 	{
 		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$comment = MMI_Blog_Comment::factory($driver);
@@ -44,6 +45,10 @@ class Kohana_MMI_Blog_Trackback
 		$comment->post_id = $post_id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s', time());
 		$comment->type = 'trackback';
+		if (isset($ip))
+		{
+			$comment->author_ip = $ip;
+		}
 		return $comment->save();
 	}
 
