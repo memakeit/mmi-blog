@@ -28,7 +28,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		'comment_author'		=> 'author',
 		'comment_author_email'	=> 'author_email',
 		'comment_author_url'	=> 'author_url',
-		'comment_author_IP'		=> 'meta_author_IP',
+		'comment_author_IP'		=> 'author_ip',
 		'comment_date'			=> 'meta_date',
 		'comment_date_gmt'		=> 'timestamp',
 		'comment_content'		=> 'content',
@@ -65,6 +65,35 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	public function is_duplicate($post_id, $content, $author = NULL, $type = NULL)
 	{
 		return Model_WP_Comments::is_duplicate($post_id, $content, $author, $type);
+	}
+
+	/**
+	 * Save the comment.
+	 *
+	 * @return	boolean
+	 */
+	public function save()
+	{
+		$mappings = array_flip(self::$_db_mappings);
+		$data = array();
+		$temp = (array) $this;
+		foreach ($temp as $name => $value)
+		{
+			$name = Arr::get($mappings, $name);
+			if (isset($name) AND isset($value))
+			{
+				$data[$name] = $value;
+			}
+		}
+
+		$model = Jelly::factory('wp_comments')->set($data);
+		if (count($model->changed()) > 0)
+		{
+			$errors = array();
+			$success = MMI_Jelly::save($model, $errors);
+			return (count($errors) === 0);
+		}
+		return FALSE;
 	}
 
 	/**
