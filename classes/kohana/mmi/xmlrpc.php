@@ -68,14 +68,18 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		$linked_to = str_replace('&amp;', '&', $args[1]);
 		if ($linked_to === $linked_from)
 		{
-			return new IXR_Error(0, 'The from and to URLs cannot be the same.');
+			$msg = 'The from and to URLs cannot be the same.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(0, $msg);
 		}
 		if ( ! substr_count($linked_to, $base_url))
 		{
-			return new IXR_Error(0, 'There doesn\'t seem to be a valid link in your request.');
+			$msg = 'There doesn\'t seem to be a valid link in your request.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(0, $msg);
 		}
 
-		// Process the linked-to URL
+		// Format the 'to' URL
 		$url = str_replace($base, '', $linked_to);
 		$idx = strpos($url, '?');
 		if ($idx !== FALSE)
@@ -94,25 +98,33 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		$parm_count = count($parms);
 		if ($parm_count < 3)
 		{
-			return new IXR_Error(33, 'A post doesn\'t exist for that URL.');
+			$msg = 'A post doesn\'t exist for that URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(33, $msg);
 		}
 		$slug = $parms[$parm_count - 1];
 		$month = $parms[$parm_count - 2];
 		$year = $parms[$parm_count - 3];
 		if (empty($year) OR empty($month) OR empty($slug))
 		{
-			return new IXR_Error(33, 'A post doesn\'t exist for that URL.');
+			$msg = 'A post doesn\'t exist for that URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(33, $msg);
 		}
 
-		// Get the blog post
+		// Get the post
 		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$post = MMI_Blog_Post::factory($driver)->get_post($year, $month, $slug);
 		if (empty($post))
 		{
-			return new IXR_Error(33, 'A post doesn\'t exist for that URL.');
+			$msg = 'A post doesn\'t exist for that URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(33, $msg);
 		}
+		$post_id = $post->id;
+		unset($post);
 
-		// Format the from URL
+		// Format the 'from' URL
 		$from_parts = parse_url($linked_from);
 		$scheme = Arr::get($from_parts, 'scheme');
 		if (empty($scheme))
@@ -125,58 +137,51 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 			return FALSE;
 		}
 
-		// Verify the pingback has not been registered
-		$author_url = str_replace('&', '&amp;', $linked_from);
-		$post_id = $post->id;
-		unset($post);
-
-		$is_duplicate = pingback::is_duplicate($post_id, $author_url);
-		if ($is_duplicate)
+		// Check for duplicate pingbacks
+		$author = array('url' => $linked_from);
+		if (MMI_Blog_Pingback::is_duplicate($post_id, NULL, $author))
 		{
-			return new IXR_Error(48, 'The pingback has already been registered.');
+			$msg = 'The pingback has already been registered.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(48, $msg);
 		}
 
 		// Wait for the 'from' server to publish
 		sleep(1);
 
-		// Get the content of the page that linked here
-		$content = MMI_Curl::factory()->get($linked_from);
-MMI_Debug::dead($content, 'content');
+		// Get the content of the 'from' page
+		$content = MMI_Curl::factory()
+			->add_curl_option(CURLOPT_CONNECTTIMEOUT, 30)
+			->get($linked_from)
+			->body();
 
-		// Get the title of the page.
-		$content = str_replace('<!DOC', '<DOC', $content);
-		$content = util::normalize_spaces($content);
-		$content = preg_replace('/ <(h1|h2|h3|h4|h5|h6|p|th|td|li|dt|dd|pre|caption|input|textarea|button|body)[^>]*>/', "\n\n", $content);
-
+		// Get the title of the 'from' page.
+		$content = MMI_Text::normalize_spaces($content);
 		if (preg_match('/<title>([^<]+)<\/title>/i', $content, $title) === 1)
 		{
 			$title = $title[1];
 		}
 		if (empty($title))
 		{
-			return new IXR_Error(32, 'A title does not exist for the page.');
+			$msg = 'A title does not exist for the page.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(32, $msg);
 		}
 
-		// Search for the linked url
-		$url_exists = pingback::target_url_exists($linked_to, $content);
-		if ( ! $url_exists)
+		// Search for the 'to' URL in the 'from' HTML
+		if ( ! MMI_Text::url_exists($linked_to, $content))
 		{
-			return new IXR_Error(17, 'The source URL does not contain a link to the target URL.');
+			$msg = 'The source page does not contain the pingback URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(17, $msg);
 		}
 
-		// Get the link excerpt
-		$excerpt = pingback::get_link_excerpt($linked_to, $content);
-		$excerpt = '[...] '.trim(util::normalize_spaces($excerpt)).' [...]';
-
-		// Save pingback to database
-		$data['comment_post_ID'] = $post_id;
-		$data['comment_author'] = util::truncate($excerpt, 255);
-		$data['comment_content'] = $title;
-		$data['comment_author_url'] = str_replace('&', '&amp;', $linked_from);
-		$msg;
-		$error = pingback::add_comment($data, $msg);
-		if ($error)
+		// Save pingback
+		$ip = Arr::get($_SERVER, 'REMOTE_ADDR');
+		if ( ! MMI_Blog_Pingback::save($post_id, $title, $linked_from, $ip))
 		{
+			$msg = 'Error saving pingback.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return new IXR_Error(48, $msg);
 		}
 

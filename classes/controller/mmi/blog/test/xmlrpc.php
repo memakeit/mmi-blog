@@ -26,15 +26,17 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 		require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
 	}
 
-/**
+	/**
 	 * Test the pingback XML-RPC.
 	 *
 	 * @return	void
 	 */
 	public function action_index()
 	{
-		$post = MMI_Blog_Post::factory('wordpress')->get_post(2010, 7, 'hello-world');
-		MMI_DEbug::dead($post);
+//		$ip = $_SERVER['REMOTE_ADDR'];
+//$data = MMI_Blog_Pingback::save(1, 'abc home page', 'http://abc.com', $ip);
+//MMI_Debug::dead($data, 'saved');
+
 		$linked_from = 'https://www.google.com';
 		$linked_to = 'http://localhost/memakeit/blog/2010/07/hello-world';
 		$request = new IXR_Request('pingback.ping', array($linked_from, $linked_to));
