@@ -55,6 +55,49 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
+	 * Get a page its slug.
+	 *
+	 * @param	string	the page slug
+	 * @return	array
+	 */
+	public function get_page($slug)
+	{
+		$data = Model_WP_Posts::get_page($slug, self::$_db_mappings);
+		if (empty($data))
+		{
+			return NULL;
+		}
+
+		// Create a post object
+		$config = MMI_Blog::get_config()->get('features', array());
+		$load_meta = Arr::get($config, 'post_meta', FALSE);
+		$post = $this->_get_post($data, $load_meta);
+		if ( ! $post instanceof MMI_Blog_Post)
+		{
+			return NULL;
+		}
+
+		// Load the post's categories, tags, and meta data
+		$load_categories = Arr::get($config, 'category', FALSE);
+		$load_tags = Arr::get($config, 'tag', FALSE);
+		$post_id = $post->id;
+		$post = array($post_id => $post);
+		if ($load_categories)
+		{
+			self::_load_categories($post);
+		}
+		if ($load_tags)
+		{
+			self::_load_tags($post);
+		}
+		if ($load_meta)
+		{
+			self::_load_meta($post);
+		}
+		return $post[$post_id];
+	}
+
+	/**
 	 * Get a post using its year, month, and slug.
 	 *
 	 * @param	string	the post year
@@ -70,18 +113,18 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			return NULL;
 		}
 
+		// Create a post object
 		$config = MMI_Blog::get_config()->get('features', array());
-		$load_categories = Arr::get($config, 'category', FALSE);
 		$load_meta = Arr::get($config, 'post_meta', FALSE);
-		$load_tags = Arr::get($config, 'tag', FALSE);
-
 		$post = $this->_get_post($data, $load_meta);
 		if ( ! $post instanceof MMI_Blog_Post)
 		{
 			return NULL;
 		}
 
-		// Create a post object
+		// Load the post's categories, tags, and meta data
+		$load_categories = Arr::get($config, 'category', FALSE);
+		$load_tags = Arr::get($config, 'tag', FALSE);
 		$post_id = $post->id;
 		$post = array($post_id => $post);
 		if ($load_categories)
@@ -96,6 +139,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		{
 			self::_load_meta($post);
 		}
+
 		return $post[$post_id];
 	}
 

@@ -151,7 +151,7 @@ class Model_WP_Posts extends Jelly_Model
 	 */
 	public static function select_by_id($id, $post_type = NULL, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms['post_status']= 'publish';
+		$where_parms['post_status'] = 'publish';
 		if (MMI_Util::is_set($id))
 		{
 			$where_parms['ID'] = $id;
@@ -170,15 +170,34 @@ class Model_WP_Posts extends Jelly_Model
 			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
 		}
 	}
+	/**
+	 * Select a page from the database using the page's slug.
+	 * Return the post data as an associative array.
+	 *
+	 * @param	string	the post slug
+	 * @param	array	an associative array of columns names
+	 * @return	array
+	 */
+	public static function get_page($slug, $columns = NULL)
+	{
+		$where_parms = array
+		(
+			'post_name'		=> $slug,
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+		);
+		$query_parms = array('columns' => $columns, 'limit' => 1, 'where_parms' => $where_parms);
+		return Arr::get(MMI_DB::select(self::$_table_name, TRUE, $query_parms), '0');
+	}
 
 	/**
 	 * Select a post from the database using the post's year, month, and slug.
+	 * Return the post data as an associative array.
 	 *
 	 * @param	string	the post year
 	 * @param	string	the post month
 	 * @param	string	the post slug
 	 * @param	array	an associative array of columns names
-	 * @param	boolean	return the data as an array?
 	 * @return	array
 	 */
 	public static function get_post($year, $month, $slug, $columns = NULL)
