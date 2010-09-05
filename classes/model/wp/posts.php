@@ -170,11 +170,12 @@ class Model_WP_Posts extends Jelly_Model
 			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
 		}
 	}
+
 	/**
 	 * Select a page from the database using the page's slug.
-	 * Return the post data as an associative array.
+	 * Return the page data as an associative array.
 	 *
-	 * @param	string	the post slug
+	 * @param	string	the page slug
 	 * @param	array	an associative array of columns names
 	 * @return	array
 	 */
