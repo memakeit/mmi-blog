@@ -55,7 +55,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
-	 * Get a page its slug.
+	 * Get a page using its slug.
 	 *
 	 * @param	string	the page slug
 	 * @return	array
