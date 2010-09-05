@@ -51,6 +51,23 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	);
 
 	/**
+	 * Check if a comment is already present for a post.
+	 * If the author parameter is a string, it represents the author's name.
+	 * If the author parameter is an array, the following keys can be used to
+	 * specify author details: name, email, url.
+	 *
+	 * @param	integer	the post id
+	 * @param	string	the content to check
+	 * @param	array	the author details
+	 * @param	string	the comment type (<empty string>|pingback|trackback)
+	 * @return	boolean
+	 */
+	public function is_duplicate($post_id, $content, $author = NULL, $type = NULL)
+	{
+		return Model_WP_Comments::is_duplicate($post_id, $content, $author, $type);
+	}
+
+	/**
 	 * Get recent comments.
 	 *
 	 * @param	boolean	include trackbacks?
@@ -58,7 +75,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	 * @param	boolean	reload cache from database?
 	 * @return	array
 	 */
-	public function get_recent($include_trackbacks = FALSE, $max_num = 10, $reload_cache = FALSE)
+	public function get_recent($include_trackbacks = FALSE, $max_num = 10, $reload_cache = TRUE)
 	{
 		$driver = self::$_driver;
 		$config = MMI_Blog::get_config()->get('features', array());

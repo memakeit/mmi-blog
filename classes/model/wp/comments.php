@@ -102,34 +102,6 @@ class Model_WP_Comments extends Jelly_Model
 	}
 
 	/**
-	 * Select recent comments from the database.
-	 *
-	 * @param	boolean	include trackbacks
-	 * @param	array	an associative array of columns names
-	 * @param	boolean	return the data as an array?
-	 * @param	integer	the maximum number of results
-	 * @return	mixed
-	 */
-	public static function recent_comments($include_trackbacks = FALSE, $columns = NULL, $as_array = TRUE, $limit = NULL)
-	{
-		$where_parms = array();
-		if ( ! $include_trackbacks)
-		{
-			$where_parms['comment_type'] = '';
-		}
-		$order_by = array('comment_id' => 'DESC');
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms, 'order_by' => $order_by);
-		if ($as_array)
-		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
-		}
-		else
-		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
-		}
-	}
-
-	/**
 	 * Select one or more rows from the database by comment id.
 	 *
 	 * @param	mixed	one or more comment id's
@@ -213,5 +185,81 @@ class Model_WP_Comments extends Jelly_Model
 		{
 			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
 		}
+	}
+
+	/**
+	 * Select recent comments from the database.
+	 *
+	 * @param	boolean	include trackbacks
+	 * @param	array	an associative array of columns names
+	 * @param	boolean	return the data as an array?
+	 * @param	integer	the maximum number of results
+	 * @return	mixed
+	 */
+	public static function recent_comments($include_trackbacks = FALSE, $columns = NULL, $as_array = TRUE, $limit = NULL)
+	{
+		$where_parms = array();
+		if ( ! $include_trackbacks)
+		{
+			$where_parms['comment_type'] = '';
+		}
+		$order_by = array('comment_id' => 'DESC');
+		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms, 'order_by' => $order_by);
+		if ($as_array)
+		{
+			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+		}
+		else
+		{
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+		}
+	}
+
+	/**
+	 * Check if a comment is already present for a post.
+	 * If the author parameter is a string, it represents the author's name.
+	 * If the author parameter is an array, the following keys can be used to
+	 * specify author details: name, email, url.
+	 *
+	 * @param	integer	the post id
+	 * @param	string	the content to check
+	 * @param	mixed	the author details
+	 * @param	string	the comment type (<empty string>|pingback|trackback)
+	 * @return	boolean
+	 */
+	public static function is_duplicate($post_id, $content, $author = NULL, $type = NULL)
+	{
+		$where_parms = array
+		(
+			'comment_approved'	=> 1,
+			'comment_content'	=> $content,
+			'comment_post_id'	=> $post_id,
+		);
+		if (isset($type))
+		{
+			$where_parms['comment_type'] = $type;
+		}
+		if (is_string($author))
+		{
+			$where_parms['comment_author'] = $author;
+		}
+		elseif (is_array($author))
+		{
+			$vars = array
+			(
+				'name'	=> 'comment_author',
+				'email'	=> 'comment_author_email',
+				'url'	=> 'comment_author_url',
+			);
+			foreach ($vars as $key => $col)
+			{
+				if (isset($author[$key]))
+				{
+					$where_parms[$col] = $author[$key];
+				}
+			}
+		}
+		$query_parms = array('where_parms' => $where_parms);
+		return (count(MMI_DB::select(self::$_table_name, TRUE, $query_parms)) > 0);
 	}
 } // End Model_WP_Comments
