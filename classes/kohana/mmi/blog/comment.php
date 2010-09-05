@@ -14,6 +14,7 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 	abstract public function get_recent($include_trackbacks = FALSE, $max_num = 10, $reload_cache = TRUE);
 	abstract public function get_trackbacks($post_ids = NULL, $reload_cache = TRUE);
 	abstract public function is_duplicate($post_id, $content, $author = NULL, $type = NULL);
+	abstract public function save();
 
 	/**
 	 * @var boolean comment approved?
@@ -29,6 +30,11 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 	 * @var string comment author's email
 	 */
 	public $author_email;
+
+	/**
+	 * @var string comment author's IP address
+	 */
+	public $author_ip;
 
 	/**
 	 * @var string comment author's URL
