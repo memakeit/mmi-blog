@@ -232,9 +232,12 @@ class Model_WP_Comments extends Jelly_Model
 		$where_parms = array
 		(
 			'comment_approved'	=> 1,
-			'comment_content'	=> $content,
 			'comment_post_id'	=> $post_id,
 		);
+		if (isset($content))
+		{
+			$where_parms['comment_content'] = $content;
+		}
 		if (isset($type))
 		{
 			$where_parms['comment_type'] = $type;
