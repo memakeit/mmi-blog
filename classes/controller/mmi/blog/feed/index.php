@@ -146,7 +146,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 		$summary_config = Arr::get($this->_defaults, 'summary', array());
 		if (Arr::get($summary_config, 'enabled', FALSE))
 		{
-			$temp = MMI_Blog_Post::get_beginning_paragraphs($content, Arr::get($summary_config, 'num_paragraphs', 3));
+			$temp = MMI_Text::get_beginning_paragraphs($content, Arr::get($summary_config, 'num_paragraphs', 3));
 			$summary = array();
 			foreach ($temp as $item)
 			{

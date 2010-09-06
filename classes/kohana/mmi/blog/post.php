@@ -238,7 +238,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 
 		// Extract the first paragraph
 		$inner = '';
-		$first_paragraph = self::get_beginning_paragraphs($content, 1);
+		$first_paragraph = MMI_Text::get_beginning_paragraphs($content, 1);
 		if (is_array($first_paragraph))
 		{
 			$first_paragraph = $first_paragraph[0];
@@ -266,7 +266,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 
 				// Extract the first paragraph
 				$inner = '';
-				$first_paragraph = self::get_beginning_paragraphs($content, 1);
+				$first_paragraph = MMI_Text::get_beginning_paragraphs($content, 1);
 				if (is_array($first_paragraph))
 				{
 					$first_paragraph = $first_paragraph[0];
@@ -284,74 +284,6 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			$excerpt = $inner;
 		}
 		$body = $content;
-	}
-
-	/**
-	 * Extract one or more beginning paragraphs from a post's content.
-	 *
-	 * @param	string	the post content
-	 * @param	integer	the number of paragraphs to extract
-	 * @return	mixed
-	 */
-	public static function get_beginning_paragraphs($content, $num_paragraphs = 1)
-	{
-		$content = str_replace(array("\n", "\r"), '', $content);
-		$beginning_paragraphs = NULL;
-		if (preg_match_all('/<p[^>]*>(.*?)<\/p>/i', $content, $matches))
-		{
-			$beginning_paragraphs = array();
-			$matches_html = $matches[0];
-			$matches_inner = $matches[1];
-			$i = 0;
-			foreach ($matches_html as $idx => $html)
-			{
-				$inner = $matches_inner[$idx];
-				$beginning_paragraphs[] = array
-				(
-					'html'	=> $html,
-					'inner'	=> $inner
-				);
-				if (++$i === $num_paragraphs)
-				{
-					break;
-				}
-			}
-		}
-		return $beginning_paragraphs;
-	}
-
-	/**
-	 * Extract one or more ending paragraphs from a post's content.
-	 *
-	 * @param	string	the post content
-	 * @param	integer	the number of paragraphs to extract
-	 * @return	mixed
-	 */
-	public static function get_ending_paragraphs($content, $num_paragraphs = 1)
-	{
-		$content = str_replace(array("\n", "\r"), '', $content);
-		$ending_paragraphs = NULL;
-		if (preg_match_all('/<p[^>]*>(.*?)<\/p>/i', $content, $matches))
-		{
-			$ending_paragraphs = array();
-			$matches_html = array_reverse($matches[0]);
-			$matches_inner = array_reverse($matches[1]);
-			$i = 0;
-			foreach ($matches_html as $idx => $html)
-			{
-				$inner = $matches_inner[$idx];
-				$ending_paragraphs[] = array
-				(
-					'html'	=> $html,
-					'inner'	=> $inner,
-				);
-				if (++$i === $num_paragraphs)
-				{
-					break;
-				}
-			}
-		}
-		return $ending_paragraphs;
 	}
 
 	/**
