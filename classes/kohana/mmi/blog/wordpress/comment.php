@@ -87,13 +87,9 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		}
 
 		$model = Jelly::factory('wp_comments')->set($data);
-		if (count($model->changed()) > 0)
-		{
-			$errors = array();
-			$success = MMI_Jelly::save($model, $errors);
-			return (count($errors) === 0);
-		}
-		return FALSE;
+		$errors = array();
+		$success = MMI_Jelly::save($model, $errors);
+		return (count($errors) === 0);
 	}
 
 	/**
