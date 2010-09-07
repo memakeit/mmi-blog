@@ -169,7 +169,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		}
 
 		// Search for the 'to' URL in the 'from' HTML
-		if ( ! MMI_Text::url_exists($linked_to, $content))
+		if ( ! MMI_Blog_Pingback::url_exists($linked_to, $content))
 		{
 			$msg = 'The source page does not contain the pingback URL.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
@@ -180,7 +180,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		$ip = Arr::get($_SERVER, 'REMOTE_ADDR');
 		if ( ! MMI_Blog_Pingback::save($post_id, $title, $linked_from, $ip))
 		{
-			$msg = 'Error saving pingback.';
+			$msg = 'There was a problem saving the pingback.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return new IXR_Error(48, $msg);
 		}
