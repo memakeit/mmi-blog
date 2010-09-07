@@ -27,16 +27,12 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 	}
 
 	/**
-	 * Test the pingback XML-RPC.
+	 * Test pingback XML-RPC functionality.
 	 *
 	 * @return	void
 	 */
 	public function action_index()
 	{
-//		$ip = $_SERVER['REMOTE_ADDR'];
-//$data = MMI_Blog_Pingback::save(1, 'abc home page', 'http://abc.com', $ip);
-//MMI_Debug::dead($data, 'saved');
-
 		$linked_from = 'https://www.google.com';
 		$linked_to = 'http://localhost/memakeit/blog/2010/07/hello-world';
 		$request = new IXR_Request('pingback.ping', array($linked_from, $linked_to));
@@ -49,17 +45,17 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 
 		$curl = MMI_Curl::factory();
 		$curl->debug($this->debug);
-		$curl
+		$response = $curl
 			->add_http_header('Host', $host)
 			->add_http_header('Content-Type', File::mime_by_ext('xml'))
 			->add_http_header('Content-Length', $len)
+			->post($url, $xml)
 		;
-		$response = $curl->post($url, $xml);
-MMI_Debug::dead($response, 'response');
+		MMI_Debug::dead($response, 'response');
 	}
 
 	/**
-	 * Test datetime XML-RPC.
+	 * Test datetime XML-RPC functionality.
 	 *
 	 * @return	void
 	 */
