@@ -33,7 +33,7 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 	 */
 	public function action_index()
 	{
-		$linked_from = 'https://www.google.com';
+		$linked_from = 'http://www.google.com';
 		$linked_to = 'http://localhost/memakeit/blog/2010/07/hello-world';
 		$request = new IXR_Request('pingback.ping', array($linked_from, $linked_to));
 		$xml = $request->getXml();
@@ -44,13 +44,17 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 		$host = parse_url($url, PHP_URL_HOST);
 
 		$curl = MMI_Curl::factory();
-		$curl->debug($this->debug);
 		$response = $curl
+			->debug($this->debug)
 			->add_http_header('Host', $host)
 			->add_http_header('Content-Type', File::mime_by_ext('xml'))
 			->add_http_header('Content-Length', $len)
 			->post($url, $xml)
 		;
+		if ($response instanceof MMI_Curl_Response)
+		{
+			$response = $response->body();
+		}
 		MMI_Debug::dead($response, 'response');
 	}
 
@@ -70,13 +74,17 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 		$host = parse_url($url, PHP_URL_HOST);
 
 		$curl = MMI_Curl::factory();
-		$curl
+		$response = $curl
 			->debug($this->debug)
 			->add_http_header('Host', $host)
 			->add_http_header('Content-Type', File::mime_by_ext('xml'))
 			->add_http_header('Content-Length', $len)
+			->post($url, $xml);
 		;
-		$response = $curl->post($url, $xml);
-		MMI_Debug::dead($response->body(), 'response');
+		if ($response instanceof MMI_Curl_Response)
+		{
+			$response = $response->body();
+		}
+		MMI_Debug::dead($response, 'response');
 	}
 } // End Controller_MMI_Blog_Test_XMLRPC

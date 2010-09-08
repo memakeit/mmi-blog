@@ -1,4 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
+
+require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
+
 /**
  * XML-RPC server.
  *
@@ -8,25 +11,24 @@
  * @license		http://www.memakeit.com/license
  * @link		http://www.xmlrpc.com/spec
  */
-require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
 class Kohana_MMI_XMLRPC extends IXR_Server
 {
 	// Error constants
-	const APPLICATION_ERROR					= -32500;
-	const SYSTEM_ERROR						= -32400;
 	const TRANSPORT_ERROR					= -32300;
-
-	const PARSE_ERROR						= -32700;
-	const PARSE_UNSUPPORTED_ENCODING		= -32701;
-	const PARSE_INVALIDCHARACTER			= -32702;
+	const SYSTEM_ERROR						= -32400;
+	const APPLICATION_ERROR					= -32500;
 
 	const SERVER_METHODCALL_ERROR			= -32600;
 	const SERVER_METHOD_NOT_FOUND			= -32601;
 	const SERVER_INVALID_METHOD_PARAMETERS	= -32602;
 	const SERVER_INTERNAL_ERROR				= -32603;
 
+	const PARSE_ERROR						= -32700;
+	const PARSE_UNSUPPORTED_ENCODING		= -32701;
+	const PARSE_INVALIDCHARACTER			= -32702;
+
 	/**
-	 * @var array the methods provided by the XML-RPC server
+	 * @var array the methods supported by the XML-RPC server
 	 */
 	protected $_methods = array
 	(
@@ -57,6 +59,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 	/**
 	 * Process a pingback.
 	 *
+	 * @param	array	the pingback arguments (from URL, to URL)
 	 * @return	string
 	 */
 	public function pingback_ping($args)
@@ -64,15 +67,15 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		// Verify the URLs
 		$base = URL::base(FALSE, TRUE);
 		$base_url = str_replace(array('http://www.', 'http://'), '', $base);
-		$linked_from = str_replace('&amp;', '&', $args[0]);
-		$linked_to = str_replace('&amp;', '&', $args[1]);
-		if ($linked_to === $linked_from)
+		$url_from = str_replace('&amp;', '&', $args[0]);
+		$url_to = str_replace('&amp;', '&', $args[1]);
+		if ($url_to === $url_from)
 		{
 			$msg = 'The from and to URLs cannot be the same.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return new IXR_Error(0, $msg);
 		}
-		if ( ! substr_count($linked_to, $base_url))
+		if ( ! substr_count($url_to, $base_url))
 		{
 			$msg = 'There doesn\'t seem to be a valid link in your request.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
@@ -80,7 +83,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		}
 
 		// Format the 'to' URL
-		$url = str_replace($base, '', $linked_to);
+		$url = str_replace($base, '', $url_to);
 		$idx = strpos($url, '?');
 		if ($idx !== FALSE)
 		{
@@ -93,18 +96,33 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		}
 		$url = rtrim($url, '/');
 
-		// Load the post parameters
+		// Format the 'from' URL
+		$from_parts = parse_url($url_from);
+		$scheme = Arr::get($from_parts, 'scheme');
+		if (empty($scheme))
+		{
+			$url_from = 'http://'.$url_from;
+			$from_parts = parse_url($url_from);
+		}
+		$host = Arr::get($from_parts, 'host');
+		if (empty($host))
+		{
+			$msg = 'The from URL is invalid.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return FALSE;
+		}
+
+		// Get the post parameters
 		$parms = explode('/', $url);
-		$parm_count = count($parms);
-		if ($parm_count < 3)
+		if (count($parms) < 3)
 		{
 			$msg = 'A post doesn\'t exist for that URL.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return new IXR_Error(33, $msg);
 		}
-		$slug = $parms[$parm_count - 1];
-		$month = $parms[$parm_count - 2];
-		$year = $parms[$parm_count - 3];
+		$slug = array_pop($parms);
+		$month = array_pop($parms);
+		$year = array_pop($parms);
 		if (empty($year) OR empty($month) OR empty($slug))
 		{
 			$msg = 'A post doesn\'t exist for that URL.';
@@ -124,21 +142,8 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		$post_id = $post->id;
 		unset($post);
 
-		// Format the 'from' URL
-		$from_parts = parse_url($linked_from);
-		$scheme = Arr::get($from_parts, 'scheme');
-		if (empty($scheme))
-		{
-			$linked_from = 'http://'.$linked_from;
-			$from_parts = parse_url($linked_from);
-		}
-		if (empty($from_parts['host']))
-		{
-			return FALSE;
-		}
-
 		// Check for duplicate pingbacks
-		$author = array('url' => $linked_from);
+		$author = array('url' => $url_from);
 		if (MMI_Blog_Pingback::is_duplicate($post_id, NULL, $author))
 		{
 			$msg = 'The pingback has already been registered.';
@@ -149,11 +154,23 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		// Wait for the 'from' server to publish
 		sleep(1);
 
-		// Get the content of the 'from' page
-		$content = MMI_Curl::factory()
+		// Get the 'from' page content
+		$curl = MMI_Curl::factory();
+		$response = $curl
 			->add_curl_option(CURLOPT_CONNECTTIMEOUT, 30)
-			->get($linked_from)
-			->body();
+			->get($url_from)
+		;
+		if ($response instanceof MMI_Curl_Response)
+		{
+			$content = $response->body();
+			unset($curl, $response);
+		}
+		else
+		{
+			$msg = 'Unable to retrieve content for the page.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(32, $msg);
+		}
 
 		// Get the title of the 'from' page.
 		$content = MMI_Text::normalize_spaces($content);
@@ -169,7 +186,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		}
 
 		// Search for the 'to' URL in the 'from' HTML
-		if ( ! MMI_Blog_Pingback::url_exists($linked_to, $content))
+		if ( ! MMI_Blog_Pingback::url_exists($url_to, $content))
 		{
 			$msg = 'The source page does not contain the pingback URL.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
@@ -178,7 +195,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 
 		// Save pingback
 		$ip = Arr::get($_SERVER, 'REMOTE_ADDR');
-		if ( ! MMI_Blog_Pingback::save($post_id, $title, $linked_from, $ip))
+		if ( ! MMI_Blog_Pingback::save($post_id, $title, $url_from, $ip))
 		{
 			$msg = 'There was a problem saving the pingback.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
@@ -186,46 +203,6 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 		}
 
 		// Return success
-		return sprintf('Pingback from %s to %s was registered!', $linked_from, $linked_to);
+		return sprintf('Pingback from %s to %s was registered.', $url_from, $url_to);
 	}
-
-//
-//
-//	public function pingback_ping($args) {/
-//		# Grab the page that linked here.
-//		$content = get_remote($linked_from);
-//
-//		# Get the title of the page.
-//		preg_match("/<title>([^<]+)<\/title>/i", $content, $title);
-//		$title = $title[1];
-//
-//		if (empty($title))
-//			return new IXR_Error(32, __("There isn't a title on that page."));
-//
-//		$content = strip_tags($content, "<a>");
-//
-//		$url = preg_quote($linked_to, "/");
-//		if (!preg_match("/<a[^>]*{$url}[^>]*>([^>]*)<\/a>/", $content, $context)) {
-//			$url = str_replace("&", "&amp;", preg_quote($linked_to, "/"));
-//			if (!preg_match("/<a[^>]*{$url}[^>]*>([^>]*)<\/a>/", $content, $context)) {
-//				$url = str_replace("&", "&#038;", preg_quote($linked_to, "/"));
-//				if (!preg_match("/<a[^>]*{$url}[^>]*>([^>]*)<\/a>/", $content, $context))
-//					return false;
-//			}
-//		}
-//
-//		$context[1] = truncate($context[1], 100, "...", true);
-//
-//		$excerpt = strip_tags(str_replace($context[0], $context[1], $content));
-//
-//		$match = preg_quote($context[1], "/");
-//		$excerpt = preg_replace("/.*?\s(.{0,100}{$match}.{0,100})\s.*/s", "\\1", $excerpt);
-//
-//		$excerpt = "[...] ".trim(normalize($excerpt))." [...]";
-//
-//		Trigger::current()->call("pingback", $post, $linked_to, $linked_from, $title, $excerpt);
-//
-//		return _f("Pingback from %s to %s registered!", array($linked_from, $linked_to));
-//	}
-
-} // End XMLRPC Server library
+} // End Kohana_MMI_XMLRPC
