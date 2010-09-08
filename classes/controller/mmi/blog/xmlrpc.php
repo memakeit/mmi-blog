@@ -35,4 +35,4 @@ class Controller_MMI_Blog_XMLRPC extends Controller
 	{
 		$server = new MMI_XMLRPC();
 	}
-} // End Controller_MMI_Blog_XMLRPC controller
+} // End Controller_MMI_Blog_XMLRPC
