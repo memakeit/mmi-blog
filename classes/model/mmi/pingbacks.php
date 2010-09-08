@@ -82,12 +82,12 @@ class Model_MMI_Pingbacks extends Jelly_Model
 					'filters' => array('trim' => NULL),
 					'rules' => array('max_length' => array(255)),
 				)),
-				'error_number' => new Field_Integer(array
+				'error_num' => new Field_Integer(array
 				(
 					'default' => 0,
 					'rules' => array('range' => array(0, 16777215)),
 				)),
-				'error_message' => new Field_String(array
+				'error_msg' => new Field_String(array
 				(
 					'default' => '',
 					'filters' => array('trim' => NULL),
@@ -97,7 +97,7 @@ class Model_MMI_Pingbacks extends Jelly_Model
 				(
 					'null' => TRUE,
 				)),
-				'headers' => new Field_Serialized(array
+				'http_headers' => new Field_Serialized(array
 				(
 					'null' => TRUE,
 				)),
