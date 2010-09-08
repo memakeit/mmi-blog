@@ -43,7 +43,7 @@ class Model_MMI_Pingbacks extends Jelly_Model
 					),
 					'default' => 'pingback',
 				)),
-				'url_xmlrpc' => new Field_Url(array
+				'url_xmlrpc' => new Field_String(array
 				(
 					'rules' => array
 					(
