@@ -101,63 +101,6 @@ class Kohana_MMI_Blog_Pingback
 	}
 
 	/**
-	 * Check the pingback response.
-	 * If the response contains an XML string, the fault or param
-	 * elements are used to create the message output parameter.
-	 *
-	 * @param	MMI_Curl_Response	the cURL response object
-	 * @param	string				the error or success message extracted
-	 * @return	boolean
-	 */
-	public static function _check_response($response, & $msg)
-	{
-		if ( ! $response instanceof MMI_Curl_Response)
-		{
-			$msg = 'invalid cURL response';
-			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
-			return FALSE;
-		}
-
-		$response = trim($response->body());
-		if (strpos($response, '<?xml') !== 0)
-		{
-			$msg = 'invalid XML document';
-			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
-			return FALSE;
-		}
-
-		$xml = simplexml_load_string($response);
-		$fault = $xml->xpath('/methodResponse/fault/value/struct/member/value');
-		if ( ! empty($fault) AND is_array($fault))
-		{
-			$details = array();
-			foreach ($fault as $item)
-			{
-				$item = (array) $item;
-				$details[] = trim(reset($item));
-			}
-			$msg = implode('; ', $details);
-			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
-		}
-		else
-		{
-			$params = $xml->xpath('/methodResponse/params/param/value');
-			if ( ! empty($params) AND is_array($params))
-			{
-				$details = array();
-				foreach ($params as $item)
-				{
-					$item = (array) $item;
-					$details[] = trim(reset($item));
-				}
-				$msg = implode('; ', $details);
-				MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback succeeded: '.$msg);
-			}
-		}
-		return empty($fault);
-	}
-
-	/**
 	 * Log the pingback response.
 	 *
 	 * @param	boolean				did the pingback succeed?
@@ -367,12 +310,59 @@ class Kohana_MMI_Blog_Pingback
 	}
 
 	/**
-	 * Create a pingback instance.
+	 * Check the pingback response.
+	 * If the response contains an XML string, the fault or param
+	 * elements are used to create the message output parameter.
 	 *
-	 * @return	MMI_Blog_Pingback
+	 * @param	MMI_Curl_Response	the cURL response object
+	 * @param	string				the error or success message extracted
+	 * @return	boolean
 	 */
-	public static function factory()
+	protected static function _check_response($response, & $msg)
 	{
-		return new MMI_Blog_Pingback;
+		if ( ! $response instanceof MMI_Curl_Response)
+		{
+			$msg = 'invalid cURL response';
+			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
+			return FALSE;
+		}
+
+		$response = trim($response->body());
+		if (strpos($response, '<?xml') !== 0)
+		{
+			$msg = 'invalid XML document';
+			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
+			return FALSE;
+		}
+
+		$xml = simplexml_load_string($response);
+		$fault = $xml->xpath('/methodResponse/fault/value/struct/member/value');
+		if ( ! empty($fault) AND is_array($fault))
+		{
+			$details = array();
+			foreach ($fault as $item)
+			{
+				$item = (array) $item;
+				$details[] = trim(reset($item));
+			}
+			$msg = implode('; ', $details);
+			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
+		}
+		else
+		{
+			$params = $xml->xpath('/methodResponse/params/param/value');
+			if ( ! empty($params) AND is_array($params))
+			{
+				$details = array();
+				foreach ($params as $item)
+				{
+					$item = (array) $item;
+					$details[] = trim(reset($item));
+				}
+				$msg = implode('; ', $details);
+				MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback succeeded: '.$msg);
+			}
+		}
+		return empty($fault);
 	}
 } // End Kohana_MMI_Blog_Pingback
