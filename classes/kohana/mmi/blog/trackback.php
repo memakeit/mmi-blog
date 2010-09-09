@@ -198,7 +198,7 @@ class Kohana_MMI_Blog_Trackback
 		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$comment = MMI_Blog_Comment::factory($driver);
 		$comment->author = 'trackback';
-		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR');
+		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR', '');
 		$comment->author_url = str_replace('&', '&amp;', $url);
 		$comment->content = $title;
 		$comment->post_id = $post_id;
