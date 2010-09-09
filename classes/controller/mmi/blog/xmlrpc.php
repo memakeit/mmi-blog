@@ -15,24 +15,12 @@ class Controller_MMI_Blog_XMLRPC extends Controller
 	public $debug_on = FALSE;
 
 	/**
-	 * Include the XML-RPC classes.
-	 *
-	 * @param	Request	the request that created the controller
-	 * @return	void
-	 */
-	public function __construct($request)
-	{
-		parent::__construct($request);
-		require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
-	}
-
-	/**
 	 * Create the XML-RPC server.
 	 *
 	 * @return	void
 	 */
 	function action_index()
 	{
-		$server = new MMI_XMLRPC();
+		$server = MMI_XMLRPC::server();
 	}
 } // End Controller_MMI_Blog_XMLRPC

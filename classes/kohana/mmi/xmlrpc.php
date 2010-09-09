@@ -1,7 +1,4 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
-
-require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
-
 /**
  * XML-RPC server.
  *
@@ -11,7 +8,7 @@ require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
  * @license		http://www.memakeit.com/license
  * @link		http://www.xmlrpc.com/spec
  */
-class Kohana_MMI_XMLRPC extends IXR_Server
+class Kohana_MMI_XMLRPC
 {
 	// Error constants
 	const TRANSPORT_ERROR					= -32300;
@@ -30,20 +27,32 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 	/**
 	 * @var array the methods supported by the XML-RPC server
 	 */
-	protected $_methods = array
+	protected static $_methods = array
 	(
-		'datetime'		=> 'this:datetime',
-		'pingback.ping'	=> 'this:pingback_ping',
+		'datetime'		=> array('MMI_XMLRPC', 'datetime'),
+		'pingback.ping'	=> array('MMI_XMLRPC', 'pingback_ping'),
 	);
 
 	/**
-	 * Set the methods for the XML-RPC server.
-	 *
-	 * @return	void
+	 * @var IXR_Server singleton instance of the XML-RPC server object
 	 */
-	public function __construct()
+	protected static $_server;
+
+	/**
+	 * Return the singleton instance of the XML-RPC server. If no instance
+	 * exists, a new one is created.
+	 *
+	 * @return  IXR_Server
+	 */
+	public static function server()
 	{
-		parent::__construct($this->_methods);
+		if ( ! self::$_server)
+		{
+			// Create the server instance
+			require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
+			self::$_server = new IXR_Server(self::$_methods);
+		}
+		return self::$_server;
 	}
 
 	/**
@@ -51,7 +60,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 	 *
 	 * @return	string
 	 */
-	public function datetime()
+	public static function datetime()
 	{
 		return date('F j, Y @ h:i:s a');
 	}
@@ -62,7 +71,7 @@ class Kohana_MMI_XMLRPC extends IXR_Server
 	 * @param	array	the pingback arguments (from URL, to URL)
 	 * @return	string
 	 */
-	public function pingback_ping($args)
+	public static function pingback_ping($args)
 	{
 		// Verify the URLs
 		$base = URL::base(FALSE, TRUE);
