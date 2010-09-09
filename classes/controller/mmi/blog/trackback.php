@@ -13,7 +13,7 @@ class Controller_MMI_Blog_Trackback extends Controller
 	/**
 	 * @var boolean turn debugging on?
 	 **/
-	public $debug = TRUE;
+	public $debug = FALSE;
 
 	/**
 	 * Process a trackback.
@@ -25,27 +25,16 @@ class Controller_MMI_Blog_Trackback extends Controller
 		// Ensure form data was posted
 		if (empty($_POST))
 		{
-			MMI_Log::log_error(__METHOD__, __LINE__, 'No trackback form data.');
-			$this->_redirect_to_post();
+			MMI_Log::log_error(__METHOD__, __LINE__, 'No trackback data was posted.');
+
+			// Redirect to the corresponding post
+			$params = $this->request->param();
+			$url = Route::url('mmi/blog/post', $params, TRUE);
+			$this->request->redirect($url);
 		}
 
 		// Process the trackback
-		$response = MMI_Blog_Trackback::receive();
-MMI_Debug::mdead($response, 'response');
 		$this->request->headers['Content-Type'] = File::mime_by_ext('xml');
-		$this->request->response = $response;
-	}
-
-	/**
-	 * Redirect to the post.
-	 *
-	 * @return	void
-	 */
-	protected function _redirect_to_post()
-	{
-		$params = $this->request->param();
-		$url = Route::url('mmi/blog/post', $params, TRUE);
-		MMI_Debug::mdead($url, 'url', $params, 'params');
-//		$this->request->redirect($url);
+		$this->request->response = MMI_Blog_Trackback::receive();
 	}
 } // End Controller_MMI_Blog_Trackback

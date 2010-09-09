@@ -22,7 +22,7 @@ class Controller_MMI_Blog_Test_Trackback extends Controller
 	 */
 	public function action_index()
 	{
-		$url = Route::url('mmi/blog/trackback', array
+		$trackback_url = Route::url('mmi/blog/trackback', array
 		(
 			'year'	=> '2010',
 			'month'	=> '07',
@@ -30,19 +30,12 @@ class Controller_MMI_Blog_Test_Trackback extends Controller
 		), TRUE);
 		$post_data = array
 		(
+			'blog_name'	=> 'Google Blog',
+			'excerpt'	=> '<a href="">goooooooooooogle!</a>',
+			'title'		=> 'Google!',
 			'url'		=> 'http://www.google.com',
-			'blog_name'	=>	'<a href="">Google Blog</a>',
-			'excerpt'	=> 'goooooooooooogle!',
-			'title'		=> 'Google'
 		);
-
-		$curl = MMI_Curl::factory();
-		$response = $curl
-			->debug($this->debug)
-			->post($url, $post_data)
-		;
-
-MMI_Debug::dead($response);
-
+		$data = MMI_Blog_Trackback::send($trackback_url, $post_data, 30, $response);
+		MMI_Debug::mdump($data, 'send', $response, 'response');
 	}
 } // End Controller_MMI_Blog_Test_Trackback

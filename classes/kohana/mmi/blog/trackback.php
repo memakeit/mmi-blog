@@ -10,79 +10,20 @@
  */
 class Kohana_MMI_Blog_Trackback
 {
-//public static function send_trackback($trackback_url, $url, $title, $excerpt, $blog_name, & $response)
-//    {
-//        $success = FALSE;
-//
-//        $temp = compact('url', 'title', 'excerpt', 'blog_name');
-//        $post_data = '';
-//        foreach ($temp as $key => $value)
-//        {
-//            $post_data .= $key.'='.rawurlencode($value).'&';
-//        }
-//        $post_data = trim($post_data, '&');
-//
-//        $parts = parse_url($trackback_url);
-//        $host = util::get_array_value('host', $parts);
-//
-//        $curl = Curl::factory();
-//        $curl_options = $curl->get_default_options();
-//        $curl_options[CURLOPT_HTTPHEADER] = array
-//        (
-//            'Expect:',
-//            'Host: '.$host
-//        );
-//
-//        // Get response
-//        $response = $curl->exec($trackback_url, $post_data, $curl_options);
-//
-//        // Get other curl info
-//        $content_type = $curl->get_content_type();
-//        $curl_info = $curl->get_curl_info();
-//        $curl_options = $curl->get_curl_options();
-//        $error_message = $curl->get_error_message();
-//        $error_number = $curl->get_error_number();
-//        $headers = $curl->get_headers();
-//        $http_status_code = $curl->get_http_status_code();
-//        unset($curl);
-//
-//        // Check for error message
-//        $success = FALSE;
-//        if (strpos($response, '<?xml') === 0)
-//        {
-//            $response_xml = simplexml_load_string($response);
-//            $success = util::not_set($response_xml->xpath('/response/message'));
-//        }
-//
-//        // Log trackback
-//        $data['success'] = $success ? 1 : 0;
-//        $data['type'] = 'trackback';
-//        $data['url_pingback'] = 'N/A';
-//        $data['url_from'] = $url;
-//        $data['url_to'] = $trackback_url;
-//        $data['post_data'] = $post_data;
-//        $data['http_status_code'] = $http_status_code;
-//        $data['content_type'] = $content_type;
-//        $data['error_number'] = $error_number;
-//        $data['error_message'] = $error_message;
-//        $data['response'] = $response;
-//        $data['headers'] = $headers;
-//        $data['curl_info'] = $curl_info;
-//        $data['curl_options'] = $curl_options;
-//        pingback::log($data);
-//
-//        return $success;
-//    }
-
+	/**
+	 * Receive and process a trackback.
+	 *
+	 * @return	string
+	 */
 	public static function receive()
 	{
-		// Get form fields
+		// Get the form fields
 		MMI_Util::load_module('purifier', MODPATH.'purifier');
 		$form = Security::xss_clean($_POST);
-		$url = Arr::get($form, 'url');
-		if (empty($url))
+		$url_from = Arr::get($form, 'url');
+		if (empty($url_from))
 		{
-			$msg = 'No trackback URL specified.';
+			$msg = 'The trackback URL was not found.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return self::_get_xml_response(TRUE, $msg);
 		}
@@ -92,27 +33,36 @@ class Kohana_MMI_Blog_Trackback
 
 		// Get the blog post
 		$request = Request::instance();
-		$month = $request->param('month');
 		$year = $request->param('year');
+		$month = $request->param('month');
 		$slug = $request->param('slug');
 		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$post = MMI_Blog_Post::factory($driver)->get_post($year, $month, $slug);
 		if ( ! $post instanceof MMI_Blog_Post)
 		{
-			$msg = 'Fake or non-existant post.';
+			$msg = 'The trackback post was not found.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return self::_get_xml_response(TRUE, $msg);
 		}
 
-		$post_url = $post->guid;
+		// Get post fields
+		$post_id = $post->id;
+		$url_to = $post->guid;
+		unset($post);
 
+		// Check for duplicate trackbacks
+		$author = array('url' => $url_from);
+		if (MMI_Blog_Trackback::is_duplicate($post_id, NULL, $author))
+		{
+			$msg = 'The trackback has already been registered.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return self::_get_xml_response(TRUE, $msg);
+		}
 
-MMI_Debug::mdead($url, 'url', $blog_name, 'blog_name', $excerpt, 'excerpt', $title, 'title');
-
-		// Get the content of the page that linked here
+		// Get the 'from' page content
 		$response = MMI_Curl::factory()
 			->add_curl_option(CURLOPT_CONNECTTIMEOUT, 30)
-			->get($url)
+			->get($url_from)
 		;
 		if ($response instanceof MMI_Curl_Response)
 		{
@@ -126,7 +76,7 @@ MMI_Debug::mdead($url, 'url', $blog_name, 'blog_name', $excerpt, 'excerpt', $tit
 			return self::_get_xml_response(TRUE, $msg);
 		}
 
-		// Get the title of the page.
+		// Get the title of the 'from' page
 		$content = MMI_Text::normalize_spaces($content);
 		if (preg_match('/<title>([^<]+)<\/title>/i', $content, $title) === 1)
 		{
@@ -139,30 +89,81 @@ MMI_Debug::mdead($url, 'url', $blog_name, 'blog_name', $excerpt, 'excerpt', $tit
 			return self::_get_xml_response(TRUE, $msg);
 		}
 
-		// Search for the post url
-		if ( ! MMI_Blog_Pingback::url_exists($post_url, $content))
+		// Search for the 'to' URL in the 'from' HTML
+		if ( ! MMI_Blog_Pingback::url_exists($url_to, $content))
 		{
 			$msg = 'The source page does not contain the trackback URL.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return self::_get_xml_response(TRUE, $msg);
 		}
 
-MMI_Debug::dead('pre-save');
-		$data['comment_post_ID'] = $post->id;
-		$data['comment_author'] = strip_tags($blog_name);
-		$ip = Arr::get($_SERVER, 'REMOTE_ADDR');
-		$title = strip_tags($title);
-		$url = strip_tags($url);
-		$success = self::save($post->id, $title, $url, $ip);
-		return self::_get_xml_response(! $success, $msg);
+		if ( ! MMI_Blog_Trackback::save($post_id, $title, $url_from))
+		{
+			$msg = 'There was a problem saving the trackback.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return self::_get_xml_response(TRUE, $msg);
+		}
+		return self::_get_xml_response(FALSE);
 	}
 
+	/**
+	 * Send a trackback.
+	 *
+	 * @param	string	the trackback URL
+	 * @param	array	the trackback parameters (keys = blog_name,excerpt,title,url)
+	 * @param	integer	the cURL connection timeout
+	 * @param	string	the trackback response
+	 * @return	boolean
+	 */
+	public static function send($trackback_url, $parms, $connection_timeout = 10, & $response = '')
+	{
+		// Verify the trackback URL
+		if (empty($trackback_url))
+		{
+			$msg = 'No trackback URL found.';
+			MMI_Log::log_info(__METHOD__, __LINE__, $msg);
+			$response = $msg;
+			return FALSE;
+		}
 
+		// Verify the trackback parameters
+		if (empty($parms))
+		{
+			$msg = 'No trackback parameters found.';
+			MMI_Log::log_info(__METHOD__, __LINE__, $msg);
+			$response = $msg;
+			return FALSE;
+		}
+		$url_from = Arr::get($parms, 'url');
+		if (empty($url_from))
+		{
+			$msg = 'No URL parameter found.';
+			MMI_Log::log_info(__METHOD__, __LINE__, $msg);
+			$response = $msg;
+			return FALSE;
+		}
 
+		// Get cURL response
+		$host = parse_url($trackback_url, PHP_URL_HOST);
+		$curl_response = MMI_Curl::factory()
+			->debug(TRUE)
+			->add_http_header('Host', $host)
+			->post($trackback_url, $parms)
+		;
 
+		// Check the response
+		$success = self::_check_response($curl_response, $msg);
+		$response = $msg;
 
-
-
+		// Log the trackback
+		$urls = array
+		(
+			'from'		=> $url_from,
+			'to'		=> $trackback_url,
+		);
+		MMI_Blog_Pingback::log($success, 'trackback', $urls, $curl_response);
+		return $success;
+	}
 
 	/**
 	 * Check if a trackback is already present for a post.
@@ -190,24 +191,65 @@ MMI_Debug::dead('pre-save');
 	 * @param	integer	the post id
 	 * @param	string	the trackback page title
 	 * @param	string	the trackback URL
-	 * @param	string	the remote IP address
 	 * @return	boolean
 	 */
-	public static function save($post_id, $title, $url, $ip = NULL)
+	public static function save($post_id, $title, $url)
 	{
 		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$comment = MMI_Blog_Comment::factory($driver);
 		$comment->author = 'trackback';
+		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR');
 		$comment->author_url = str_replace('&', '&amp;', $url);
 		$comment->content = $title;
 		$comment->post_id = $post_id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s');
 		$comment->type = 'trackback';
-		if (isset($ip))
-		{
-			$comment->author_ip = $ip;
-		}
 		return $comment->save();
+	}
+
+	/**
+	 * Check the trackback response.
+	 * If the response contains an XML string, the message elements are used
+	 * to create the $msg output parameter.
+	 *
+	 * @param	MMI_Curl_Response	the cURL response object
+	 * @param	string				the error or success message extracted
+	 * @return	boolean
+	 */
+	protected static function _check_response($response, & $msg = '')
+	{
+		if ( ! $response instanceof MMI_Curl_Response)
+		{
+			$msg = 'no cURL response received';
+			MMI_Log::log_error(__METHOD__, __LINE__, 'Trackback failed: '.$msg);
+			return FALSE;
+		}
+
+		$response = trim($response->body());
+		if (strpos($response, '<?xml') !== 0)
+		{
+			$msg = 'invalid XML document';
+			MMI_Log::log_error(__METHOD__, __LINE__, 'Trackback failed: '.$msg);
+			return FALSE;
+		}
+
+		$xml = simplexml_load_string($response);
+		$message = $xml->xpath('/response/message');
+		if (is_array($message))
+		{
+			$details = array();
+			foreach ($message as $item)
+			{
+				$item = (array) $item;
+				$details[] = trim(reset($item));
+			}
+			$msg = implode('; ', $details);
+		}
+		if ( ! empty($msg))
+		{
+			MMI_Log::log_error(__METHOD__, __LINE__, 'Trackback failed: '.$msg);
+		}
+		return empty($msg);
 	}
 
 	/**
