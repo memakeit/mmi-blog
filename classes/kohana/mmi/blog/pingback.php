@@ -10,6 +10,155 @@
 class Kohana_MMI_Blog_Pingback
 {
 	/**
+	 * Receive and process a pingback.
+	 *
+	 * @param	array	the pingback arguments (from URL, to URL)
+	 * @return	string
+	 */
+	public static function receive($args)
+	{
+		// Verify the URLs
+		$base = URL::base(FALSE, TRUE);
+		$base_url = str_replace(array('http://www.', 'http://'), '', $base);
+		$url_from = str_replace('&amp;', '&', $args[0]);
+		$url_to = str_replace('&amp;', '&', $args[1]);
+		if ($url_to === $url_from)
+		{
+			$msg = 'The from and to URLs cannot be the same.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(0, $msg);
+		}
+		if ( ! substr_count($url_to, $base_url))
+		{
+			$msg = 'There does not seem to be a valid link in your request.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(0, $msg);
+		}
+
+		// Format the 'to' URL
+		$url = str_replace($base, '', $url_to);
+		$idx = strpos($url, '?');
+		if ($idx !== FALSE)
+		{
+			$url = substr($url, 0, $idx);
+		}
+		$idx = strpos($url, '#');
+		if ($idx !== FALSE)
+		{
+			$url = substr($url, 0, $idx);
+		}
+		$url = rtrim($url, '/');
+
+		// Format the 'from' URL
+		$from_parts = parse_url($url_from);
+		$scheme = Arr::get($from_parts, 'scheme');
+		if (empty($scheme))
+		{
+			$url_from = 'http://'.$url_from;
+			$from_parts = parse_url($url_from);
+		}
+		$host = Arr::get($from_parts, 'host');
+		if (empty($host))
+		{
+			$msg = 'The from URL is invalid.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return FALSE;
+		}
+
+		// Get the post parameters
+		$parms = explode('/', $url);
+		if (count($parms) < 3)
+		{
+			$msg = 'A post does not exist for that URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(33, $msg);
+		}
+		$slug = array_pop($parms);
+		$month = array_pop($parms);
+		$year = array_pop($parms);
+		if (empty($year) OR empty($month) OR empty($slug))
+		{
+			$msg = 'A post does not exist for that URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(33, $msg);
+		}
+
+		// Get the post
+		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
+		$post = MMI_Blog_Post::factory($driver)->get_post($year, $month, $slug);
+		if (empty($post))
+		{
+			$msg = 'A post does not exist for that URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(33, $msg);
+		}
+		$post_id = $post->id;
+		unset($post);
+
+		// Check for duplicate pingbacks
+		$author = array('url' => $url_from);
+		if (MMI_Blog_Pingback::is_duplicate($post_id, NULL, $author))
+		{
+			$msg = 'The pingback has already been registered.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(48, $msg);
+		}
+
+		// Wait for the 'from' server to publish
+		sleep(1);
+
+		// Get the 'from' page content
+		$curl = MMI_Curl::factory();
+		$response = $curl
+			->add_curl_option(CURLOPT_CONNECTTIMEOUT, 30)
+			->get($url_from)
+		;
+		if ($response instanceof MMI_Curl_Response)
+		{
+			$content = $response->body();
+			unset($curl, $response);
+		}
+		else
+		{
+			$msg = 'Unable to retrieve content for the page.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(32, $msg);
+		}
+
+		// Get the title of the 'from' page
+		$content = MMI_Text::normalize_spaces($content);
+		if (preg_match('/<title>([^<]+)<\/title>/i', $content, $title) === 1)
+		{
+			$title = $title[1];
+		}
+		if (empty($title))
+		{
+			$msg = 'A title does not exist for the page.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(32, $msg);
+		}
+
+		// Search for the 'to' URL in the 'from' HTML
+		if ( ! MMI_Blog_Pingback::url_exists($url_to, $content))
+		{
+			$msg = 'The source page does not contain the pingback URL.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(17, $msg);
+		}
+
+		// Save pingback
+		if ( ! MMI_Blog_Pingback::save($post_id, $title, $url_from))
+		{
+			$msg = 'There was a problem saving the pingback.';
+			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
+			return new IXR_Error(48, $msg);
+		}
+
+		// Return success
+		return sprintf('Pingback from %s to %s was registered.', $url_from, $url_to);
+	}
+
+	/**
 	 * Attempt to send pingbacks to the destination URLs.
 	 * If the destination URLs parameter is an HTML string, the URLs will be
 	 * extracted.  Otherwise an array of destination URLs can be specified.
@@ -20,7 +169,7 @@ class Kohana_MMI_Blog_Pingback
 	 * @param	array	the ping responses
 	 * @return	boolean
 	 */
-	public static function send_pingbacks($destinations, $url_from, $connection_timeout = 10, & $responses = array())
+	public static function msend($destinations, $url_from, $connection_timeout = 10, & $responses = array())
 	{
 		if ( ! is_array($responses))
 		{
@@ -34,7 +183,7 @@ class Kohana_MMI_Blog_Pingback
 		}
 		foreach ($destinations as $url_to)
 		{
-			$temp = self::send_pingback($url_from, $url_to, $connection_timeout, $response);
+			$temp = self::send($url_from, $url_to, $connection_timeout, $response);
 			$success = $success && $temp;
 			$responses[$url_to] = $response;
 		}
@@ -50,8 +199,9 @@ class Kohana_MMI_Blog_Pingback
 	 * @param	string	the ping response
 	 * @return	boolean
 	 */
-	public static function send_pingback($url_from, $url_to, $connection_timeout = 10, & $response = '')
+	public static function send($url_from, $url_to, $connection_timeout = 10, & $response = '')
 	{
+		// Verify the pingback URL
 		$url_xmlrpc = self::get_pingback_url($url_to, $connection_timeout);
 		if (empty($url_xmlrpc))
 		{
@@ -79,17 +229,10 @@ class Kohana_MMI_Blog_Pingback
 		;
 
 		// Check the response
-		if ( ! $curl_response instanceof MMI_Curl_Response)
-		{
-			$msg = 'No cURL response received. URL: '.$url_xmlrpc;
-			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
-			$response = $msg;
-			return FALSE;
-		}
 		$success = self::_check_response($curl_response, $msg);
 		$response = $msg;
 
-		// Log ping
+		// Log the ping
 		$urls = array
 		(
 			'from'		=> $url_from,
@@ -105,7 +248,7 @@ class Kohana_MMI_Blog_Pingback
 	 *
 	 * @param	boolean				did the pingback succeed?
 	 * @param	string				the type of pingback (pingback|trackback)
-	 * @param	array				an array of URL parameters (keys = from|to|xmlrpc)
+	 * @param	array				an array of URL parameters (keys = from,to,xmlrpc)
 	 * @param	MMI_Curl_Response	the cURL response object
 	 * @return	boolean
 	 */
@@ -289,23 +432,19 @@ class Kohana_MMI_Blog_Pingback
 	 * @param	integer	the post id
 	 * @param	string	the pingback page title
 	 * @param	string	the pingback URL
-	 * @param	string	the remote IP address
 	 * @return	boolean
 	 */
-	public static function save($post_id, $title, $url, $ip = NULL)
+	public static function save($post_id, $title, $url)
 	{
 		$driver = MMI_Blog::get_config()->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$comment = MMI_Blog_Comment::factory($driver);
 		$comment->author = 'pingback';
+		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR');
 		$comment->author_url = str_replace('&', '&amp;', $url);
 		$comment->content = $title;
 		$comment->post_id = $post_id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s');
 		$comment->type = 'pingback';
-		if (isset($ip))
-		{
-			$comment->author_ip = $ip;
-		}
 		return $comment->save();
 	}
 
@@ -318,11 +457,11 @@ class Kohana_MMI_Blog_Pingback
 	 * @param	string				the error or success message extracted
 	 * @return	boolean
 	 */
-	protected static function _check_response($response, & $msg)
+	protected static function _check_response($response, & $msg = '')
 	{
 		if ( ! $response instanceof MMI_Curl_Response)
 		{
-			$msg = 'invalid cURL response';
+			$msg = 'no cURL response received';
 			MMI_Log::log_error(__METHOD__, __LINE__, 'Pingback failed: '.$msg);
 			return FALSE;
 		}

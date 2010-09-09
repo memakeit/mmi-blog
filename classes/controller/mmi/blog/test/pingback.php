@@ -24,6 +24,12 @@ class Controller_MMI_Blog_Test_Pingback extends Controller
 		$data = MMI_Blog_Pingback::get_pingback_url(URL::base(FALSE, TRUE), 30);
 		MMI_Debug::dump($data, 'get_pingback_url');
 
+		$post_url = Route::url('mmi/blog/post', array
+		(
+			'year'	=> '2010',
+			'month'	=> '07',
+			'slug'	=> 'hello-world',
+		), TRUE);
 		$arr = array
 		(
 			'http://www.wired.com',
@@ -37,13 +43,7 @@ Testing
 More Testing
 <a href="http://www.yahoo.com/">Yahoo!</a>
 EOHTML;
-		$data = MMI_Blog_Pingback::send_pingbacks
-		(
-			$arr,
-			'http://localhost/memakeit/blog/2010/07/hello-world',
-			30,
-			$responses
-		);
-		MMI_Debug::mdump($data, 'send_pingbacks', $responses, 'responses');
+		$data = MMI_Blog_Pingback::msend($arr, $post_url, 30, $responses);
+		MMI_Debug::mdump($data, 'msend', $responses, 'responses');
 	}
 } // End Controller_MMI_Blog_Test_Pingback
