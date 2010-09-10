@@ -45,8 +45,8 @@ class Controller_MMI_Blog_Rest_Trackbacks extends MMI_REST_JSON
 				unset
 				(
 					$trackbacks[$idx]->approved,
+					$trackbacks[$idx]->author,
 					$trackbacks[$idx]->author_email,
-					$trackbacks[$idx]->content,
 					$trackbacks[$idx]->driver,
 					$trackbacks[$idx]->gravatar_url,
 					$trackbacks[$idx]->meta,

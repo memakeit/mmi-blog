@@ -4,5 +4,5 @@
 
 ?>
 <li id="comment-${id}">
-	<a href="${author_url}" rel="external nofollow" >${author}</a>
+	<a href="${author_url}" rel="external nofollow" >${content}</a>
 </li>

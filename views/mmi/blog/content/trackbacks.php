@@ -20,7 +20,7 @@ if (is_array($trackbacks) AND count($trackbacks) > 0)
 	foreach ($trackbacks as $trackback)
 	{
 		$output[] = '<li id="comment-'.$trackback->id.'">';
-		$output[] = HTML::anchor($trackback->author_url, $trackback->author, array('rel' => 'external nofollow'));
+		$output[] = HTML::anchor($trackback->author_url, $trackback->content, array('rel' => 'external nofollow'));
 		$output[] = '</li>';
 	}
 	$output[] = '</ol>';
