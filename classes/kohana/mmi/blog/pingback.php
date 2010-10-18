@@ -161,7 +161,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Attempt to send pingbacks to the destination URLs.
 	 * If the destination URLs parameter is an HTML string, the URLs will be
-	 * extracted.  Otherwise an array of destination URLs can be specified.
+	 * extracted. Otherwise an array of destination URLs can be specified.
 	 *
 	 * @param	mixed	the destination URLs (an array or an HTML string)
 	 * @param	string	the ping from URL

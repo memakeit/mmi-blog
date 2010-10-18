@@ -42,7 +42,7 @@ class Kohana_MMI_XMLRPC
 	 * Return the singleton instance of the XML-RPC server. If no instance
 	 * exists, a new one is created.
 	 *
-	 * @return  IXR_Server
+	 * @return	IXR_Server
 	 */
 	public static function server()
 	{
