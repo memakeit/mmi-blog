@@ -44,6 +44,6 @@ More Testing
 <a href="http://www.yahoo.com/">Yahoo!</a>
 EOHTML;
 		$data = MMI_Blog_Pingback::msend($arr, $post_url, 30, $responses);
-		MMI_Debug::mdump($data, 'msend', $responses, 'responses');
+		MMI_Debug::dump($data, 'msend', $responses, 'responses');
 	}
 } // End Controller_MMI_Blog_Test_Pingback

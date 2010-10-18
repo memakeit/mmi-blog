@@ -36,6 +36,6 @@ class Controller_MMI_Blog_Test_Trackback extends Controller
 			'url'		=> 'http://www.google.com',
 		);
 		$data = MMI_Blog_Trackback::send($trackback_url, $post_data, 30, $response);
-		MMI_Debug::mdump($data, 'send', $response, 'response');
+		MMI_Debug::dump($data, 'send', $response, 'response');
 	}
 } // End Controller_MMI_Blog_Test_Trackback
