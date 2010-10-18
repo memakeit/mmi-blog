@@ -39,7 +39,7 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 		$this->_use_ajax = Arr::get($comment_config, 'use_ajax', FALSE);
 
 		// Load parameters
-		$post = isset($request->post) ? ($request->post) : array();
+		$post = (isset($request->post)) ? ($request->post) : (array());
 		$this->_post = Arr::get($post, 'post');
 		$this->_driver = $this->_post->driver;
 	}

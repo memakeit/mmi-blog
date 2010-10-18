@@ -88,7 +88,7 @@ class Kohana_MMI_Blog
 	 */
 	public static function set_nav_type($nav_type)
 	{
-		if( ! empty($nav_type))
+		if ( ! empty($nav_type))
 		{
 			$nav_type = json_encode($nav_type);
 		}

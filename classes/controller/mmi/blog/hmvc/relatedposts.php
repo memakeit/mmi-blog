@@ -30,7 +30,7 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends MMI_HMVC
 		parent::__construct($request);
 
 		// Load parameters
-		$post = isset($request->post) ? ($request->post) : array();
+		$post = (isset($request->post)) ? ($request->post) : (array());
 		$this->_post = Arr::get($post, 'post');
 		$this->_driver = $this->_post->driver;
 	}

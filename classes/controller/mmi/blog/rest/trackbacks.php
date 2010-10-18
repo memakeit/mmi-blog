@@ -42,9 +42,7 @@ class Controller_MMI_Blog_Rest_Trackbacks extends MMI_REST_JSON
 				$trackbacks[$idx]->is_first = ($idx === 0);
 				$trackbacks[$idx]->is_last = ($idx === $last);
 
-				unset
-				(
-					$trackbacks[$idx]->approved,
+				unset($trackbacks[$idx]->approved,
 					$trackbacks[$idx]->author,
 					$trackbacks[$idx]->author_email,
 					$trackbacks[$idx]->driver,
@@ -54,8 +52,7 @@ class Controller_MMI_Blog_Rest_Trackbacks extends MMI_REST_JSON
 					$trackbacks[$idx]->post_id,
 					$trackbacks[$idx]->timestamp,
 					$trackbacks[$idx]->type,
-					$trackbacks[$idx]->user_id
-				);
+					$trackbacks[$idx]->user_id);
 			}
 		}
 		else

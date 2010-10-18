@@ -289,7 +289,7 @@ class Kohana_MMI_Blog_Pingback
 		// Create pingback model
 		$model = Jelly::factory('mmi_pingbacks');
 		$date_created = gmdate('Y-m-d H:i:s');
-		$success = ($success) ? 1 : 0;
+		$success = $success ? 1 : 0;
 		$parms = array
 		(
 			'success', 'type','url_xmlrpc', 'url_from', 'url_to', 'post_data',

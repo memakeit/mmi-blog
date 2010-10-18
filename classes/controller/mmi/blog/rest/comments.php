@@ -60,9 +60,7 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 				$comments[$idx]->is_last = ($idx === $last);
 
 				// Unset unused fields
-				unset
-				(
-					$comments[$idx]->approved,
+				unset($comments[$idx]->approved,
 					$comments[$idx]->author_email,
 					$comments[$idx]->driver,
 					$comments[$idx]->meta,
@@ -70,8 +68,7 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 					$comments[$idx]->post_id,
 					$comments[$idx]->timestamp,
 					$comments[$idx]->type,
-					$comments[$idx]->user_id
-				);
+					$comments[$idx]->user_id);
 			}
 		}
 		else
