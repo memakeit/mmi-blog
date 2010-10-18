@@ -164,7 +164,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 						'title'	=> 'articles for '.gmdate('F Y', $date)
 					)
 				);
-				break;
+			break;
 
 			case MMI_Blog::NAV_CATEGORY:
 				if ( ! empty($nav_parm))
@@ -189,7 +189,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 						)
 					);
 				}
-				break;
+			break;
 
 			case MMI_Blog::NAV_TAG:
 				if ( ! empty($nav_parm))
@@ -214,7 +214,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 						)
 					);
 				}
-				break;
+			break;
 
 			default:
 				$parent->meta->add_link
@@ -226,7 +226,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 						'title'	=> 'recent articles',
 					)
 				);
-				break;
+			break;
 		}
 	}
 
@@ -329,18 +329,18 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 				{
 					$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($post_ids);
 				}
-				break;
+			break;
 
 			case MMI_Blog::NAV_ARCHIVE:
 				$month = substr($nav_parm, -2);
 				$year = substr($nav_parm, 0, 4);
 				$posts = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
 				$posts = Arr::get($posts, $nav_parm, array());
-				break;
+			break;
 
 			default:
 				$posts = MMI_Blog_Post::factory($this->_driver)->get_posts();
-				break;
+			break;
 		}
 		return $posts;
 	}

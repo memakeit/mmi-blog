@@ -211,11 +211,11 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 				{
 					case self::TYPE_CATEGORY:
 						$terms[$id]->guid = self::get_category_guid($terms[$id]->slug);
-						break;
+					break;
 
 					case self::TYPE_TAG:
 						$terms[$id]->guid = self::get_tag_guid($terms[$id]->slug);
-						break;
+					break;
 				}
 			}
 			if ($cache_lifetime > 0)

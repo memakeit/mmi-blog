@@ -789,11 +789,11 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 						{
 							case MMI_Blog_Term::TYPE_TAG:
 								$posts[$found_id]->tags[] = $term;
-								break;
+							break;
 
 							default:
 								$posts[$found_id]->categories[] = $term;
-								break;
+							break;
 						}
 					}
 				}
