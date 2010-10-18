@@ -108,7 +108,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		$load_meta = Arr::get($config, 'comment_meta', FALSE);
 
 		$comments = array();
-		$data = Model_WP_Comments::recent_comments($include_trackbacks, self::$_db_mappings, TRUE, $max_num);;
+		$data = Model_WP_Comments::recent_comments($include_trackbacks, self::$_db_mappings, TRUE, $max_num);
 		foreach ($data as $id => $fields)
 		{
 			$comments[] = self::factory($driver)->_load($fields, $load_meta);
