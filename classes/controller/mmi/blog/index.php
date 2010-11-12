@@ -210,8 +210,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	{
 		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-blog_pagination', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-social_addthis.mini', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-bookmark_addthis_pill', array('bundle' => 'blog'));
+		$this->add_js_url('mmi-bookmark_addthis', array('bundle' => 'blog'));
 	}
 
 	/**

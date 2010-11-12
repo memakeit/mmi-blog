@@ -80,10 +80,10 @@ if (count($post) > 0)
 			if (is_array($last_paragraph))
 			{
 				// Insert retweet
-				$route = Route::get('mmi/social/hmvc')->uri(array
+				$route = Route::get('mmi/bookmark/hmvc')->uri(array
 				(
-					'action' 		=> 'tweet',
-					'controller'	=> 'addthis'
+					'action' 		=> MMI_Bookmark_AddThis::MODE_TWEET,
+					'controller'	=> MMI_Bookmark::SERVICE_ADDTHIS,
 				));
 				$retweet = Request::factory($route);
 				$retweet->post = array

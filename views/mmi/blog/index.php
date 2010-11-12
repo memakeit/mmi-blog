@@ -16,10 +16,10 @@ if (count($posts) === 0)
 }
 else
 {
-	$route = Route::get('mmi/social/hmvc')->uri(array
+	$route = Route::get('mmi/bookmark/hmvc')->uri(array
 	(
-		'action' 		=> 'mini',
-		'controller'	=> 'addthis'
+		'action' 		=> MMI_Bookmark_AddThis::MODE_PILL,
+		'controller'	=> MMI_Bookmark::SERVICE_ADDTHIS
 	));
 	$toolbox = Request::factory($route);
 

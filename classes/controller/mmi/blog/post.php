@@ -130,10 +130,10 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected function _inject_media()
 	{
 		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-social_addthis.mini', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-social_addthis.bookmarks', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-bookmark_addthis_pill', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-bookmark_addthis_bookmarks', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-social_addthis', array('bundle' => 'blog'));
+		$this->add_js_url('mmi-bookmark_addthis', array('bundle' => 'blog'));
 	}
 
 	protected function _get_related_posts()
@@ -198,10 +198,10 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$title = $post->title;
 		$url = $post->guid;
 
-		$route = Route::get('mmi/social/hmvc')->uri(array
+		$route = Route::get('mmi/bookmark/hmvc')->uri(array
 		(
-			'action' 		=> 'bookmarks',
-			'controller'	=> 'addthis'
+			'action' 		=> MMI_Bookmark_AddThis::MODE_BOOKMARKS,
+			'controller'	=> MMI_Bookmark::SERVICE_ADDTHIS,
 		));
 		$addthis = Request::factory($route);
 		$addthis->post = array
@@ -222,10 +222,10 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$title = $post->title;
 		$url = $post->guid;
 
-		$route = Route::get('mmi/social/hmvc')->uri(array
+		$route = Route::get('mmi/bookmark/hmvc')->uri(array
 		(
-			'action' 		=> 'mini',
-			'controller'	=> 'addthis'
+			'action' 		=> MMI_Bookmark_AddThis::MODE_PILL,
+			'controller'	=> MMI_Bookmark::SERVICE_ADDTHIS,
 		));
 		$addthis = Request::factory($route);
 		$addthis->post = array
