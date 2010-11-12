@@ -2,7 +2,8 @@
 
 function load_comments(url, template)
 {
-	$.ajax({
+	$.ajax(
+	{
 		cache: false,
 		dataType: 'json',
 		url: url,

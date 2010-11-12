@@ -2,7 +2,8 @@
 
 function load_trackbacks(url, template, allow_pingbacks, allow_trackbacks)
 {
-	$.ajax({
+	$.ajax(
+	{
 		cache: false,
 		dataType: 'json',
 		url: url,
