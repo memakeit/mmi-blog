@@ -10,6 +10,11 @@
 abstract class Controller_MMI_Blog_Feed_Atom extends Controller
 {
 	/**
+	 * @var string the cache type
+	 **/
+	public $cache_type = MMI_Cache::CACHE_TYPE_FEED;
+
+	/**
 	 * @var boolean turn debugging on?
 	 **/
 	public $debug = FALSE;
@@ -45,7 +50,7 @@ abstract class Controller_MMI_Blog_Feed_Atom extends Controller
 		else
 		{
 			$this->request->headers['Content-Type'] = File::mime_by_ext('atom');
-			$this->request->response = $this->_feed->render();
+			$this->request->response = $this->_feed->render().'<!-- published @ '.gmdate('Y-m-d H:i:s').' GMT -->';
 		}
 	}
 } // End Controller_MMI_Blog_Feed_Atom
