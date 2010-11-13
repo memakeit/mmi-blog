@@ -18,6 +18,7 @@ return array
 		'use_ajax'		=> TRUE,
 	),
 	'driver' => MMI_Blog::DRIVER_WORDPRESS,
+	'excerpt_size' => 3, // Number of paragraphs
 	'features' => array
 	(
 		'category'			=> TRUE,
