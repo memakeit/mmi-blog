@@ -85,8 +85,13 @@ else
 		// End header
 		$output[] = '</header>';
 
+		// Begin section
+		$output[] = '<section class="alpha omega grid_8">';
+
+		$output[] = '<p>';
+
 		// Figure
-		$output[] = '<figure class="alpha grid_3">';
+		$output[] = '<figure>';
 		if (empty($img))
 		{
 			$output[] = '<img src="'.URL::site('media/img/icons/48px/Picture.png').'" alt="'.$post_title.'">';
@@ -97,12 +102,22 @@ else
 		}
 		$output[] = '</figure>';
 
-		// Begin section
-		$output[] = '<section class="omega grid_5">';
+		// Excerpt
 		if ( ! empty($excerpt))
 		{
-			$output[] = '<p>'.$excerpt.'</p>';
+			// Remove beginning and ending p tags from the excerpt
+			$excerpt = Text::auto_p($excerpt);
+			if (substr($excerpt, 0, strlen('<p>')) === '<p>')
+			{
+				$excerpt = substr($excerpt, strlen('<p>'));
+			}
+			if (substr($excerpt, - strlen('</p>')) === '</p>')
+			{
+				$excerpt = substr($excerpt, 0, - strlen('</p>'));
+			}
+			$output[] = $excerpt;
 		}
+		$output[] = '</p>';
 
 		// Tags
 		if (count($tags) > 0)
@@ -119,11 +134,12 @@ else
 			$output[] = '</p>';
 		}
 
-		// Toolbox
+		// Footer
 		$output[] = '<div class="last">';
+
+		// Toolbox
 		$toolbox->post = array
 		(
-			'description'	=> $excerpt,
 			'title'			=> $post_title,
 			'url'			=> $post_guid,
 		);

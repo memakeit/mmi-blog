@@ -14,7 +14,7 @@ p.hdr
  ******************************************************************************/
 article header
 {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 article header h2
@@ -57,9 +57,10 @@ article header .comments a
  ******************************************************************************/
 article figure
 {
+	float: left;
 	height: 220px;
 	width: 220px;
-	padding-bottom: 20px;
+	padding: 0 20px 10px 0;
 }
 
 article figure img
@@ -99,20 +100,23 @@ article p.tags a
 	font-size: 1.143em; /* 16px */
 }
 
-/*	sharing and read more
- ******************************************************************************/
-article div.last
+div.last
 {
 	float: left;
+	margin-bottom: 20px;
 	width: 100%;
 }
 
-div.mini
+/*	sharing toolbox
+ ******************************************************************************/
+div.addthis_toolbox.pill
 {
-	margin: 2px 0;
+	float: left;
 }
 
-a.more
+/*	read more
+ ******************************************************************************/
+div.last a.more
 {
 	background: url('../../img/icons/24px/Arrow1 Right.png') no-repeat 100% 0;
 	float: right;

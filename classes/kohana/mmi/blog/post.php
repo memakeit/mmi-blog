@@ -227,21 +227,22 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 * @param	string			the post body (with the excerpt and initial image removed)
 	 * @return	void
 	 */
-	public static function parse_content($post, & $excerpt, & $img, & $body, $use_excerpt = TRUE)
+	public static function parse_content($post, & $excerpt, & $img, & $body)
 	{
 		$body = NULL;
 		$excerpt = $post->excerpt;
+		$excerpt_size = MMI_Blog::get_config()->get('excerpt_size', 1);
 		$img = NULL;
 
 		$content = Text::auto_p($post->content);
 		$content = str_replace(array("\n", "\r"), '', $content);
 
-		// Extract the first paragraph
+		// Extract the initial paragraph(s)
 		$inner = '';
-		$first_paragraph = MMI_Text::get_beginning_paragraphs($content, 1);
-		if (is_array($first_paragraph))
+		$paragraphs = MMI_Text::get_beginning_paragraphs($content, $excerpt_size);
+		if (is_array($paragraphs))
 		{
-			$first_paragraph = $first_paragraph[0];
+			$first_paragraph = $paragraphs[0];
 			$html = $first_paragraph['html'];
 			$inner = $first_paragraph['inner'];
 		}
@@ -262,26 +263,28 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			if ( ! empty($img))
 			{
 				// Remove the initial image from the content
-				$content = str_ireplace($html, '', $content);
+				$content = str_replace($html, '', $content);
 
-				// Extract the first paragraph
+				// Extract the initial paragraph(s)
 				$inner = '';
-				$first_paragraph = MMI_Text::get_beginning_paragraphs($content, 1);
-				if (is_array($first_paragraph))
-				{
-					$first_paragraph = $first_paragraph[0];
-					$html = $first_paragraph['html'];
-					$inner = $first_paragraph['inner'];
-				}
+				$paragraphs = MMI_Text::get_beginning_paragraphs($content, $excerpt_size);
 			}
 		}
 
 		// Set the excerpt
-		if (empty($excerpt) AND ! empty($inner))
+		if (empty($excerpt) AND ! empty($paragraphs))
 		{
+			$html = array();
+			$inner = array();
+			foreach ($paragraphs as $p)
+			{
+				$html[] = $p['html'];
+				$inner[] = $p['inner'];
+			}
+
 			// Remove the excerpt from the content
-			$content = str_ireplace($html, '', $content);
-			$excerpt = $inner;
+			$content = str_replace($html, '', $content);
+			$excerpt = implode("\n\n", $inner);
 		}
 		$body = $content;
 	}
