@@ -11,6 +11,7 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 {
 	// Abstract methods
 	abstract public function get_comments($post_ids = NULL, $reload_cache = TRUE);
+	abstract public function get_form();
 	abstract public function get_recent($include_trackbacks = FALSE, $max_num = 10, $reload_cache = TRUE);
 	abstract public function get_trackbacks($post_ids = NULL, $reload_cache = TRUE);
 	abstract public function is_duplicate($post_id, $content, $author = NULL, $type = NULL);

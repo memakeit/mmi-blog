@@ -51,6 +51,83 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	);
 
 	/**
+	 * Create a form object using configuration settings.
+	 *
+	 * @return	MMI_Form
+	 */
+	public function get_form()
+	{
+		$config = MMI_Blog::get_post_config()->get('comment_form');
+		$allowed_tags = Arr::get($config, 'allowed_tags');
+
+		// Form
+		$form = MMI_Form::factory(Arr::get($config, 'form', array()));
+
+		// HTML Purifier filter
+		$purify = array();
+		if ( ! empty($allowed_tags))
+		{
+			$purify = array
+			(
+				'MMI_Form_Filter_HTML::purify' => array
+				(
+					array
+					(
+						'HTML.Allowed' => implode(',', array_keys($allowed_tags))
+					),
+				),
+			);
+		}
+
+		// Fields
+		$field_config = Arr::get($config, 'fields', array());
+		foreach ($field_config as $type => $settings)
+		{
+			$setting_filters = Arr::get($settings, '_filters', array());
+			$settings['_filters'] = array_merge($setting_filters, $purify);
+
+			if ( ! empty($allowed_tags) AND strcasecmp($type, 'textarea') === 0)
+			{
+				$tags = array_values($allowed_tags);
+				if ( ! empty($tags))
+				{
+					$tags = implode(', ', $tags);
+					$settings['_after'] = '<div class="tags">The following HTML tags are allowed:<br /><em>'.HTML::chars($tags, FALSE).'</em></div>';
+				}
+			}
+			$form->add_field($type, $settings);
+		}
+
+		// Plugins
+		$plugin_config = Arr::get($config, 'plugins', array());
+		foreach ($plugin_config as $type => $config)
+		{
+			$type = strtolower(trim($type));
+			switch ($type)
+			{
+				case 'csrf':
+					$id = Arr::get($config, 'id');
+					$namespace = Arr::get($config, 'namespace');
+					$form->add_csrf($id, $namespace);
+				break;
+
+				case 'recaptcha':
+					$settings = Arr::get($config, 'settings', array());
+					$form->add_captcha($type, $settings);
+				break;
+
+				default:
+					$method_prefix = Arr::get($config, 'method_prefix');
+					$settings = Arr::get($config, 'settings', array());
+					$form->add_plugin($type, $method_prefix, $settings);
+				break;
+			}
+		}
+
+		return $form;
+	}
+
+	/**
 	 * Check if a comment is already present for a post.
 	 * If the author parameter is a string, it represents the author's name.
 	 * If the author parameter is an array, the following keys can be used to
