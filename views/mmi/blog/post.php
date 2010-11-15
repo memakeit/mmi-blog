@@ -82,8 +82,8 @@ if (count($post) > 0)
 				// Insert retweet
 				$route = Route::get('mmi/bookmark/hmvc')->uri(array
 				(
-					'action' 		=> MMI_Bookmark_AddThis::MODE_TWEET,
-					'controller'	=> MMI_Bookmark::SERVICE_ADDTHIS,
+					'action' 		=> MMI_Bookmark::MODE_TWEET,
+					'controller'	=> MMI_Bookmark::DRIVER_ADDTHIS,
 				));
 				$retweet = Request::factory($route);
 				$retweet->post = array
@@ -147,18 +147,18 @@ if (count($post) > 0)
 		$output[] = $comments;
 	}
 
+	// Comment form
+	if ( ! empty($comment_form))
+	{
+		$output[] = '<a name="commentform"></a>';
+		$output[] = $comment_form;
+	}
+
 	// Trackbacks
 	if ( ! empty($trackbacks))
 	{
 		$output[] = $trackbacks;
 	}
-
-//	// Comment form
-//	if ( ! empty($comment_form))
-//	{
-//		$output[] = '<a name="commentform"></a>';
-//		$output[] = $comment_form;
-//	}
 }
 echo implode(PHP_EOL, $output);
 unset($output);
