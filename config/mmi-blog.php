@@ -3,6 +3,7 @@
 // MMI blog configuration
 return array
 (
+	'bookmark_driver' => MMI_Bookmark::DRIVER_ADDTHIS,
 	'cache_lifetimes' => array
 	(
 		'category'	=> 1 * Date::HOUR,
