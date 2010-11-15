@@ -18,8 +18,8 @@ else
 {
 	$route = Route::get('mmi/bookmark/hmvc')->uri(array
 	(
-		'action' 		=> MMI_Bookmark_AddThis::MODE_PILL,
-		'controller'	=> MMI_Bookmark::SERVICE_ADDTHIS
+		'action' 		=> MMI_Bookmark::MODE_PILL,
+		'controller'	=> MMI_Bookmark::DRIVER_ADDTHIS
 	));
 	$toolbox = Request::factory($route);
 
