@@ -330,7 +330,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				if ($is_duplicate)
 				{
 					$valid = FALSE;
-					$form->error('This comment has already posted.');
+					$form->error('This comment has already been posted.');
 				}
 				else
 				{
