@@ -80,11 +80,12 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		}
 
 		// Fields
+		$submit;
 		$field_config = Arr::get($config, 'fields', array());
-		foreach ($field_config as $type => $settings)
+		foreach ($field_config as $type => $options)
 		{
-			$setting_filters = Arr::get($settings, '_filters', array());
-			$settings['_filters'] = array_merge($setting_filters, $purify);
+			$option_filters = Arr::get($options, '_filters', array());
+			$settings['_filters'] = array_merge($option_filters, $purify);
 
 			if ( ! empty($allowed_tags) AND strcasecmp($type, 'textarea') === 0)
 			{
@@ -92,36 +93,49 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 				if ( ! empty($tags))
 				{
 					$tags = implode(', ', $tags);
-					$settings['_after'] = '<div class="tags">The following HTML tags are allowed:<br /><em>'.HTML::chars($tags, FALSE).'</em></div>';
+					$options['_after'] = '<div class="tags">The following HTML tags are allowed:<br /><em>'.HTML::chars($tags, FALSE).'</em></div>'.PHP_EOL.'</div>';
 				}
 			}
-			$form->add_field($type, $settings);
+			if (strcasecmp($type, 'submit') === 0)
+			{
+				$submit = MMI_Form_Field::factory($type, $options);
+			}
+			else
+			{
+				$form->add_field($type, $options);
+			}
 		}
 
 		// Plugins
 		$plugin_config = Arr::get($config, 'plugins', array());
-		foreach ($plugin_config as $type => $config)
+		foreach ($plugin_config as $type => $options)
 		{
 			$type = strtolower(trim($type));
 			switch ($type)
 			{
 				case 'csrf':
-					$id = Arr::get($config, 'id');
-					$namespace = Arr::get($config, 'namespace');
+					$id = Arr::get($options, 'id');
+					$namespace = Arr::get($options, 'namespace');
 					$form->add_csrf($id, $namespace);
 				break;
 
 				case 'recaptcha':
-					$settings = Arr::get($config, 'settings', array());
+					$settings = Arr::get($options, 'settings', array());
 					$form->add_captcha($type, $settings);
 				break;
 
 				default:
-					$method_prefix = Arr::get($config, 'method_prefix');
-					$settings = Arr::get($config, 'settings', array());
+					$method_prefix = Arr::get($options, 'method_prefix');
+					$settings = Arr::get($options, 'settings', array());
 					$form->add_plugin($type, $method_prefix, $settings);
 				break;
 			}
+		}
+
+		// Submit button always comes last
+		if ($submit instanceof MMI_Form_Field)
+		{
+			$form->add_field($submit);
 		}
 
 		return $form;
