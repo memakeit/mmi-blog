@@ -99,8 +99,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$post = MMI_Blog_Post::factory($this->_driver)->get_post($year, $month, $slug);
 		$this->_post = $post;
 
-		$comments_open = ($post->comment_status === 'open');
-		if ($comments_open)
+		if (strcasecmp($post->comment_status, 'open') === 0)
 		{
 			$this->_mmi_comment = MMI_Blog_Comment::factory($this->_driver);
 			$this->_comment_form = $this->_mmi_comment->get_form();
@@ -164,6 +163,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
+			$this->add_css_url('mmi-form_form', array('bundle' => 'form'));
+			$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'form'));
 			if ($form->plugin_exists('jquery_validation'))
 			{
 				$this->add_js_url('mmi-form_jquery.validate.min', array('bundle' => 'blog'));
@@ -311,11 +312,18 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
-			return $form->render();
+			return View::factory('mmi/blog/content/comment_form')
+				->set('form', $form->render())
+				->render();
 		}
 		return '';
 	}
 
+	/**
+	 * Do form validation, check for duplicate comments and save the comment.
+	 *
+	 * @return	void
+	 */
 	protected function _process_comment_form()
 	{
 		$form = $this->_comment_form;

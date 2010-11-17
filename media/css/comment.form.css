@@ -1,0 +1,55 @@
+/* mmi-blog/comment-form.css */
+
+#comment_form header
+{
+	border-bottom: 1px solid #CCC;
+	font-size: 2.571em; /* 36px */
+	line-height: 1.2;
+	margin-bottom: 10px;
+}
+
+/*	form customizations
+ ******************************************************************************/
+#mmi_frm_status
+{
+	width: 496px;
+}
+
+div.mmi
+{
+	width: 100%;
+}
+
+div.mmi.submit
+{
+	width: 540px;
+}
+
+input.mmi
+{
+	width: 208px;
+}
+
+input.mmi.btn
+{
+	float: right;
+	width: 220px;
+}
+
+textarea.mmi
+{
+	width: 528px;
+}
+
+div.tags
+{
+	clear: both;
+	float: left;
+	margin-top: 2px;
+}
+
+form.mmi .submitting
+{
+	float: right;
+	margin-right: 80px;
+}

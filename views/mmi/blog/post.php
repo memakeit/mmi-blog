@@ -141,17 +141,17 @@ if (count($post) > 0)
 		$output[] = $bookmarks;
 	}
 
-	// Comments
-	if ( ! empty($comments))
-	{
-		$output[] = $comments;
-	}
-
 	// Comment form
 	if ( ! empty($comment_form))
 	{
 		$output[] = '<a name="commentform"></a>';
 		$output[] = $comment_form;
+	}
+
+	// Comments
+	if ( ! empty($comments))
+	{
+		$output[] = $comments;
 	}
 
 	// Trackbacks
