@@ -31,7 +31,6 @@ return array
 					'_msg_general' => 'There was a problem saving your comment. Please try again.',
 				),
 			),
-			'_open' => array('_before' => '<h1>Comment Form</h1>'),
 			'id' => 'add_comment',
 		),
 
@@ -71,7 +70,13 @@ return array
 				'required' => 'required',
 			),
 
-			'submit' => array('value' => 'Submit Comment'),
+			'submit' => array
+			(
+				'class' => 'minimal',
+				'value' => 'Submit Comment',
+//				'style' => 'clear:none;',
+				'_after' => '<div class="submitting"><img src="'.URL::site('media/img/animated/loading16x16.gif').'" height=16" width=16" />Submitting Comment &hellip;</div>',
+			),
 		),
 
 		'plugins' => array
@@ -81,16 +86,21 @@ return array
 				'id' => 'token',
 				'namespace' => 'mmi',
 			),
-//			'recaptcha' => array
-//			(
-//				'settings' => array('lang' => 'en', 'theme' => 'blackglass')
-//			),
 			'jquery_validation' => array
 			(
 				'method_prefix' => 'jqv',
-				'settings' => array(),
+				'settings' => array
+				(
+					'options' => MMI_Form_Plugin_JQuery_Validation::get_default_config
+					(
+						Kohana::$environment !== Kohana::PRODUCTION,
+						'error',
+						'success',
+						'div.submit',
+						'Submitting Comment &hellip;'
+					),
+				),
 			),
 		)
-
 	),
 );
