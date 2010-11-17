@@ -93,7 +93,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 				if ( ! empty($tags))
 				{
 					$tags = implode(', ', $tags);
-					$options['_after'] = '<div class="tags">The following HTML tags are allowed:<br /><em>'.HTML::chars($tags, FALSE).'</em></div>'.PHP_EOL.'</div>';
+					$options['_after'] = '<div class="tags">The following HTML tags are allowed: <em>'.HTML::chars($tags, FALSE).'</em></div>'.PHP_EOL.'</div>';
 				}
 			}
 			if (strcasecmp($type, 'submit') === 0)
