@@ -63,38 +63,34 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		// Form
 		$form = MMI_Form::factory(Arr::get($config, 'form', array()));
 
-		// HTML Purifier filter
-		$purify = array();
-		if ( ! empty($allowed_tags))
-		{
-			$purify = array
-			(
-				'MMI_Form_Filter_HTML::purify' => array
-				(
-					array
-					(
-						'HTML.Allowed' => implode(',', array_keys($allowed_tags))
-					),
-				),
-			);
-		}
-
 		// Fields
 		$submit;
 		$field_config = Arr::get($config, 'fields', array());
 		foreach ($field_config as $type => $options)
 		{
-			$option_filters = Arr::get($options, '_filters', array());
-			$settings['_filters'] = array_merge($option_filters, $purify);
-
 			if ( ! empty($allowed_tags) AND strcasecmp($type, 'textarea') === 0)
 			{
+				// Add allowed tags HTML
 				$tags = array_values($allowed_tags);
 				if ( ! empty($tags))
 				{
 					$tags = implode(', ', $tags);
 					$options['_after'] = '<div class="tags">The following HTML tags are allowed: <em>'.HTML::chars($tags, FALSE).'</em></div>'.PHP_EOL.'</div>';
 				}
+
+				// Add HTML Purifier filter
+				$purify = array
+				(
+					'MMI_Form_Filter_HTML::purify' => array
+					(
+						array
+						(
+							'HTML.Allowed' => implode(',', array_keys($allowed_tags))
+						),
+					),
+				);
+				$option_filters = Arr::get($options, '_filters', array());
+				$options['_filters'] = array_merge($option_filters, $purify);
 			}
 			if (strcasecmp($type, 'submit') === 0)
 			{
@@ -137,7 +133,6 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		{
 			$form->add_field($submit);
 		}
-
 		return $form;
 	}
 
