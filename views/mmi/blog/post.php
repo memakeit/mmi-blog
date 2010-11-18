@@ -83,7 +83,7 @@ if (count($post) > 0)
 				$route = Route::get('mmi/bookmark/hmvc')->uri(array
 				(
 					'action' 		=> MMI_Bookmark::MODE_TWEET,
-					'controller'	=> MMI_Bookmark::DRIVER_ADDTHIS,
+					'controller'	=> $bookmark_driver,
 				));
 				$retweet = Request::factory($route);
 				$retweet->post = array

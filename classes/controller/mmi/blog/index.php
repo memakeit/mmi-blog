@@ -15,6 +15,11 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	public $debug = TRUE;
 
 	/**
+	 * @var string the social bookmarking driver
+	 **/
+	protected $_bookmark_driver;
+
+	/**
 	 * @var string the blog driver
 	 **/
 	protected $_driver;
@@ -41,6 +46,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		parent::__construct($request);
 		MMI_Util::load_module('pagination', MODPATH.'pagination');
 		$config = MMI_Blog::get_config();
+		$this->_bookmark_driver = $config->get('bookmark_driver', MMI_Bookmark::DRIVER_ADDTHIS);
 		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$this->_headers_config = $config->get('headers', array());
 		$this->_titles_config = $config->get('titles', array());
@@ -194,6 +200,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 
 		// Configure and add the view
 		$view = View::factory('mmi/blog/index')
+			->set('bookmark_driver', $this->_bookmark_driver)
 			->set('header', $header)
 			->set('pagination', $pagination->render())
 			->set('posts', $posts)
