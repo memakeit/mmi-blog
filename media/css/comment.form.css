@@ -1,5 +1,10 @@
 /* mmi-blog/comment-form.css */
 
+#comment_form
+{
+	margin-bottom: 20px;
+}
+
 #comment_form header
 {
 	border-bottom: 1px solid #CCC;
@@ -34,6 +39,11 @@ input.mmi.btn
 {
 	float: right;
 	width: 220px;
+}
+
+input.mmi.checkable
+{
+	width: auto;
 }
 
 textarea.mmi

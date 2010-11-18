@@ -1,5 +1,10 @@
 /* mmi-blog/comments.css */
 
+#comments
+{
+	margin-bottom: 20px;
+}
+
 #comments_hdr
 {
 	border-bottom: 1px solid #CCC;
