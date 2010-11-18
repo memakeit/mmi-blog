@@ -54,3 +54,14 @@ form.mmi .submitting
 	float: right;
 	margin-right: 80px;
 }
+
+.ie6 form.mmi .submitting
+{
+	margin-right: 40px;
+}
+
+img.offscreen
+{
+	position: fixed;
+	text-indent: -7777px;
+}
