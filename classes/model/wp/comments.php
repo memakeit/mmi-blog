@@ -176,7 +176,8 @@ class Model_WP_Comments extends Jelly_Model
 		{
 			$where_parms['comment_post_id'] = $post_id;
 		}
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms);
+		$order_by = array('comment_id' => 'ASC');
+		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms, 'order_by' => $order_by);
 		if ($as_array)
 		{
 			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
@@ -203,7 +204,7 @@ class Model_WP_Comments extends Jelly_Model
 		{
 			$where_parms['comment_type'] = '';
 		}
-		$order_by = array('comment_id' => 'DESC');
+		$order_by = array('comment_id' => 'ASC');
 		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms, 'order_by' => $order_by);
 		if ($as_array)
 		{
