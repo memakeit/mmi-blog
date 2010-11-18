@@ -55,6 +55,16 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
+	 * Get whether comments are open.
+	 *
+	 * @return	boolean
+	 */
+	public function comments_open()
+	{
+		return (strcasecmp($this->comment_status, 'open') === 0);
+	}
+
+	/**
 	 * Get a page using its slug.
 	 *
 	 * @param	string	the page slug

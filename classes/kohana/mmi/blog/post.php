@@ -10,6 +10,7 @@
 abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 {
 	// Abstract methods
+	abstract public function comments_open();
 	abstract public function get_archive($year, $month, $reload_cache = NULL);
 	abstract public function get_archive_frequencies($reload_cache = NULL);
 	abstract public function get_page($slug);
