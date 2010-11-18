@@ -13,6 +13,12 @@
 	margin-bottom: 10px;
 }
 
+#comment_form div.closed
+{
+	font-size: 1.143em; /* 16px */
+	margin-bottom: 20px;
+}
+
 /*	form customizations
  ******************************************************************************/
 #mmi_frm_status

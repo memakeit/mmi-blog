@@ -5,7 +5,14 @@
 $output = array();
 $output[] = '<section id="comment_form" class="alpha omega grid_8">';
 $output[] = '<header>Leave a Comment</header>';
-$output[] = $form;
+if (empty($form))
+{
+	$output[] = '<div class="closed">Comments are closed for this article.</div>';
+}
+else
+{
+	$output[] = $form;
+}
 $output[] = '</section>';
 
 echo implode(PHP_EOL, $output);
