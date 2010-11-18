@@ -99,7 +99,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$post = MMI_Blog_Post::factory($this->_driver)->get_post($year, $month, $slug);
 		$this->_post = $post;
 
-		if (strcasecmp($post->comment_status, 'open') === 0)
+		// If comments are open, configure the comment form
+		if ($post->comments_open())
 		{
 			$this->_mmi_comment = MMI_Blog_Comment::factory($this->_driver);
 			$this->_comment_form = $this->_mmi_comment->get_form();
@@ -115,6 +116,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 
 		$view = View::factory('mmi/blog/post')
 		 	->set('ajax_comments', $this->_ajax_comments)
+		 	->set('bookmark_driver', $this->_bookmark_driver)
 		 	->set('bookmarks', $this->_get_bookmarks())
 		 	->set('comment_form', $this->_get_comment_form())
 		 	->set('insert_retweet', TRUE)
@@ -159,15 +161,15 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$this->add_css_url('mmi-bookmark_addthis_bookmarks', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-blog_post', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-bookmark_addthis', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'blog'));
 
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
 			$this->add_css_url('mmi-form_form', array('bundle' => 'form'));
-			$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'form'));
 			if ($form->plugin_exists('jquery_validation'))
 			{
-				$this->add_js_url('mmi-form_jquery.validate.min', array('bundle' => 'blog'));
+				$this->add_js_url('mmi-form_jquery.validate.min', array('bundle' => 'form'));
 				$this->add_js_inline('jquery_validate', $form->jqv_get_validation_js());
 			}
 		}
@@ -307,16 +309,21 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		return $addthis->execute()->response;
 	}
 
+	/**
+	 * Get the comment form view.
+	 *
+	 * @return	string
+	 */
 	protected function _get_comment_form()
 	{
-		$form = $this->_comment_form;
-		if (isset($form))
+		$form = '';
+		if (isset($this->_comment_form))
 		{
-			return View::factory('mmi/blog/content/comment_form')
-				->set('form', $form->render())
-				->render();
+			$form = $this->_comment_form->render();
 		}
-		return '';
+		return View::factory('mmi/blog/content/comment_form')
+			->set('form', $form)
+			->render();
 	}
 
 	/**
