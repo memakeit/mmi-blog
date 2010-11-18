@@ -30,6 +30,10 @@ return array
 				(
 					'_msg_general' => 'There was a problem saving your comment. Please try again.',
 				),
+				'_success' => array
+				(
+					'_msg' => 'Your comment has been posted.',
+				)
 			),
 			'id' => 'add_comment',
 		),
@@ -74,8 +78,6 @@ return array
 			(
 				'class' => 'minimal',
 				'value' => 'Submit Comment',
-//				'style' => 'clear:none;',
-				'_after' => '<div class="submitting"><img src="'.URL::site('media/img/animated/loading16x16.gif').'" height=16" width=16" />Submitting Comment &hellip;</div>',
 			),
 		),
 
