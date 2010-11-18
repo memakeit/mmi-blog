@@ -46,6 +46,7 @@ div.tags
 	clear: both;
 	float: left;
 	margin-top: 2px;
+	width: 100%;
 }
 
 form.mmi .submitting
