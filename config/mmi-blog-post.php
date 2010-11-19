@@ -85,11 +85,6 @@ return array
 
 		'plugins' => array
 		(
-			'csrf' => array
-			(
-				'id' => 'token',
-				'namespace' => 'mmi',
-			),
 			'jquery_validation' => array
 			(
 				'method_prefix' => 'jqv',
