@@ -55,9 +55,9 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends MMI_HMVC
 		$parent->css->add_url('mmi-blog_related.posts', array('bundle' => 'blog'));
 
 		// Set response
-		$view = View::factory('mmi/blog/content/related_posts')
-			->set('related', $related)
-		;
-		$this->request->response = $view->render();
+		$this->request->response = View::factory('mmi/blog/content/related_posts', array
+		(
+			'related' => $related,
+		))->render();
 	}
 } // End Controller_MMI_Blog_HMVC_RelatedPosts

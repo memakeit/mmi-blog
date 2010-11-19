@@ -94,12 +94,12 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 		$parent->css->add_url('mmi-blog_trackbacks', array('bundle' => 'blog'));
 
 		// Set response
-		$view = View::factory('mmi/blog/content/trackbacks')
-			->set('header', $this->_get_header($trackbacks))
-			->set('trackback_url', $post->trackback_guid)
-			->set('trackbacks', $trackbacks)
-		;
-		$this->request->response = $view->render();
+		$this->request->response = View::factory('mmi/blog/content/trackbacks', array
+		(
+			'header'		=> $this->_get_header($trackbacks),
+			'trackback_url'	=> $post->trackback_guid,
+			'trackbacks'	=> $trackbacks,
+		))->render();
 	}
 
 	/**
@@ -127,11 +127,11 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 		$parent->js->add_inline('ajax_trackbacks', $js);
 
 		// Set response
-		$view = View::factory('mmi/blog/content/ajax/trackbacks')
-			->set('header', $this->_get_header())
-			->set('trackback_url', $post->trackback_guid)
-		;
-		$this->request->response = $view->render();
+		$this->request->response = View::factory('mmi/blog/content/ajax/trackbacks', array
+		(
+			'header'		=> $this->_get_header(),
+			'trackback_url'	=> $post->trackback_guid,
+		))->render();
 	}
 
 	/**

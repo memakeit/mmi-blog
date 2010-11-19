@@ -75,11 +75,11 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 		$parent->css->add_url('mmi-blog_prev.next', array('bundle' => 'blog'));
 
 		// Set response
-		$view = View::factory('mmi/blog/content/prev_next')
-			->set('prev', $this->_prev)
-			->set('next', $this->_next)
-		;
-		$this->request->response = $view->render();
+		$this->request->response = View::factory('mmi/blog/content/prev_next', array
+		(
+			'prev'	=> $this->_prev,
+			'next'	=> $this->_next,
+		))->render();
 	}
 
 	/**

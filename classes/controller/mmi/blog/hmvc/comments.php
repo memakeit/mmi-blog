@@ -83,14 +83,14 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 		$default_img_size = Arr::get($defaults, 'size');
 
 		// Set response
-		$view = View::factory('mmi/blog/content/comments')
-			->set('comments', $comments)
-			->set('header', $this->_get_header($comments))
-			->set('default_img', $default_img)
-			->set('default_img_size', $default_img_size)
-			->set('feed_url', $post->comments_feed_guid)
-		;
-		$this->request->response = $view->render();
+		$this->request->response = View::factory('mmi/blog/content/comments', array
+		(
+			'comments'			=> $comments,
+			'default_img'		=> $default_img,
+			'default_img_size'	=> $default_img_size,
+			'feed_url'			=> $post->comments_feed_guid,
+			'header'			=> $this->_get_header($comments),
+		))->render();
 	}
 
 	/**
@@ -118,11 +118,11 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 		$parent->js->add_inline('ajax_comments', $js);
 
 		// Set response
-		$view = View::factory('mmi/blog/content/ajax/comments')
-			->set('feed_url', $post->comments_feed_guid)
-			->set('header', $this->_get_header())
-		;
-		$this->request->response = $view->render();
+		$this->request->response = View::factory('mmi/blog/content/ajax/comments', array
+		(
+			'feed_url'	=> $post->comments_feed_guid,
+			'header'	=> $this->_get_header(),
+		))->render();
 	}
 
 	/**
