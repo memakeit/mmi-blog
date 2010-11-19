@@ -43,6 +43,8 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 			$last = count($comments) - 1;
 			foreach ($comments as $idx => $comment)
 			{
+				$comments[$idx]->content = Text::auto_p($comments[$idx]->content);
+
 				// Add gravatar settings
 				if (empty($comment->gravatar_url))
 				{

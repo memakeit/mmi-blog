@@ -16,5 +16,5 @@
 		{{/if}}
 		on <time pubdate="" datetime="${time_attribute}">${time_content}</time>
 	</header>
-	<p>{{html content}}</p>
+	{{html content}}
 </article>
