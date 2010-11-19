@@ -390,9 +390,18 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR', '');
 		$comment->author_url = str_replace('&', '&amp;', Arr::get($values, 'author_url', ''));
 		$comment->content = Arr::get($values, 'content');
-		$comment->post_id = $post_id = $this->_post->id;
+		$comment->post_id = $this->_post->id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s');
-		return $comment->save();
+		$success = $comment->save();
+
+		if ($success)
+		{
+			if ( ! $this->_post->update_comment_count())
+			{
+				MMI_Log::log_error(__METHOD__, __LINE__, 'Unable to update comment count. Post id: '.$this->_post->id);
+			}
+		}
+		return $success;
 	}
 
 	/**
