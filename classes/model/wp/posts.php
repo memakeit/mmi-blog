@@ -232,4 +232,18 @@ LIMIT 1
 EOSQL;
 		return Arr::get(MMI_DB::sql_select($sql, TRUE, $db), '0');
 	}
+
+	/**
+	 * Update the comment count for a post.
+	 *
+	 * @param	integer	the post id
+	 * @param	integer	the comment count
+	 * @return	boolean
+	 */
+	public static function update_comment_count($post_id, $comment_count)
+	{
+		$post = Jelly::factory('wp_posts');
+		$post->comment_count = $comment_count;
+ 		return MMI_Jelly::update($post_id, $post);
+	}
 } // End Model_WP_Posts

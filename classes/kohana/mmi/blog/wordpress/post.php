@@ -65,6 +65,16 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	}
 
 	/**
+	 * Update the comment count.
+	 *
+	 * @return	boolean
+	 */
+	public function update_comment_count()
+	{
+		return Model_WP_Posts::update_comment_count($this->id, $this->comment_count + 1);
+	}
+
+	/**
 	 * Get a page using its slug.
 	 *
 	 * @param	string	the page slug

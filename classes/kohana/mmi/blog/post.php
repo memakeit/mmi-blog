@@ -21,6 +21,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	abstract public function get_random($max_num = 10, $reload_cache = NULL);
 	abstract public function get_recent($max_num = 10, $reload_cache = NULL);
 	abstract public function get_related($id, $max_num = 10, $reload_cache = NULL);
+	abstract public function update_comment_count();
 
 	// Type constants
 	const TYPE_PAGE = 'page';
