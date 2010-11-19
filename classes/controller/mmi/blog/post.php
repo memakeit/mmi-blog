@@ -15,21 +15,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	public $debug = TRUE;
 
 	/**
-	 * @var boolean load comments via AJAX?
-	 **/
-	protected $_ajax_comments;
-
-	/**
-	 * @var boolean allow pingbacks?
-	 **/
-	protected $_allow_pingbacks;
-
-	/**
-	 * @var boolean allow trackbacks?
-	 **/
-	protected $_allow_trackbacks;
-
-	/**
 	 * @var string the social bookmarking driver
 	 **/
 	protected $_bookmark_driver;
@@ -45,11 +30,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected $_driver;
 
 	/**
-	 * @var array the blog feature settings
-	 **/
-	protected $_features_config;
-
-	/**
 	 * @var MMI_Blog_Comment a blog comment object
 	 **/
 	protected $_mmi_comment;
@@ -60,7 +40,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected $_post;
 
 	/**
-	 * Ensure the pagination module is loaded.
 	 * Load the blog settings from the configuration file.
 	 *
 	 * @param	object	the request that created the controller
@@ -69,18 +48,9 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	public function __construct(Request $request)
 	{
 		parent::__construct($request);
-		MMI_Util::load_module('pagination', MODPATH.'pagination');
-
 		$config = MMI_Blog::get_config();
 		$this->_bookmark_driver = $config->get('bookmark_driver', MMI_Bookmark::DRIVER_ADDTHIS);
 		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
-		$this->_features_config = $config->get('features', array());
-
-		// Comment settings
-		$comment_config = $config->get('comments', array());
-		$this->_ajax_comments = Arr::get($comment_config, 'use_ajax', FALSE);
-		$this->_allow_pingbacks = Arr::get($comment_config, 'pingbacks', TRUE);
-		$this->_allow_trackbacks = Arr::get($comment_config, 'trackbacks', TRUE);
 	}
 
 	/**
@@ -90,17 +60,24 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	 */
 	public function action_index()
 	{
+		// Post parameters
 		$request = $this->request;
 		$month = $request->param('month');
 		$year = $request->param('year');
 		$slug = $request->param('slug');
+
+		// Comment settings
+		$config = MMI_Blog::get_config();
+		$features = $config->get('features', array());
+		$allow_comments = Arr::get($features, 'comments', TRUE);
+		$comment_config = $config->get('comments', array());
 
 		// Get the post
 		$post = MMI_Blog_Post::factory($this->_driver)->get_post($year, $month, $slug);
 		$this->_post = $post;
 
 		// If comments are open, configure the comment form
-		if ($post->comments_open())
+		if ($allow_comments AND $post->comments_open())
 		{
 			$this->_mmi_comment = MMI_Blog_Comment::factory($this->_driver);
 			$this->_comment_form = $this->_mmi_comment->get_form();
@@ -114,25 +91,37 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$nav_type = MMI_Blog::get_nav_type();
 		MMI_Blog::set_nav_type($nav_type);
 
-		$view = View::factory('mmi/blog/post')
-		 	->set('ajax_comments', $this->_ajax_comments)
-		 	->set('bookmark_driver', $this->_bookmark_driver)
-		 	->set('bookmarks', $this->_get_bookmarks())
-		 	->set('comment_form', $this->_get_comment_form())
-		 	->set('insert_retweet', TRUE)
-			->set('is_homepage', FALSE)
-			->set('post', $post)
-			->set('toolbox', $this->_get_pill_bookmarks())
-		;
+		// configure the view
+		$view = View::factory('mmi/blog/post', array
+		(
+		 	'ajax_comments'		=> Arr::get($comment_config, 'use_ajax', FALSE),
+		 	'bookmark_driver'	=> $this->_bookmark_driver,
+		 	'bookmarks'			=> $this->_get_bookmarks(),
+		 	'comment_form'		=> $this->_get_comment_form(),
+		 	'insert_retweet'	=> TRUE,
+			'is_homepage'		=> FALSE,
+			'post'				=> $post,
+			'toolbox'			=> $this->_get_pill_bookmarks(),
+		));
 
 		// Comments and trackbacks
-		if (Arr::get($this->_features_config, 'comments', TRUE))
+		if ($allow_comments)
 		{
 			$view->set('comments', $this->_get_comments());
+			$this->_allow_pingbacks = Arr::get($comment_config, 'pingbacks', TRUE);
+			$this->_allow_trackbacks = Arr::get($comment_config, 'trackbacks', TRUE);
 			if ($this->_allow_pingbacks OR $this->_allow_trackbacks)
 			{
 				$view->set('trackbacks', $this->_get_trackbacks());
 			}
+
+			// Add feed for the posts's comments
+			$this->add_meta_link($post->comments_feed_guid, array
+			(
+				'rel'	=> 'alternate',
+				'title'	=> 'Comments for '.HTML::chars($post->title),
+				'type'	=> File::mime_by_ext('atom'),
+			));
 		}
 
 		$post_features = MMI_Blog::get_post_config()->get('features', array());
@@ -157,19 +146,20 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected function _inject_media()
 	{
 		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-bookmark_addthis_pill', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-bookmark_addthis_bookmarks', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-blog_post', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-bookmark_addthis', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'blog'));
+
 
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
-			$this->add_css_url('mmi-form_form', array('bundle' => 'form'));
+			$this->add_css_url('mmi-form_form', array('bundle' => 'blog'));
 			if ($form->plugin_exists('jquery_validation'))
 			{
-				$this->add_js_url('mmi-form_jquery.validate.min', array('bundle' => 'form'));
+				$this->add_js_url('mmi-form_jquery.validate.min', array('bundle' => 'blog'));
 				$this->add_js_inline('jquery_validate', $form->jqv_get_validation_js());
 			}
 		}
@@ -195,7 +185,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	}
 
 	/**
-	 * Using an HMVC request, get the related previous-next post HTML.
+	 * Using an HMVC request, get the previous and next post HTML.
 	 *
 	 * @return	string
 	 */
@@ -267,17 +257,13 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			'action' 		=> MMI_Bookmark::MODE_BOOKMARKS,
 			'controller'	=> $this->_bookmark_driver,
 		));
-		$addthis = Request::factory($route);
-		$addthis->post = array
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
 		(
 			'title'	=> $title,
 			'url'	=> $url,
 		);
-		if ( ! empty($description))
-		{
-			$addthis->post['description'] = $description;
-		}
-		return $addthis->execute()->response;
+		return $hmvc->execute()->response;
 	}
 
 	/**
@@ -296,17 +282,13 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			'action' 		=> MMI_Bookmark::MODE_PILL,
 			'controller'	=> $this->_bookmark_driver,
 		));
-		$addthis = Request::factory($route);
-		$addthis->post = array
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
 		(
 			'title'	=> $title,
 			'url'	=> $url,
 		);
-		if ( ! empty($description))
-		{
-			$addthis->post['description'] = $description;
-		}
-		return $addthis->execute()->response;
+		return $hmvc->execute()->response;
 	}
 
 	/**
@@ -321,9 +303,9 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		{
 			$form = $this->_comment_form->render();
 		}
-		return View::factory('mmi/blog/content/comment_form')
-			->set('form', $form)
-			->render();
+		return View::factory('mmi/blog/content/comment_form', array(
+			'form' => $form,
+		))->render();
 	}
 
 	/**
@@ -339,9 +321,8 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			$valid = $form->valid();
 			if ($valid)
 			{
-				$post_id = $this->_post->id;
 				$values = $form->values();
-				$is_duplicate = $this->_is_duplicate_comment($post_id, $values);
+				$is_duplicate = $this->_is_duplicate_comment($values);
 				if ($is_duplicate)
 				{
 					$valid = FALSE;
@@ -349,16 +330,16 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				}
 				else
 				{
-					$valid = $this->_save_comment($post_id, $values);
+					$valid = $this->_save_comment($values);
+					if ( ! $valid)
+					{
+						$form->error('There was a problem saving your comment. Please try again.');
+					}
 				}
 			}
 			if ($valid)
 			{
 				$form->reset();
-			}
-			else
-			{
-				// Invalid logic here
 			}
 		}
 	}
@@ -366,11 +347,10 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Check if a comment already exists.
 	 *
-	 * @param	integer	the post id
 	 * @param	string	the form values
 	 * @return	boolean
 	 */
-	protected function _is_duplicate_comment($post_id, $values)
+	protected function _is_duplicate_comment($values)
 	{
 		$mappings = array
 		(
@@ -388,17 +368,16 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			}
 		}
 		$content = Arr::get($values, 'content');
-		return $this->_mmi_comment->is_duplicate($post_id, $content, $author);
+		return $this->_mmi_comment->is_duplicate($this->_post->id, $content, $author);
 	}
 
 	/**
 	 * Save the comment.
 	 *
-	 * @param	integer	the post id
 	 * @param	string	the form values
 	 * @return	boolean
 	 */
-	protected function _save_comment($post_id, $values)
+	protected function _save_comment($values)
 	{
 		$comment = $this->_mmi_comment;
 		$comment->author = Arr::get($values, 'author');
@@ -406,7 +385,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR', '');
 		$comment->author_url = str_replace('&', '&amp;', Arr::get($values, 'author_url', ''));
 		$comment->content = Arr::get($values, 'content');
-		$comment->post_id = $post_id;
+		$comment->post_id = $post_id = $this->_post->id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s');
 		return $comment->save();
 	}
