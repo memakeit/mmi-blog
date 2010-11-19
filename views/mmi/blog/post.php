@@ -74,7 +74,7 @@ if (count($post) > 0)
 	$output[] = '<div class="content">';
 	if ( ! empty($post_content))
 	{
-		if (is_bool($insert_retweet) AND $insert_retweet)
+		if ($insert_retweet)
 		{
 			$last_paragraph = MMI_Text::get_ending_paragraphs($post_content, 1);
 			if (is_array($last_paragraph))

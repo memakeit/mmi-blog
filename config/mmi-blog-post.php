@@ -5,8 +5,10 @@ return array
 (
 	'features' => array
 	(
-		'prev_next'		=> TRUE,
-		'related_posts'	=> TRUE,
+		'facebook_meta'		=> FALSE,
+		'insert_retweet'	=> TRUE,
+		'prev_next'			=> TRUE,
+		'related_posts'		=> TRUE,
 	),
 	'num_related_posts' => 5,
 
