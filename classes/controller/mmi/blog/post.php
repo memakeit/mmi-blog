@@ -91,14 +91,15 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$nav_type = MMI_Blog::get_nav_type();
 		MMI_Blog::set_nav_type($nav_type);
 
-		// configure the view
+		// Configure the view
+		$post_features = MMI_Blog::get_post_config()->get('features', array());
 		$view = View::factory('mmi/blog/post', array
 		(
 		 	'ajax_comments'		=> Arr::get($comment_config, 'use_ajax', FALSE),
 		 	'bookmark_driver'	=> $this->_bookmark_driver,
 		 	'bookmarks'			=> $this->_get_bookmarks(),
 		 	'comment_form'		=> $this->_get_comment_form(),
-		 	'insert_retweet'	=> TRUE,
+		 	'insert_retweet'	=> Arr::get($post_features, 'insert_retweet', TRUE),
 			'is_homepage'		=> FALSE,
 			'post'				=> $post,
 			'toolbox'			=> $this->_get_pill_bookmarks(),
@@ -124,7 +125,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			));
 		}
 
-		$post_features = MMI_Blog::get_post_config()->get('features', array());
 		if (Arr::get($post_features, 'prev_next', FALSE))
 		{
 			$view->set('prev_next', $this->_get_prev_next());
@@ -132,6 +132,11 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		if (Arr::get($post_features, 'related_posts', FALSE))
 		{
 			$view->set('related_posts', $this->_get_related_posts());
+		}
+
+		if (Arr::get($post_features, 'facebook_meta', FALSE))
+		{
+			$this->_set_facebook_meta();
 		}
 
 		$this->_title = $post->title;
@@ -388,5 +393,21 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		$comment->post_id = $post_id = $this->_post->id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s');
 		return $comment->save();
+	}
+
+	/**
+	 * Add Facebook meta tags.
+	 *
+	 * @return	void
+	 */
+	protected function _set_facebook_meta()
+	{
+		$post = $this->_post;
+		$this->add_meta_tag('og:site_name', $this->_site_name);
+		$this->add_meta_tag('og:type', 'article');
+		$this->add_meta_tag('og:title', $post->title);
+		$this->add_meta_tag('og:url', $post->guid );
+//	"http://ia.media-imdb.com/images/M/MV5BNzM2NDU5ODUzOV5BMl5BanBnXkFtZTcwNDY1MzQyMQ@@._V1._SX98_SY140_.jpg" extracted from <meta property="og:image" />
+//	"115109575169727" extracted from <meta property="fb:app_id" />
 	}
 } // End Controller_MMI_Blog_Post
