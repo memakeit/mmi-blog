@@ -114,11 +114,6 @@ else
 				$tag_name = $tag->name;
 				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
 			}
-			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
-			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
-			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
-			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
-			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
 			$output[] = implode(', ', $temp);
 			$output[] = '</p>';
 		}
