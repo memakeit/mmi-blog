@@ -251,7 +251,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			$first = $paragraphs[0];
 			if (preg_match('/<img[^>](.*?)\/>/i', $first, $matches) === 1)
 			{
-				if ($matches[0] === $first);
+				if ($matches[0] === $first)
 				{
 					array_shift($paragraphs);
 					$begin = '<p class="img_hdr">'.PHP_EOL.$first.PHP_EOL.'</p>';
