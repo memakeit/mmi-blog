@@ -14,8 +14,6 @@ if (count($post) > 0)
 
 	$post_date = $post->timestamp_created;
 	$post_guid = $post->guid;
-	$post_content = $content = Text::auto_p($post->content);
-//	MMI_Blog_Post::parse_content($post, $excerpt, $img, $body, FALSE);
 
 	// Begin article
 	$output[] = '<article id="post_'.$post->id.'">';
@@ -72,35 +70,15 @@ if (count($post) > 0)
 
 	// Begin content
 	$output[] = '<div class="content">';
-	if ( ! empty($post_content))
-	{
-		if ($insert_retweet)
-		{
-			$last_paragraph = MMI_Text::get_ending_paragraphs($post_content, 1);
-			if (is_array($last_paragraph))
-			{
-				// Insert retweet
-				$route = Route::get('mmi/bookmark/hmvc')->uri(array
-				(
-					'action' 		=> MMI_Bookmark::MODE_TWEET,
-					'controller'	=> $bookmark_driver,
-				));
-				$retweet = Request::factory($route);
-				$retweet->post = array
-				(
-					'title'	=> $post_title,
-					'url'	=> $post_guid,
-				);
-
-				$last_paragraph = $last_paragraph[0];
-				$html = $last_paragraph['html'];
-				$inner = $last_paragraph['inner'];
-				$retweet = $retweet->execute()->response;
-				$post_content = str_replace($html, '', $post_content).'<div>'.$retweet.$inner.'</div>';
-			}
-		}
-		$output[] = $post_content;
-	}
+	$paragraphs = MMI_Text::get_paragraphs($post->content);
+	$output[] = MMI_Blog_Post::format_content($paragraphs, array
+	(
+		'bookmark_driver'	=> $bookmark_driver,
+		'image_header'		=> TRUE,
+		'insert_retweet'	=> TRUE,
+		'title'				=> $post_title,
+		'url'				=> $post_guid,
+	));
 
 	// Tags
 	if (count($tags) > 0)

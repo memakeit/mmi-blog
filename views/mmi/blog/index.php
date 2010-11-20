@@ -52,7 +52,6 @@ else
 
 		$post_date = $post->timestamp_created;
 		$post_guid = $post->guid;
-		MMI_Blog_Post::parse_content($post, $excerpt, $img, $body, TRUE);
 
 		// Begin article
 		$output[] = '<article id="post_'.$post->id.'"'.$class.'>';
@@ -82,61 +81,6 @@ else
 		$output[] = '</span>';
 		$output[] = '</p>';
 
-		// End header
-		$output[] = '</header>';
-
-		// Begin section
-		$output[] = '<section class="alpha omega grid_8">';
-
-		$output[] = '<p>';
-
-		// Figure
-		$output[] = '<figure>';
-		if (empty($img))
-		{
-			$output[] = '<img src="'.URL::site('media/img/icons/48px/Picture.png').'" alt="'.$post_title.'">';
-		}
-		else
-		{
-			$output[] = $img;
-		}
-		$output[] = '</figure>';
-
-		// Excerpt
-		if ( ! empty($excerpt))
-		{
-			// Remove beginning and ending p tags from the excerpt
-			$excerpt = Text::auto_p($excerpt);
-			if (substr($excerpt, 0, strlen('<p>')) === '<p>')
-			{
-				$excerpt = substr($excerpt, strlen('<p>'));
-			}
-			if (substr($excerpt, - strlen('</p>')) === '</p>')
-			{
-				$excerpt = substr($excerpt, 0, - strlen('</p>'));
-			}
-			$output[] = $excerpt;
-		}
-		$output[] = '</p>';
-
-		// Tags
-		if (count($tags) > 0)
-		{
-			$output[] = '<p class="tags">';
-			$output[] = '<strong>Tags:</strong>';
-			$temp = array();
-			foreach ($tags as $tag)
-			{
-				$tag_name = $tag->name;
-				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
-			}
-			$output[] = implode(', ', $temp);
-			$output[] = '</p>';
-		}
-
-		// Footer
-		$output[] = '<div class="last">';
-
 		// Toolbox
 		$toolbox->post = array
 		(
@@ -145,9 +89,45 @@ else
 		);
 		$output[] = $toolbox->execute()->response;
 
+		// End header
+		$output[] = '</header>';
+
+		// Begin section
+		$output[] = '<section class="alpha omega grid_8">';
+
+		// Excerpt
+		$paragraphs = MMI_Text::get_paragraphs($post->content, $excerpt_size);
+		$output[] = MMI_Blog_Post::format_content($paragraphs, array
+		(
+			'image_header' => TRUE,
+		));
+
+		// Tags
+		$output[] = '<div class="last">';
+		if (count($tags) > 0)
+		{
+			$output[] = '<p class="grid_6 alpha">';
+			$output[] = '<strong>Tags:</strong>';
+			$temp = array();
+			foreach ($tags as $tag)
+			{
+				$tag_name = $tag->name;
+				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			}
+			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			$temp[] = HTML::anchor($tag->guid, 'shawn sprehe', array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
+			$output[] = implode(', ', $temp);
+			$output[] = '</p>';
+		}
+
 		// Read more
+		$output[] = '<p class="grid_2 omega">';
 		$link_title = 'read the article about '.HTML::chars($post_title, FALSE);
-		$output[] = '<a class="more" href="'.$post_guid.'" rel="nofollow" title="'.$link_title.'"><strong>Read more</strong></a>';
+		$output[] = '<a href="'.$post_guid.'" rel="nofollow" title="'.$link_title.'"><strong>Read more</strong></a>';
+		$output[] = '</p>';
 		$output[] = '</div>';
 
 		// End section
