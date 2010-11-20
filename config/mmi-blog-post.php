@@ -6,7 +6,6 @@ return array
 	'features' => array
 	(
 		'facebook_meta'		=> FALSE,
-		'insert_retweet'	=> TRUE,
 		'prev_next'			=> TRUE,
 		'related_posts'		=> TRUE,
 	),
