@@ -220,75 +220,71 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	}
 
 	/**
-	 * Parse the post content, extracting (and removing from the body)
-	 * an excerpt and initial image if present.
+	 * Format the content (which is represented as an array of paragraphs).
 	 *
-	 * @param	MMI_Blog_Post	the blog post
-	 * @param	string			the post excerpt
-	 * @param	string			the initial image
-	 * @param	string			the post body (with the excerpt and initial image removed)
-	 * @return	void
+	 * @param	array	the paragraphs
+	 * @param	array	an associative array of formatting settings
+	 * @return	string
 	 */
-	public static function parse_content($post, & $excerpt, & $img, & $body)
+	public static function format_content($paragraphs, $features = array())
 	{
-		$body = NULL;
-		$excerpt = $post->excerpt;
-		$excerpt_size = MMI_Blog::get_config()->get('excerpt_size', 1);
-		$img = NULL;
-
-		$content = Text::auto_p($post->content);
-		$content = str_replace(array("\n", "\r"), '', $content);
-
-		// Extract the initial paragraph(s)
-		$inner = '';
-		$paragraphs = MMI_Text::get_beginning_paragraphs($content, $excerpt_size);
-		if (is_array($paragraphs))
+		if ( ! is_array($paragraphs))
 		{
-			$first_paragraph = $paragraphs[0];
-			$html = $first_paragraph['html'];
-			$inner = $first_paragraph['inner'];
+			$paragraphs = array();
+		}
+		if (empty($paragraphs))
+		{
+			return '';
 		}
 
-		if ( ! empty($inner))
+		if ( ! is_array($features))
 		{
-			// Check for an initial image
-			$img_parts;
-			if (stripos($inner, '<img ') === 0)
-			{
-				$img = $inner;
-			}
-			elseif (preg_match('/<a[^>]*><img[^>](.*?)\/><\/a>/i', $inner, $img_parts) === 1)
-			{
-				$img = $img_parts[0];
-			}
+			$features = array();
+		}
+		$begin = '';
+		$end = '';
 
-			if ( ! empty($img))
+		$image_header = Arr::get($features, 'image_header', FALSE);
+		if ($image_header)
+		{
+			// Format image header
+			$first = $paragraphs[0];
+			if (preg_match('/<img[^>](.*?)\/>/i', $first, $matches) === 1)
 			{
-				// Remove the initial image from the content
-				$content = str_replace($html, '', $content);
-
-				// Extract the initial paragraph(s)
-				$inner = '';
-				$paragraphs = MMI_Text::get_beginning_paragraphs($content, $excerpt_size);
+				if ($matches[0] === $first);
+				{
+					array_shift($paragraphs);
+					$begin = '<p class="img_hdr">'.PHP_EOL.$first.PHP_EOL.'</p>';
+				}
 			}
 		}
 
-		// Set the excerpt
-		if (empty($excerpt) AND ! empty($paragraphs))
+		$insert_retweet = Arr::get($features, 'insert_retweet', FALSE);
+		if ($insert_retweet)
 		{
-			$html = array();
-			$inner = array();
-			foreach ($paragraphs as $p)
+			// Insert retweet
+			$last = array_pop($paragraphs);
+			$route = Route::get('mmi/bookmark/hmvc')->uri(array
+			(
+				'action' 		=> MMI_Bookmark::MODE_TWEET,
+				'controller'	=> Arr::get($features, 'bookmark_driver', MMI_Bookmark::DRIVER_ADDTHIS),
+			));
+			$title = Arr::get($features, 'title');
+			$url = Arr::get($features, 'url');
+			$url_settings = array();
+			foreach (array('title', 'url') as $key)
 			{
-				$html[] = $p['html'];
-				$inner[] = $p['inner'];
+				$temp  = $$key;
+				if ( ! empty($temp))
+				{
+					$url_settings[$key] = $temp;
+				}
 			}
-
-			// Remove the excerpt from the content
-			$content = str_replace($html, '', $content);
-			$excerpt = implode("\n\n", $inner);
+			$retweet = Request::factory($route);
+			$retweet->post = $url_settings;
+			$end = '<div class="last">'.$retweet->execute()->response.$last.PHP_EOL.'</div>';
 		}
-		$body = $content;
+		return $begin.PHP_EOL.'<p>'.PHP_EOL.implode(PHP_EOL.'</p>'.PHP_EOL.'<p>'.PHP_EOL, $paragraphs).PHP_EOL.'</p>'.PHP_EOL.$end;
 	}
 
 	/**
