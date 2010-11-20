@@ -99,7 +99,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		 	'bookmark_driver'	=> $this->_bookmark_driver,
 		 	'bookmarks'			=> $this->_get_bookmarks(),
 		 	'comment_form'		=> $this->_get_comment_form(),
-		 	'insert_retweet'	=> Arr::get($post_features, 'insert_retweet', TRUE),
 			'is_homepage'		=> FALSE,
 			'post'				=> $post,
 			'toolbox'			=> $this->_get_pill_bookmarks(),

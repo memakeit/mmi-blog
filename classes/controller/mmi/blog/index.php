@@ -203,6 +203,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$view = View::factory('mmi/blog/index', array
 		(
 			'bookmark_driver'	=>$this->_bookmark_driver,
+			'excerpt_size'		=> MMI_Blog::get_config()->get('excerpt_size', 2),
 			'header'			=> $header,
 			'pagination'		=> $pagination->render(),
 			'posts'				=> $posts,
