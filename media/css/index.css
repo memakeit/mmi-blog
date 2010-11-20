@@ -14,7 +14,7 @@ p.hdr
  ******************************************************************************/
 article header
 {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 article header h2
@@ -26,7 +26,6 @@ article header h2
 article header p
 {
 	border-bottom: 1px solid #CCC;
-	display: block;
 	float: left;
 	line-height: 24px;
 	position: relative;
@@ -53,70 +52,49 @@ article header .comments a
 	padding-right: 32px;
 }
 
-/*	figure
- ******************************************************************************/
-article figure
+div.addthis_toolbox.pill
 {
-	float: left;
-	height: 220px;
-	width: 220px;
-	padding: 0 20px 10px 0;
-}
-
-article figure img
-{
-	background: #FFF;
-	border: 1px solid #CCC;
-	height: 200px;
-	width: 200px;
-	padding: 9px;
-}
-
-article figure img:hover
-{
-	background: #EEE;
-	border-color: #BBB;
+	padding-top: 4px;
 }
 
 /*	section
  ******************************************************************************/
-article section
-{
-	float: right;
-	padding-bottom: 20px;
-}
-
 article section p
 {
-	float: left;
 	margin-bottom: 20px;
-	width: 100%;
 }
 
-/*	tags
+article section p img
+{
+	float: left;
+	padding: 0 15px 5px 0;
+}
+
+article section p.img_hdr img
+{
+	display: block;
+	float: none;
+	padding: 0;
+}
+
+/*	tags and read more
  ******************************************************************************/
-article p.tags a
+div.last
+{
+	float: left;
+}
+
+div.last p.alpha
 {
 	font-size: 1.143em; /* 16px */
 }
 
-div.last
+div.last p.omega
 {
-	float: left;
-	margin-bottom: 20px;
-	width: 100%;
+	margin-bottom: 0;
 }
 
-/*	sharing toolbox
- ******************************************************************************/
-div.addthis_toolbox.pill
-{
-	float: left;
-}
-
-/*	read more
- ******************************************************************************/
-div.last a.more
+div.last p.omega a
 {
 	background: url('../../img/icons/24px/Arrow1 Right.png') no-repeat 100% 0;
 	float: right;

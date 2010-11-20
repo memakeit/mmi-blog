@@ -4,7 +4,7 @@
  ******************************************************************************/
 article header
 {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 article header h2
@@ -39,9 +39,9 @@ article header a
 	right: 0;
 }
 
-div.mini
+div.addthis_toolbox.pill
 {
-	margin: 4px 0 0 0;
+	padding-top: 4px;
 }
 
 /*	content
@@ -51,9 +51,27 @@ article div.content
 	margin-bottom: 40px;
 }
 
+article p img
+{
+	float: left;
+	padding: 0 15px 5px 0;
+}
+
+article p.img_hdr img
+{
+	display: block;
+	float: none;
+	padding: 0;
+}
+
+article div.content div.last
+{
+	margin-bottom: 20px;
+	min-height: 68px;
+}
+
 .tweet
 {
-	display: inline;
 	float: left;
 	height: 68px;
 	margin: 5px 15px 5px 0;
