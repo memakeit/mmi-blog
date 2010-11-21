@@ -395,7 +395,11 @@ class Controller_MMI_Blog_Post extends MMI_Template
 
 		if ($success)
 		{
-			if ( ! $this->_post->update_comment_count())
+			if ($this->_post->update_comment_count())
+			{
+				$this->_post->comment_count++;
+			}
+			else
 			{
 				MMI_Log::log_error(__METHOD__, __LINE__, 'Unable to update comment count. Post id: '.$this->_post->id);
 			}
