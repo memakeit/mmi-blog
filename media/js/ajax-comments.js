@@ -26,6 +26,10 @@ function load_comments(url, template)
 			var div = $('<div></div>').hide();
 			var html = div.append(template, data).html();
 			$('#comments').append(innerShiv(html));
+			$('#comments article p a').each(function(e)
+			{
+				$(this).attr('rel', 'nofollow external');
+			});
 		}
 	});
 }

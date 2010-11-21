@@ -2,6 +2,16 @@
 
 $(window).load(function()
 {
+	$('#prev_post, #next_post')
+		.delegate('a', 'mouseover', function()
+		{
+			$(this).parent().find('small').show();
+		})
+		.delegate('a', 'mouseout', function()
+		{
+			$(this).parent().find('small').hide();
+		});
+
 	$('#comments_hdr')
 		.delegate('a', 'mouseover', function()
 		{
@@ -12,13 +22,8 @@ $(window).load(function()
 			$(this).find('span').hide();
 		});
 
-	$('#prev_post, #next_post')
-		.delegate('a', 'mouseover', function()
-		{
-			$(this).parent().find('small').show();
-		})
-		.delegate('a', 'mouseout', function()
-		{
-			$(this).parent().find('small').hide();
-		});
+	$('#comments article p a').each(function(e)
+	{
+		$(this).attr('rel', 'nofollow external');
+	});
 });
