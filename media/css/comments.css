@@ -5,6 +5,8 @@
 	margin-bottom: 20px;
 }
 
+/*	comment header
+ ******************************************************************************/
 #comments_hdr
 {
 	border-bottom: 1px solid #CCC;
@@ -43,21 +45,13 @@
 	color: #000;
 }
 
-#comments img
-{
-	margin-left: 10px;
-}
-
+/*	comment content
+ ******************************************************************************/
 #comments article
 {
 	border-bottom: 1px solid #CCC;
 	float: left;
 	padding-top: 20px;
-}
-
-#comments figure
-{
-	padding-bottom: 20px;
 }
 
 #comments article.last
@@ -75,6 +69,11 @@
 #comments article header a
 {
 	font-size: 1em;
+}
+
+#comments figure
+{
+	padding-bottom: 20px;
 }
 
 #comments article p
