@@ -150,7 +150,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected function _inject_media()
 	{
 		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-bookmark_addthis_pill', array('bundle' => 'blog'));
 		$this->add_css_url('mmi-bookmark_addthis_bookmarks', array('bundle' => 'blog'));
 		$this->add_js_url('mmi-blog_post', array('bundle' => 'blog'));
@@ -167,6 +166,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				$this->add_js_inline('jquery_validate', $form->jqv_get_validation_js());
 			}
 		}
+		$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'blog'));
 	}
 
 	/**
