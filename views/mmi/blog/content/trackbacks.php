@@ -6,7 +6,7 @@ $output = array();
 if (is_array($trackbacks) AND count($trackbacks) > 0)
 {
 	// Header
-	$output[] = '<section id="trackbacks" class="alpha omega grid_8">';
+	$output[] = '<section id="trackbacks" class="grid_8 alpha omega">';
 	$output[] = '<header id="trackbacks_hdr">';
 	$output[] = '<span>'.$header.'</span>';
 	if ( ! empty($trackback_url))
@@ -16,7 +16,7 @@ if (is_array($trackbacks) AND count($trackbacks) > 0)
 	$output[] = '</header>';
 
 	// Trackbacks
-	$output[] = '<ol class="alpha omega push_1 grid_7">';
+	$output[] = '<ol class="push_1 grid_7 alpha omega">';
 	foreach ($trackbacks as $trackback)
 	{
 		$output[] = '<li id="comment-'.$trackback->id.'">';

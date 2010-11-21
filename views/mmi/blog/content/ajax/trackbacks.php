@@ -3,7 +3,7 @@
 // mmi/blog/content/ajax/trackbacks
 
 $output = array();
-$output[] = '<section id="trackbacks" class="hidden alpha omega grid_8">';
+$output[] = '<section id="trackbacks" class="hidden grid_8 alpha omega">';
 $output[] = '<header id ="trackbacks_hdr">';
 $output[] = '<span>'.$header.'</span>';
 if ( ! empty($trackback_url))
@@ -12,7 +12,7 @@ if ( ! empty($trackback_url))
 }
 $output[] = '</header>';
 
-$output[] = '<ol class="alpha omega push_1 grid_7">';
+$output[] = '<ol class="push_1 grid_7 alpha omega">';
 // AJAX trackback template goes here
 $output[] = '</ol>';
 $output[] = '</section>';

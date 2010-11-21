@@ -5,9 +5,9 @@
 $output = array();
 if ( ! empty($related))
 {
-	$output[] = '<section id="related_posts" class="alpha omega grid_8">';
+	$output[] = '<section id="related_posts" class="grid_8 alpha omega">';
 	$output[] = '<header>Possibly Related Articles</header>';
-	$output[] = '<ul class="alpha omega push_1 grid_7">';
+	$output[] = '<ul class="push_1 grid_7 alpha omega">';
 	foreach ($related as $item)
 	{
 		$output[] = '<li>'.HTML::anchor($item['guid'], $item['title'], array('rel'	=> 'nofollow')).'</li>';

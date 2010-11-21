@@ -28,7 +28,7 @@ else
 	foreach ($posts as $post)
 	{
 		// Set content class
-		$class = 'alpha omega grid_8';
+		$class = 'grid_8 alpha omega';
 		if ($i === 0)
 		{
 			$class .= ' first';
@@ -58,11 +58,11 @@ else
 
 		// Begin header
 		$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
-		$output[] = '<header class="alpha omega grid_8">';
+		$output[] = '<header class="grid_8 alpha omega">';
 		$output[] = '<h2><a href="'.$post_guid.'" title="'.$post_title.'">'.Text::widont($post_title).'</a></h2>';
 		$output[] = '<p>';
-		$output[] = '<span class="comments omega grid_2"><a href="'.$post_guid.'/#comments" title="'.$link_title.'">'.$comment_count.' '.Inflector::plural('comment', $comment_count).'</a></span>';
-		$output[] = '<span class="alpha grid_6">';
+		$output[] = '<span class="comments grid_2 omega"><a href="'.$post_guid.'/#comments" title="'.$link_title.'">'.$comment_count.' '.Inflector::plural('comment', $comment_count).'</a></span>';
+		$output[] = '<span class="grid_6 alpha">';
 		$output[] = 'By '.$author;
 		$date = HTML::anchor($post->archive_guid, gmdate('F j, Y', $post_date), array('rel' => 'archive index', 'title' => 'articles for '.gmdate('F Y', $post_date)));
 		$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.$date.'</time>';
@@ -93,7 +93,7 @@ else
 		$output[] = '</header>';
 
 		// Begin section
-		$output[] = '<section class="alpha omega grid_8">';
+		$output[] = '<section class="grid_8 alpha omega">';
 
 		// Excerpt
 		$paragraphs = MMI_Text::get_paragraphs($post->content, $excerpt_size);

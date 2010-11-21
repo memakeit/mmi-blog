@@ -3,7 +3,7 @@
 // mmi/blog/content/ajax/comments
 
 $output = array();
-$output[] = '<section id="comments" class="alpha omega grid_8">';
+$output[] = '<section id="comments" class="grid_8 alpha omega">';
 
 // Header
 $output[] = '<header id="comments_hdr">';

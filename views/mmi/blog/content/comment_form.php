@@ -3,7 +3,7 @@
 // mmi/blog/content/comment_form
 
 $output = array();
-$output[] = '<section id="comment_form" class="alpha omega grid_8">';
+$output[] = '<section id="comment_form" class="grid_8 alpha omega">';
 $output[] = '<header>Leave a Comment</header>';
 if (empty($form))
 {

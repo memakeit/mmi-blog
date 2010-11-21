@@ -4,10 +4,10 @@
 
 ?>
 <article class="comment{{if is_first}} first{{/if}}{{if is_last}} last{{/if}}" id="comment-${id}">
-	<figure class="alpha grid_2">
+	<figure class="grid_2 alpha">
 		<img width="${img_size}" height="${img_size}" alt="${author}" src="${gravatar_url}">
 	</figure>
-	<header class="omega grid_6">
+	<header class="grid_6 omega">
 		By
 		{{if author_url}}
 			<a href="${author_url}" rel="external nofollow">${author}</a>

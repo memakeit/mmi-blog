@@ -20,7 +20,7 @@ if (count($post) > 0)
 
 	// Begin header
 	$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
-	$output[] = '<header class="alpha omega grid_8">';
+	$output[] = '<header class="grid_8 alpha omega">';
 	if ($is_homepage)
 	{
 		$output[] = '<h2>'.Text::widont(HTML::chars($post_title, FALSE)).'</h2>';
@@ -40,7 +40,7 @@ if (count($post) > 0)
 		$link_text = $comment_count.' '.Inflector::plural('comment', $comment_count);
 	}
 	$output[] = '<a href="#comments" id="comment_ct" title="'.$link_title.'">'.$link_text.'</a>';
-	$output[] = '<span class="alpha grid_6">';
+	$output[] = '<span class="grid_6 alpha">';
 	$output[] = 'By '.$author;
 	$date = HTML::anchor($post->archive_guid, gmdate('F j, Y', $post_date), array('rel' => 'archive index', 'title' => 'articles for '.gmdate('F Y', $post_date)));
 	$output[] = ' on <time datetime="'.gmdate('c', $post_date).'" pubdate>'.$date.'</time>';
@@ -122,7 +122,6 @@ if (count($post) > 0)
 	// Comment form
 	if ( ! empty($comment_form))
 	{
-		$output[] = '<a name="commentform"></a>';
 		$output[] = $comment_form;
 	}
 

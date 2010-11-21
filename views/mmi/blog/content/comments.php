@@ -4,7 +4,7 @@
 
 $output = array();
 $num_comments = count($comments);
-$output[] = '<section id="comments" class="alpha omega grid_8">';
+$output[] = '<section id="comments" class="grid_8 alpha omega">';
 
 // Header
 $class = (count($comments) === 0) ? ' class="zero"': '';
@@ -55,12 +55,12 @@ if ($num_comments > 0)
 		{
 			$gravatar_url = MMI_Gravatar::get_gravatar_url($author_email);
 		}
-		$output[] = '<figure class="alpha grid_2">';
+		$output[] = '<figure class="grid_2 alpha">';
 		$output[] = '<img src="'.$gravatar_url.'" alt="'.HTML::chars($author, FALSE).'" height="'.$default_img_size.'" width="'.$default_img_size.'" />';
 		$output[] = '</figure>';
 
 		// Header
-		$output[] = '<header class="omega grid_6">';
+		$output[] = '<header class="grid_6 omega">';
 		$output[] = 'By ';
 		if (empty($author_url))
 		{
