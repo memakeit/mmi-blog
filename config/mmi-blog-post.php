@@ -44,7 +44,7 @@ return array
 			'text' => array
 			(
 				'_label' => 'Name',
-				'id' => 'author',
+				'id' => 'comment_author',
 				'required' => 'required',
 			),
 
@@ -58,20 +58,20 @@ return array
 						'_html' => '&nbsp;<em>(required, but will not be published)</em>',
 					),
 				),
-				'id' => 'author_email',
+				'id' => 'comment_author_email',
 				'required' => 'required',
 			),
 
 			'url' => array
 			(
 				'_label' => 'Website',
-				'id' => 'author_url',
+				'id' => 'comment_author_url',
 			),
 
 			'textarea' => array
 			(
 				'_label' => 'Comment',
-				'id' => 'content',
+				'id' => 'comment_content',
 				'required' => 'required',
 			),
 

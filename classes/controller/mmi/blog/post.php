@@ -358,9 +358,9 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	{
 		$mappings = array
 		(
-			'author'		=> 'name',
-			'author_email'	=> 'email',
-			'author_url'	=> 'url'
+			'comment_author'		=> 'name',
+			'comment_author_email'	=> 'email',
+			'comment_author_url'	=> 'url'
 		);
 		$author = array();
 		foreach ($mappings as $key1 => $key2)
@@ -371,7 +371,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				$author[$key2] = $temp;
 			}
 		}
-		$content = Arr::get($values, 'content');
+		$content = Arr::get($values, 'comment_content');
 		return $this->_mmi_comment->is_duplicate($this->_post->id, $content, $author);
 	}
 
@@ -384,11 +384,11 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	protected function _save_comment($values)
 	{
 		$comment = $this->_mmi_comment;
-		$comment->author = Arr::get($values, 'author');
-		$comment->author_email = Arr::get($values, 'author_email');
+		$comment->author = Arr::get($values, 'comment_author');
+		$comment->author_email = Arr::get($values, 'comment_author_email');
 		$comment->author_ip = Arr::get($_SERVER, 'REMOTE_ADDR', '');
-		$comment->author_url = str_replace('&', '&amp;', Arr::get($values, 'author_url', ''));
-		$comment->content = Arr::get($values, 'content');
+		$comment->author_url = str_replace('&', '&amp;', Arr::get($values, 'comment_author_url', ''));
+		$comment->content = Arr::get($values, 'comment_content');
 		$comment->post_id = $this->_post->id;
 		$comment->timestamp = gmdate('Y-m-d H:i:s');
 		$success = $comment->save();
