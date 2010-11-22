@@ -184,7 +184,7 @@ class Kohana_MMI_Blog_Pingback
 		foreach ($destinations as $url_to)
 		{
 			$temp = self::send($url_from, $url_to, $connection_timeout, $response);
-			$success = $success && $temp;
+			$success = ($success AND $temp);
 			$responses[$url_to] = $response;
 		}
 		return $success;

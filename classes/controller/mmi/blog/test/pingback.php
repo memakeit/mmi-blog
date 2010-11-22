@@ -36,13 +36,6 @@ class Controller_MMI_Blog_Test_Pingback extends Controller
 			'http://www.noupe.com',
 			'http://www.onextrapixel.com',
 		);
-		$html = <<<EOHTML
-Test
-<a href="http://www.smashingmagazine.com/">Smashing Magazine</a>
-Testing
-More Testing
-<a href="http://www.yahoo.com/">Yahoo!</a>
-EOHTML;
 		$data = MMI_Blog_Pingback::msend($arr, $post_url, 30, $responses);
 		MMI_Debug::dump($data, 'msend', $responses, 'responses');
 	}
