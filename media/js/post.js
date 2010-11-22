@@ -2,7 +2,7 @@
 
 $(window).load(function()
 {
-	$('#content div.content a').each(function(e)
+	$('#content .content a').each(function(e)
 	{
 		$(this).attr('rel', 'nofollow external');
 	});
