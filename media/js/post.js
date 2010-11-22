@@ -2,6 +2,11 @@
 
 $(window).load(function()
 {
+	$('#content div.content a').each(function(e)
+	{
+		$(this).attr('rel', 'nofollow external');
+	});
+
 	$('#prev_post, #next_post')
 		.delegate('a', 'mouseover', function()
 		{
