@@ -104,9 +104,10 @@ else
 
 		// Tags
 		$output[] = '<div class="last">';
+		$output[] = '<p class="grid_6 alpha">';
 		if (count($tags) > 0)
 		{
-			$output[] = '<p class="grid_6 alpha">';
+
 			$output[] = '<strong>Tags:</strong>';
 			$temp = array();
 			foreach ($tags as $tag)
@@ -115,8 +116,12 @@ else
 				$temp[] = HTML::anchor($tag->guid, $tag_name, array('rel' => 'index tag', 'title' => 'articles tagged as '.$tag_name));
 			}
 			$output[] = implode(', ', $temp);
-			$output[] = '</p>';
 		}
+		else
+		{
+			$output[] = '&nbsp;';
+		}
+		$output[] = '</p>';
 
 		// Read more
 		$output[] = '<p class="grid_2 omega">';
