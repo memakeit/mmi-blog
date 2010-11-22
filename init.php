@@ -21,7 +21,7 @@ Route::set('mmi/blog/index', 'blog(/<page>)', array('page' => '\d+'))
 	'controller'	=> 'index',
 	'directory'		=> 'mmi/blog',
 ));
-Route::set('mmi/blog/archive', 'blog/<year>/<month>(/<page>)', array('year' => '\d{4}', 'month' => '\d{2}', 'page' => '\d+'))
+Route::set('mmi/blog/archive', 'archive/<year>/<month>(/<page>)', array('year' => '\d{4}', 'month' => '\d{2}', 'page' => '\d+'))
 ->defaults(array
 (
 	'action'		=> 'archive',
@@ -63,17 +63,17 @@ Route::set('mmi/blog/feed/index', 'feed')
 	'controller'	=> 'index',
 	'directory'		=> 'mmi/blog/feed',
 ));
-Route::set('mmi/blog/feed/post/comments', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
-->defaults(array
-(
-	'controller'	=> 'comments',
-	'directory'		=> 'mmi/blog/feed/post',
-));
 Route::set('mmi/blog/feed/comments', 'feed/comments')
 ->defaults(array
 (
 	'controller'	=> 'comments',
 	'directory'		=> 'mmi/blog/feed',
+));
+Route::set('mmi/blog/feed/post/comments', 'blog/<year>/<month>/<slug>/feed', array('year' => '\d{4}', 'month' => '\d{2}', 'slug' => '[a-zA-Z0-9\-]+'))
+->defaults(array
+(
+	'controller'	=> 'comments',
+	'directory'		=> 'mmi/blog/feed/post',
 ));
 
 // XML-RPC routes
