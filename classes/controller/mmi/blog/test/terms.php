@@ -24,7 +24,7 @@ class Controller_MMI_Blog_Test_Terms extends Controller
 		$mmi_term = MMI_Blog_Term::factory(MMI_Blog::DRIVER_WORDPRESS);
 
 		$data = $mmi_term->get_category_frequencies(TRUE);
-		MMI_Debug::dump($data, 'tag frequencies');
+		MMI_Debug::dump($data, 'category frequencies');
 
 		$data = $mmi_term->get_tag_frequencies(TRUE);
 		MMI_Debug::dump($data, 'tag frequencies');
