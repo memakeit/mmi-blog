@@ -166,7 +166,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				$this->add_js_inline('jquery_validate', $form->jqv_get_validation_js());
 			}
 		}
-		$this->add_css_url('mmi-blog_comment.form', array('bundle' => 'blog'));
+		$this->add_css_url('mmi-blog_comment-form', array('bundle' => 'blog'));
 	}
 
 	/**
