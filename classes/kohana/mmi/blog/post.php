@@ -254,7 +254,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 				if ($matches[0] === $first)
 				{
 					array_shift($paragraphs);
-					$begin = '<p class="img_hdr">'.PHP_EOL.$first.PHP_EOL.'</p>';
+					$begin = '<p class="content img_hdr">'.PHP_EOL.$first.PHP_EOL.'</p>';
 				}
 			}
 		}
@@ -282,9 +282,9 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			}
 			$retweet = Request::factory($route);
 			$retweet->post = $url_settings;
-			$end = '<div class="last">'.$retweet->execute()->response.$last.PHP_EOL.'</div>';
+			$end = '<div class="content last">'.$retweet->execute()->response.$last.PHP_EOL.'</div>';
 		}
-		return $begin.PHP_EOL.'<p>'.PHP_EOL.implode(PHP_EOL.'</p>'.PHP_EOL.'<p>'.PHP_EOL, $paragraphs).PHP_EOL.'</p>'.PHP_EOL.$end;
+		return $begin.PHP_EOL.'<p class="content">'.PHP_EOL.implode(PHP_EOL.'</p>'.PHP_EOL.'<p class="content">'.PHP_EOL, $paragraphs).PHP_EOL.'</p>'.PHP_EOL.$end;
 	}
 
 	/**
