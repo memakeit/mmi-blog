@@ -46,9 +46,14 @@ div.addthis_toolbox.pill
 
 /*	content
  ******************************************************************************/
-article div.content
+article div.post
 {
 	margin-bottom: 40px;
+}
+
+article div.post div.last
+{
+	min-height: 68px;
 }
 
 article p img
@@ -62,12 +67,6 @@ article p.img_hdr img
 	display: block;
 	float: none;
 	padding: 0;
-}
-
-article div.content div.last
-{
-	margin-bottom: 20px;
-	min-height: 68px;
 }
 
 .tweet

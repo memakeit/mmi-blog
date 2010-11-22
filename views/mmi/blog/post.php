@@ -69,7 +69,7 @@ if (count($post) > 0)
 	$output[] = '</header>';
 
 	// Begin content
-	$output[] = '<div class="content">';
+	$output[] = '<div class="post">';
 	$paragraphs = MMI_Text::get_paragraphs($post->content);
 	$output[] = MMI_Blog_Post::format_content($paragraphs, array
 	(
