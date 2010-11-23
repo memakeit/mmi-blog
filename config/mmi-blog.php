@@ -18,6 +18,29 @@ return array
 		'trackbacks'	=> TRUE,
 		'use_ajax'		=> TRUE,
 	),
+	'content' => array
+	(
+		'popular' => array
+		(
+			'header'	=> 'Popular Articles',
+			'max_items'	=> 5,
+		),
+		'random' => array
+		(
+			'header'	=> 'Random Articles',
+			'max_items'	=> 5,
+		),
+		'recent' => array
+		(
+			'header'	=> 'Recent Articles',
+			'max_items'	=> 5,
+		),
+		'related' => array
+		(
+			'header'	=> 'Related Articles',
+			'max_items'	=> 5,
+		),
+	),
 	'driver' => MMI_Blog::DRIVER_WORDPRESS,
 	'excerpt_size' => 3, // Number of paragraphs
 	'features' => array
