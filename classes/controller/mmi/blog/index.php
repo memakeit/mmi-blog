@@ -189,7 +189,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$this->_title = $title;
 
 		// Configure the pagination
-		$pagination = $this->_get_pagination(count($posts));
+		$pagination = $this->_get_pagination(count($list));
 		$list = array_slice($list, $pagination->offset, $pagination->items_per_page, TRUE);
 
 		// Load post details
