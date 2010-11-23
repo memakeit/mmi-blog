@@ -72,7 +72,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			$links[$idx]['url'] = $links[$idx]['guid'];
 			unset($links[$idx]['guid']);
 		}
-		$this->request->response = MMI_Content::get_link_box($this->_header, $links, array
+		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
 		));
@@ -91,7 +91,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			$links[$idx]['url'] = $links[$idx]['guid'];
 			unset($links[$idx]['guid']);
 		}
-		$this->request->response = MMI_Content::get_link_box($this->_header, $links, array
+		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
 		));
@@ -110,7 +110,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			$links[$idx]['url'] = $links[$idx]['guid'];
 			unset($links[$idx]['guid']);
 		}
-		$this->request->response = MMI_Content::get_link_box($this->_header, $links, array
+		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
 		));
@@ -134,7 +134,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			$links[$idx]['url'] = $links[$idx]['guid'];
 			unset($links[$idx]['guid']);
 		}
-		$this->request->response = MMI_Content::get_link_box($this->_header, $links, array
+		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
 		));
