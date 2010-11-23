@@ -55,6 +55,32 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	);
 
 	/**
+	 * Get a list of posts. If no id is specified, all posts are returned.
+	 * Minimal post details are returned for each list item.
+	 *
+	 * @param	mixed	id's being selected
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_post_list($ids = NULL, $reload_cache = NULL)
+	{
+		return self::_get_post_list($ids, self::TYPE_POST, $reload_cache);
+	}
+
+	/**
+	 * Get a list of pages. If no id is specified, all pages are returned.
+	 * Minimal page details are returned for each list item.
+	 *
+	 * @param	mixed	id's being selected
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	public function get_page_list($ids = NULL, $reload_cache = NULL)
+	{
+		return self::_get_post_list($ids, self::TYPE_PAGE, $reload_cache);
+	}
+
+	/**
 	 * Get whether comments are open.
 	 *
 	 * @return	boolean
@@ -208,17 +234,17 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 
 		// Find post guid and title
 		$count = 0;
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$posts = $this->_get_post_list(NULL, self::TYPE_POST, $reload_cache);
 		foreach ($posts as $post)
 		{
-			$timestamp = $post->timestamp_created;
+			$timestamp = $post['timestamp_created'];
 			$month = date('m', $timestamp);
 			$year = date('Y', $timestamp);
-			$slug = $year.'/'.$month.'/'.$post->slug;
+			$slug = $year.'/'.$month.'/'.$post['slug'];
 			if (array_key_exists($slug, $popular))
 			{
-				$popular[$slug]['guid'] = $post->guid;
-				$popular[$slug]['title'] = $post->title;
+				$popular[$slug]['guid'] = $post['guid'];
+				$popular[$slug]['title'] = $post['title'];
 				if (++$count === $max_num)
 				{
 					break;
@@ -243,7 +269,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$posts = $this->_get_post_list(NULL, self::TYPE_POST, $reload_cache);
 		if (count($posts) === 0)
 		{
 			return array();
@@ -260,8 +286,8 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$post = $posts[$key];
 			$random[] = array
 			(
-				'guid'	=> $post->guid,
-				'title'	=> $post->title,
+				'guid'	=> $post['guid'],
+				'title'	=> $post['title'],
 			);
 		}
 		unset($posts);
@@ -282,7 +308,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$posts = $this->_get_post_list(NULL, self::TYPE_POST, $reload_cache);
 		if (count($posts) === 0)
 		{
 			return array();
@@ -297,8 +323,8 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		{
 			$recent[$post->timestamp_created] = array
 			(
-				'guid'	=> $post->guid,
-				'title'	=> $post->title,
+				'guid'	=> $post['guid'],
+				'title'	=> $post['title'],
 			);
 		}
 		unset($posts);
@@ -321,7 +347,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$reload_cache = MMI_Blog::reload_cache();
 		}
 
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$posts = $this->_get_post_list(NULL, self::TYPE_POST, $reload_cache);
 		if (count($posts) === 0)
 		{
 			return array();
@@ -337,17 +363,17 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		$temp = array();
 		foreach ($posts as $post)
 		{
-			$post_id = $post->id;
+			$post_id = intval($post['id']);
 			if ($post_id === $id)
 			{
 				// Category and tag ids for the post id specified
-				foreach ($post->categories as $category)
+				foreach ($post['categories'] as $category)
 				{
-					$cat_ids[] = $category->id;
+					$cat_ids[] = $category;
 				}
-				foreach ($post->tags as $tag)
+				foreach ($post['tags'] as $tag)
 				{
-					$tag_ids[] = $tag->id;
+					$tag_ids[] = $tag;
 				}
 			}
 			else
@@ -356,18 +382,18 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				$temp[$post_id] = array
 				(
 					'cat_ids'	=> array(),
-					'created'	=> $post->timestamp_created,
-					'guid'		=> $post->guid,
+					'created'	=> $post['timestamp_created'],
+					'guid'		=> $post['guid'],
 					'tag_ids'	=> array(),
-					'title'		=> $post->title,
+					'title'		=> $post['title'],
 				);
-				foreach ($post->categories as $category)
+				foreach ($post['categories'] as $category)
 				{
-					$temp[$post_id]['cat_ids'][] = $category->id;
+					$temp[$post_id]['cat_ids'][] = $category;
 				}
-				foreach ($post->tags as $tag)
+				foreach ($post['tags'] as $tag)
 				{
-					$temp[$post_id]['tag_ids'][] = $tag->id;
+					$temp[$post_id]['tag_ids'][] = $tag;
 				}
 			}
 		}
@@ -422,16 +448,17 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	}
 
 	/**
-	 * Get posts for a month and year.
+	 * Get a list of posts for a month and year.
+	 * Minimal post details are returned for each list item.
 	 *
 	 * @param	integer	year
 	 * @param	integer	month
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_archive($year, $month, $reload_cache = NULL)
+	public function get_archive_list($year, $month, $reload_cache = NULL)
 	{
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$posts = $this->_get_post_list(NULL, self::TYPE_POST, $reload_cache);
 		if (count($posts) === 0)
 		{
 			return array();
@@ -442,10 +469,10 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		$archive = array();
 		foreach ($posts as $post)
 		{
-			$created = $post->timestamp_created;
+			$created = $post['timestamp_created'];
 			if (intval(gmdate('Y', $created)) === $year AND intval(gmdate('n', $created)) === $month)
 			{
-				$archive[gmdate('Ym', $created)][$post->slug] = $post;
+				$archive[] = $post;
 			}
 		}
 		return $archive;
@@ -459,7 +486,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	public function get_archive_frequencies($reload_cache = NULL)
 	{
-		$posts = $this->_get_posts(NULL, self::TYPE_POST, $reload_cache);
+		$posts = $this->_get_post_list(NULL, self::TYPE_POST, $reload_cache);
 		if (count($posts) === 0)
 		{
 			return array();
@@ -468,7 +495,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		$archives = array();
 		foreach ($posts as $post)
 		{
-			$timestamp = $post->timestamp_created;
+			$timestamp = $post['timestamp_created'];
 			$key = date('Ym', $timestamp);
 			if (array_key_exists($key, $archives))
 			{
@@ -479,7 +506,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				$archives[$key] = array
 				(
 					'count'	=> 1,
-					'guid'	=> $post->guid,
+					'guid'	=> $post['guid'],
 					'name'	=> date('F Y', $timestamp),
 				);
 			}
@@ -507,24 +534,22 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get posts. If no id is specified, all posts are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	public function get_posts($ids = NULL, $reload_cache = NULL)
+	public function get_posts($ids = NULL)
 	{
-		return $this->_get_posts($ids, self::TYPE_POST, $reload_cache);
+		return $this->_get_posts($ids, self::TYPE_POST);
 	}
 
 	/**
 	 * Get pages. If no id is specified, all pages are returned.
 	 *
 	 * @param	mixed	id's being selected
-	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
 	public function get_pages($ids = NULL, $reload_cache = NULL)
 	{
-		return $this->_get_posts($ids, self::TYPE_PAGE, $reload_cache);
+		return $this->_get_posts($ids, self::TYPE_PAGE);
 	}
 
 	/**
@@ -532,10 +557,9 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 *
 	 * @param	mixed	id's being selected
 	 * @param	string	post type (page | post)
-	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
-	protected function _get_posts($ids = NULL, $post_type = self::TYPE_POST, $reload_cache = NULL)
+	protected function _get_posts($ids = NULL, $post_type = self::TYPE_POST)
 	{
 		if ( ! isset($reload_cache))
 		{
@@ -543,22 +567,16 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		}
 
 		$config = MMI_Blog::get_config(TRUE);
-		$cache_id = $this->_get_cache_id(self::$_driver, 'posts_'.$post_type);
-		$cache_lifetime = Arr::path($config, 'cache_lifetimes.post', 0);
 		$features = Arr::get($config, 'features', array());
 		$load_categories = Arr::get($features, 'category', FALSE);
 		$load_meta = Arr::get($features, 'post_meta', FALSE);
 		$load_tags = Arr::get($features, 'tag', FALSE);
 
 		$posts = NULL;
-		if ( ! $reload_cache AND $cache_lifetime > 0)
-		{
-			$posts = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
-		}
 		if ( ! isset($posts))
 		{
 			// Load all data
-			$data = Model_WP_Posts::select_by_id(NULL, $post_type, self::$_db_mappings, TRUE);
+			$data = Model_WP_Posts::select_by_id($ids, $post_type, self::$_db_mappings, TRUE);
 			$posts = array();
 			foreach ($data as $fields)
 			{
@@ -577,13 +595,8 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			{
 				self::_load_meta($posts);
 			}
-
-			if ($cache_lifetime > 0)
-			{
-				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $posts, $cache_lifetime);
-			}
 		}
-		return $this->_extract_results($posts, $ids, FALSE);
+		return $posts;
 	}
 
 	/**
@@ -819,5 +832,184 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get a list of posts. If no id is specified, all posts are returned.
+	 * Minimal post details are returned for each list item.
+	 *
+	 * @param	mixed	id's being selected
+	 * @param	string	post type (page | post)
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	protected function _get_post_list($ids = NULL, $post_type = self::TYPE_POST, $reload_cache = NULL)
+	{
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
+		$config = MMI_Blog::get_config(TRUE);
+		$cache_id = $this->_get_cache_id(self::$_driver, 'post_list_'.$post_type);
+		$cache_lifetime = Arr::path($config, 'cache_lifetimes.post', 0);
+		$features = Arr::get($config, 'features', array());
+		$load_categories = Arr::get($features, 'category', FALSE);
+		$load_tags = Arr::get($features, 'tag', FALSE);
+
+		$posts = NULL;
+		if ( ! $reload_cache AND $cache_lifetime > 0)
+		{
+			$posts = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
+		}
+		if ( ! isset($posts))
+		{
+			$cols = array_intersect_key(self::$_db_mappings, array
+			(
+				'ID'			=> 'id',
+				'post_title'	=> 'title',
+				'post_name'		=> 'slug',
+				'post_date_gmt'	=> 'timestamp_created',
+			));
+
+			// Load all post list data
+			$data = Model_WP_Posts::select_by_id(NULL, $post_type, $cols, TRUE);
+			$posts = array();
+			foreach ($data as $fields)
+			{
+				$id = $fields[$cols['ID']];
+				$post_date = strtotime($fields[$cols['post_date_gmt']]);
+				$year = gmdate('Y', $post_date);
+				$month = gmdate('m', $post_date);
+				$slug = $fields[$cols['post_name']];
+				$guid = self::get_guid($year, $month, $slug);
+
+				$fields[$cols['post_date_gmt']] = $post_date;
+				$fields['guid'] = $guid;
+				$posts[$id] = $fields;
+			}
+			if ($load_categories)
+			{
+				$posts = self::_set_category_ids($posts, $reload_cache);
+			}
+			if ($load_tags)
+			{
+				$posts = self::_set_tag_ids($posts, $reload_cache);
+			}
+			if ($cache_lifetime > 0)
+			{
+				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $posts, $cache_lifetime);
+			}
+		}
+
+		if (empty($ids))
+		{
+			$posts = array_values($posts);
+		}
+		else
+		{
+			$posts = array_values(array_intersect_key($posts, array_fill_keys($ids, $ids)));
+		}
+		return $posts;
+	}
+
+	/**
+	 * Set the category ids for each post.
+	 *
+	 * @param	array	array of blog posts (represented as arrays)
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	protected static function _set_category_ids($posts, $reload_cache = NULL)
+	{
+		if ( ! (is_array($posts) AND count($posts) > 0))
+		{
+			return;
+		}
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
+		foreach ($posts as $idx => $post)
+		{
+			$posts[$idx]['categories'] = array();
+		}
+		$terms = MMI_Blog_Term::factory(self::$_driver)->get_categories(NULL, $reload_cache);
+		return self::_set_term_ids($posts, $terms, MMI_Blog_Term::TYPE_CATEGORY);
+	}
+
+	/**
+	 * Set the tag ids for each post.
+	 *
+	 * @param	array	array of blog posts (represented as arrays)
+	 * @param	mixed	reload cache from database?
+	 * @return	array
+	 */
+	protected static function _set_tag_ids($posts, $reload_cache = NULL)
+	{
+		if ( ! (is_array($posts) AND count($posts) > 0))
+		{
+			return;
+		}
+		if ( ! isset($reload_cache))
+		{
+			$reload_cache = MMI_Blog::reload_cache();
+		}
+
+		foreach ($posts as $idx => $post)
+		{
+			$posts[$idx]['tags'] = array();
+		}
+		$terms = MMI_Blog_Term::factory(self::$_driver)->get_tags(NULL, $reload_cache);
+		return self::_set_term_ids($posts, $terms, MMI_Blog_Term::TYPE_TAG);
+	}
+
+	/**
+	 * Set the term ids for each post.
+	 *
+	 * @param	array	array of blog posts (represented as arrays)
+	 * @param	array	array of blog term objects
+	 * @param	string	type of term to load (category | tag)
+	 * @return	array
+	 */
+	protected static function _set_term_ids($posts, $terms, $type = MMI_Blog_Term::TYPE_CATEGORY)
+	{
+		if ( ! is_array($terms))
+		{
+			$terms = array();
+		}
+
+		// Get post-ids
+		$post_ids = array();
+		foreach ($posts as $post)
+		{
+			$post_ids[] = intval($post['id']);
+		}
+
+		if (is_array($terms) AND count($terms) > 0)
+		{
+			foreach ($terms as $term)
+			{
+				$found = array_intersect($term->post_ids, $post_ids);
+				if (is_array($found) AND count($found) > 0)
+				{
+					foreach ($found as $found_id)
+					{
+						switch ($type)
+						{
+							case MMI_Blog_Term::TYPE_TAG:
+								$posts[$found_id]['tags'][] = $term->id;
+							break;
+
+							default:
+								$posts[$found_id]['categories'][] = $term->id;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return $posts;
 	}
 } // End Kohana_MMI_Blog_Wordpress_Post

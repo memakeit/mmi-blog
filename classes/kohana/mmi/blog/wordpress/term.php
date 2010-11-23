@@ -218,6 +218,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 					break;
 				}
 			}
+
 			if ($cache_lifetime > 0)
 			{
 				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $terms, $cache_lifetime);

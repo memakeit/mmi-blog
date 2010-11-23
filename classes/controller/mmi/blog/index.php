@@ -65,17 +65,17 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$header = Arr::get($this->_headers_config, 'index', '');
 		$title = Arr::get($this->_titles_config, 'index', 'Recent Articles');
 
-		// Get the data
-		$posts = MMI_Blog_Post::factory($this->_driver)->get_posts();
+		// Get the list of posts
+		$list = MMI_Blog_Post::factory($this->_driver)->get_post_list();
 
 		// Set the nav type
-		if (count($posts) > 0)
+		if (count($list) > 0)
 		{
 			MMI_Blog::set_nav_type('');
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title, $header);
+		$this->_process_posts($list, $title, $header);
 	}
 
 	/**
@@ -94,22 +94,17 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$header = sprintf(Arr::get($this->_headers_config, 'archive', '%s'), date('F Y', $timestamp));
 		$title = sprintf(Arr::get($this->_titles_config, 'archive', 'Articles for %s'), date('F Y', $timestamp));
 
-		// Get the data
-		$data = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
-		$posts = array();
-		if (array_key_exists($slug, $data))
-		{
-			$posts = $data[$slug];
-		}
+		// Get the list of posts for the archive
+		$list = MMI_Blog_Post::factory($this->_driver)->get_archive_list($year, $month);
 
 		// Set the nav type
-		if (count($posts) > 0)
+		if (count($list) > 0)
 		{
 			MMI_Blog::set_nav_type(array(MMI_Blog::NAV_ARCHIVE => $slug));
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title, $header);
+		$this->_process_posts($list, $title, $header);
 	}
 
 	/**
@@ -125,25 +120,25 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$header= sprintf(Arr::get($this->_headers_config, 'category', 'Categorized \'%s\''), ucwords($slug));
 		$title = sprintf(Arr::get($this->_titles_config, 'category', 'Articles Categorized \'%s\''), ucwords($slug));
 
-		// Get the data
+		// Get list of posts for the category
 		$data = MMI_Blog_Term::factory($this->_driver)->get_categories_by_slug($slug);
-		$posts = array();
+		$list = array();
 		if (array_key_exists($slug, $data))
 		{
 			$data = $data[$slug];
-			$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($data->post_ids);
+			$list = MMI_Blog_Post::factory($this->_driver)->get_post_list($data->post_ids);
 			$header= sprintf(Arr::get($this->_headers_config, 'category', 'Categorized \'%s\''), $data->name);
 			$title = sprintf(Arr::get($this->_titles_config, 'category', 'Articles Categorized \'%s\''), $data->name);
 		}
 
 		// Set the nav type
-		if (count($posts) > 0)
+		if (count($list) > 0)
 		{
 			MMI_Blog::set_nav_type(array(MMI_Blog::NAV_CATEGORY => $slug));
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title, $header);
+		$this->_process_posts($list, $title, $header);
 	}
 
 	/**
@@ -159,42 +154,51 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		$header = sprintf(Arr::get($this->_headers_config, 'tag', 'Tagged \'%s\''), ucwords($slug));
 		$title = sprintf(Arr::get($this->_titles_config, 'tag', 'Articles Tagged \'%s\''), ucwords($slug));
 
-		// Get the data
+		// Get list of posts for the tag
 		$data = MMI_Blog_Term::factory($this->_driver)->get_tags_by_slug($slug);
-		$posts = array();
+		$list = array();
 		if (array_key_exists($slug, $data))
 		{
 			$data = $data[$slug];
-			$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($data->post_ids);
+			$list = MMI_Blog_Post::factory($this->_driver)->get_post_list($data->post_ids);
 			$header = sprintf(Arr::get($this->_headers_config, 'tag', 'Tagged \'%s\''), $data->name);
 			$title = sprintf(Arr::get($this->_titles_config, 'tag', 'Articles Tagged \'%s\''), $data->name);
 		}
 
 		// Set the nav type
-		if (count($posts) > 0)
+		if (count($list) > 0)
 		{
 			MMI_Blog::set_nav_type(array(MMI_Blog::NAV_TAG => $slug));
 		}
 
 		// Process the posts
-		$this->_process_posts($posts, $title, $header);
+		$this->_process_posts($list, $title, $header);
 	}
 
 	/**
+	 * Load the post details.
 	 * Create and add the index view.
 	 *
-	 * @param	array	an array of MMI_Post objects
+	 * @param	array	an array of posts (represented as arrays)
 	 * @param	string	the HTML page title
 	 * @param	string	the page header
 	 * @return	void
 	 */
-	protected function _process_posts($posts, $title, $header)
+	protected function _process_posts($list, $title, $header)
 	{
 		$this->_title = $title;
 
 		// Configure the pagination
 		$pagination = $this->_get_pagination(count($posts));
-		$posts = array_slice($posts, $pagination->offset, $pagination->items_per_page, TRUE);
+		$list = array_slice($list, $pagination->offset, $pagination->items_per_page, TRUE);
+
+		// Load post details
+		$post_ids = array();
+		foreach ($list as $item)
+		{
+			$post_ids[] = $item['id'];
+		}
+		$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($post_ids);
 
 		// Inject CSS and JavaScript
 		$this->_inject_media();
@@ -202,7 +206,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		// Configure and add the view
 		$view = View::factory('mmi/blog/index', array
 		(
-			'bookmark_driver'	=>$this->_bookmark_driver,
+			'bookmark_driver'	=> $this->_bookmark_driver,
 			'excerpt_size'		=> MMI_Blog::get_config()->get('excerpt_size', 2),
 			'header'			=> $header,
 			'pagination'		=> $pagination->render(),

@@ -249,7 +249,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 			$post = $first;
 			while ($post !== FALSE)
 			{
-				if ($post_id === $post->id)
+				if ($post_id === intval($post['id']))
 				{
 					// Get previous item
 					$prev = prev($posts);
@@ -262,10 +262,10 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 					{
 						$prev = array
 						(
-							'title'		=> $prev->title,
-							'url'		=> $prev->guid,
-							'is_first'	=> ($prev->id === $first->id),
-							'is_last'	=> ($prev->id === $last->id),
+							'title'		=> $prev['title'],
+							'url'		=> $prev['guid'],
+							'is_first'	=> ($prev['id'] === $first['id']),
+							'is_last'	=> ($prev['id'] === $last['id']),
 						);
 
 						// Return to current item
@@ -284,10 +284,10 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 						$is_last = ($next === $last);
 						$next = array
 						(
-							'title'		=> $next->title,
-							'url'		=> $next->guid,
-							'is_first'	=> ($next->id === $first->id),
-							'is_last'	=> ($next->id === $last->id),
+							'title'		=> $next['title'],
+							'url'		=> $next['guid'],
+							'is_first'	=> ($next['id'] === $first['id']),
+							'is_last'	=> ($next['id'] === $last['id']),
 						);
 					}
 					break;
@@ -327,19 +327,18 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 				$post_ids = empty($term) ? NULL : $term->post_ids;
 				if ( ! empty($post_ids))
 				{
-					$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($post_ids);
+					$posts = MMI_Blog_Post::factory($this->_driver)->get_post_list($post_ids);
 				}
 			break;
 
 			case MMI_Blog::NAV_ARCHIVE:
 				$month = substr($nav_parm, -2);
 				$year = substr($nav_parm, 0, 4);
-				$posts = MMI_Blog_Post::factory($this->_driver)->get_archive($year, $month);
-				$posts = Arr::get($posts, $nav_parm, array());
+				$posts = MMI_Blog_Post::factory($this->_driver)->get_archive_list($year, $month);
 			break;
 
 			default:
-				$posts = MMI_Blog_Post::factory($this->_driver)->get_posts();
+				$posts = MMI_Blog_Post::factory($this->_driver)->get_post_list();
 			break;
 		}
 		return $posts;

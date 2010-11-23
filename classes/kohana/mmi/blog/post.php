@@ -11,12 +11,14 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 {
 	// Abstract methods
 	abstract public function comments_open();
-	abstract public function get_archive($year, $month, $reload_cache = NULL);
+	abstract public function get_archive_list($year, $month, $reload_cache = NULL);
 	abstract public function get_archive_frequencies($reload_cache = NULL);
 	abstract public function get_page($slug);
+	abstract public function get_page_list($ids = NULL, $reload_cache = NULL);
 	abstract public function get_pages($ids = NULL, $reload_cache = NULL);
 	abstract public function get_popular($max_num = 10, $reload_cache = NULL);
 	abstract public function get_post($year, $month, $slug);
+	abstract public function get_post_list($ids = NULL, $reload_cache = NULL);
 	abstract public function get_posts($ids = NULL, $reload_cache = NULL);
 	abstract public function get_random($max_num = 10, $reload_cache = NULL);
 	abstract public function get_recent($max_num = 10, $reload_cache = NULL);
@@ -194,7 +196,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('mmi/blog/feed/comment')->uri($parms);
+		$url = Route::get('mmi/blog/feed/post/comments')->uri($parms);
 		return $url = URL::site($url, $absolute);
 	}
 
