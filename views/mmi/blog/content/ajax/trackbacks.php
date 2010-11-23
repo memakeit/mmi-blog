@@ -5,7 +5,7 @@
 $output = array();
 $output[] = '<section id="trackbacks" class="hidden grid_8 alpha omega">';
 $output[] = '<header id ="trackbacks_hdr">';
-$output[] = '<span>'.$header.'</span>';
+$output[] = '<h3>'.$header.'</h3>';
 if ( ! empty($trackback_url))
 {
 	$output[] = '<small>Trackback URL: '.$trackback_url.'</small>';

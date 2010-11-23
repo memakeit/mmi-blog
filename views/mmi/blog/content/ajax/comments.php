@@ -7,6 +7,7 @@ $output[] = '<section id="comments" class="grid_8 alpha omega">';
 
 // Header
 $output[] = '<header id="comments_hdr">';
+$output[] = '<h3>';
 if ( ! empty($feed_url))
 {
 	$header .= '<span>subscribe</span>';
@@ -16,6 +17,7 @@ else
 {
 	$output[] = $header;
 }
+$output[] = '</h3>';
 $output[] = '</header>';
 
 // Comments loading

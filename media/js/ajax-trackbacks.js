@@ -31,7 +31,7 @@ function load_trackbacks(url, template, allow_pingbacks, allow_trackbacks)
 				{
 					header = count + ' ' + (count === 1 ? 'Trackback' : 'Trackbacks');
 				}
-				$('#trackbacks_hdr > span').text(header);
+				$('#trackbacks_hdr > h3').text(header);
 
 				// Trackbacks
 				var div = $('<div></div>').hide();

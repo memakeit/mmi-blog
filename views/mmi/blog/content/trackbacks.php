@@ -8,7 +8,7 @@ if (is_array($trackbacks) AND count($trackbacks) > 0)
 	// Header
 	$output[] = '<section id="trackbacks" class="grid_8 alpha omega">';
 	$output[] = '<header id="trackbacks_hdr">';
-	$output[] = '<span>'.$header.'</span>';
+	$output[] = '<h3>'.$header.'</h3>';
 	if ( ! empty($trackback_url))
 	{
 		$output[] = '<small>Trackback URL: '.$trackback_url.'</small>';

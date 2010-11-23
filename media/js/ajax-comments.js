@@ -15,7 +15,7 @@ function load_comments(url, template)
 			var count = data.length;
 			var header = 'Comment';
 			header = count + ' ' + (count === 1 ? header : header + 's');
-			$('#comments_hdr > a').html(header + '<span>subscribe</span>');
+			$('#comments_hdr > h3 > a').html(header + '<span>subscribe</span>');
 			$('#comment_ct').text(header.toLowerCase());
 			if (count === 0)
 			{

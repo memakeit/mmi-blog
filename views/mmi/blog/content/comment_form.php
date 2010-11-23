@@ -4,7 +4,7 @@
 
 $output = array();
 $output[] = '<section id="comment_form" class="grid_8 alpha omega">';
-$output[] = '<header>Leave a Comment</header>';
+$output[] = '<header><h3>Leave a Comment</h3></header>';
 if (empty($form))
 {
 	$output[] = '<div class="closed">Comments are closed for this article.</div>';
