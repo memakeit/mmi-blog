@@ -5,7 +5,7 @@
 $output = array();
 if ( ! empty($header))
 {
-	$output[] = '<header><h1>'.HTML::chars($header, FALSE).'</h1></header>';
+	$output[] = '<header class="type"><h1>'.HTML::chars($header, FALSE).'</h1></header>';
 }
 
 if (count($posts) === 0)
