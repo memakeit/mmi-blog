@@ -321,7 +321,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		$recent = array();
 		foreach ($posts as $post)
 		{
-			$recent[$post->timestamp_created] = array
+			$recent[$post['timestamp_created']] = array
 			(
 				'guid'	=> $post['guid'],
 				'title'	=> $post['title'],
