@@ -12,12 +12,12 @@ class Controller_MMI_Blog_Test_Content extends Controller
 	/**
 	 * @var boolean turn debugging on?
 	 **/
-	public $debug = TRUE;
+	public $debug = FALSE;
 
 	/**
-	 * @var string the CSS file
+	 * @var string the CSS URL
 	 **/
-	protected $_css_file;
+	protected $_css_url;
 
 	/**
 	 * @var string the page HTML
@@ -25,18 +25,23 @@ class Controller_MMI_Blog_Test_Content extends Controller
 	protected $_html;
 
 	/**
+	 * @var string the inline JavaScript
+	 **/
+	protected $_js_inline;
+
+	/**
 	 * @var string the page title
 	 **/
 	protected $_title = 'Content Test';
 
 	/**
-	 * Test HMVC popular posts widget.
+	 * Test HMVC tabbed post widget.
 	 *
 	 * @return	void
 	 */
 	public function action_index()
 	{
-		$this->action_popular();
+		$this->action_tabbed();
 	}
 
 	/**
@@ -80,14 +85,30 @@ class Controller_MMI_Blog_Test_Content extends Controller
 	}
 
 	/**
+	 * Test HMVC tabbed post widget.
+	 *
+	 * @return	void
+	 */
+	public function action_tabbed()
+	{
+		$mode = MMI_Blog_Content::MODE_TABBED;
+		$this->_process($mode);
+		$this->_css_url = 'media/css/jquery.mmiTabs.css';
+
+		$config = MMI_Blog::get_config();
+		$mode_settings = Arr::get($config->get('content', array()), $mode, array());
+		$tab_id = Arr::get($mode_settings, 'id', 'tabs_post_meta');
+		$this->_js_inline = '$("#'.$tab_id.'").mmiTabs();';
+	}
+
+	/**
 	 * Make the HMVC request and set the variables used during page rendering.
 	 *
 	 * @param	string	the rendering mode
 	 * @param	array	an associative array of parameters
-	 * @param	string	the CSS file name
 	 * @return	void
 	 */
-	protected function _process($mode, $parms = array(), $css_file = NULL)
+	protected function _process($mode, $parms = array())
 	{
 		if ( ! is_array($parms))
 		{
@@ -110,8 +131,6 @@ class Controller_MMI_Blog_Test_Content extends Controller
 		{
 			$html = MMI_Debug::get($html, $mode).$html;
 		}
-
-		$this->_css_file = $css_file;
 		$this->_html = $html;
 	}
 
@@ -126,15 +145,21 @@ class Controller_MMI_Blog_Test_Content extends Controller
 		$html[] = '<html lang="en">';
 		$html[] = '<head>';
 		$html[] = '<title>'.$this->_title.'</title>';
-		$css_file = $this->_css_file;
-		if ( ! empty($css_file))
+		$css_url = $this->_css_url;
+		if ( ! empty($css_url))
 		{
-			$html[] = HTML::style($css_file);
+			$html[] = HTML::style($css_url);
 		}
 		$html[] = '</head>';
 		$html[] = '<body>';
 		$html[] = $this->_html;
-		$html[] = HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js');
+		$js_inline = $this->_js_inline;
+		if ( ! empty($js_inline))
+		{
+			$html[] = HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js');
+			$html[] = HTML::script('media/js/jquery.mmiTabs.js');
+			$html[] = '<script type="text/javascript">'.PHP_EOL.$js_inline.PHP_EOL.'</script>';
+		}
 		$html[] = '</body>';
 		$html[] = '</html>';
 

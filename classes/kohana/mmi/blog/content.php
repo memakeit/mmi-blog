@@ -10,10 +10,10 @@
 class Kohana_MMI_Blog_Content
 {
 	// Mode constants
-	const MODE_COMBINED = 'popular+recent+random';
 	const MODE_POPULAR = 'popular';
 	const MODE_RANDOM = 'random';
 	const MODE_RECENT = 'recent';
 	const MODE_RELATED = 'related';
+	const MODE_TABBED = 'tabbed';
 
 } // End Kohana_MMI_Blog_Content

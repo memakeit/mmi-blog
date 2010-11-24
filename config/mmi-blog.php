@@ -40,6 +40,16 @@ return array
 			'header'	=> 'Related Articles',
 			'max_items'	=> 5,
 		),
+		'tabbed' => array
+		(
+			'id' 		=> 'tabs_post_meta',
+			'max_items'	=> 5,
+			'order'		=> array
+			(
+				MMI_Blog_Content::MODE_POPULAR	=> 'Popular',
+				MMI_Blog_Content::MODE_RECENT	=> 'Recent',
+			),
+		)
 	),
 	'driver' => MMI_Blog::DRIVER_WORDPRESS,
 	'excerpt_size' => 3, // Number of paragraphs

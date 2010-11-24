@@ -66,12 +66,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	 */
 	public function action_popular()
 	{
-		$links = MMI_Blog_Post::factory($this->_driver)->get_popular($this->_max_items);
-		foreach ($links as $idx => $link)
-		{
-			$links[$idx]['url'] = $links[$idx]['guid'];
-			unset($links[$idx]['guid']);
-		}
+		$links = $this->_get_links($this->_mode);
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -85,12 +80,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	 */
 	public function action_random()
 	{
-		$links = MMI_Blog_Post::factory($this->_driver)->get_random($this->_max_items);
-		foreach ($links as $idx => $link)
-		{
-			$links[$idx]['url'] = $links[$idx]['guid'];
-			unset($links[$idx]['guid']);
-		}
+		$links = $this->_get_links($this->_mode);
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -104,12 +94,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	 */
 	public function action_recent()
 	{
-		$links = MMI_Blog_Post::factory($this->_driver)->get_recent($this->_max_items);
-		foreach ($links as $idx => $link)
-		{
-			$links[$idx]['url'] = $links[$idx]['guid'];
-			unset($links[$idx]['guid']);
-		}
+		$links = $this->_get_links($this->_mode);
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -123,20 +108,78 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	 */
 	public function action_related()
 	{
-		$links = array();
-		$post_id = Arr::get($this->_post, 'post_id');
-		if ( ! empty($post_id))
+		$links = $this->_get_links($this->_mode);
+		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
+		(
+			'id' => 'sb_posts_'.$this->_mode,
+		));
+	}
+
+	/**
+	 * Generate a tabbed post list.
+	 *
+	 * @return	void
+	 */
+	public function action_tabbed()
+	{
+		$config = MMI_Blog::get_config();
+		$mode_settings = Arr::get($config->get('content', array()), $this->_mode, array());
+		$tab_id = Arr::get($mode_settings, 'id', 'tabs_post_meta');
+		$order = Arr::get($mode_settings, 'order', array(MMI_Blog_Content::MODE_POPULAR, MMI_Blog_Content::MODE_RECENT));
+
+		$tabs = array();
+		foreach ($order as $mode => $header)
 		{
-			$links = MMI_Blog_Post::factory($this->_driver)->get_related($post_id, $this->_max_items);
+			$list_items = MMI_Template_Content::get_link_list($this->_get_links($mode));
+			$content = View::factory('mmi/template/content/box/tab_links', array
+			(
+				'list_items' => $list_items,
+			))->render();
+			$tabs[$header] = $content;
 		}
+		$this->request->response = MMI_Template_Content::get_tab_box('', $tab_id, $tabs, array
+		(
+			'id' => 'sb_posts_'.$this->_mode,
+		));
+	}
+
+	/**
+	 * Get the links.
+	 *
+	 * @param	string	the type of links to get
+	 * @return	array
+	 */
+	protected function _get_links($mode)
+	{
+		$links = array();
+		switch ($mode)
+		{
+			case MMI_Blog_Content::MODE_POPULAR:
+				$links = MMI_Blog_Post::factory($this->_driver)->get_popular($this->_max_items);
+			break;
+
+			case MMI_Blog_Content::MODE_RANDOM:
+				$links = MMI_Blog_Post::factory($this->_driver)->get_random($this->_max_items);
+			break;
+
+			case MMI_Blog_Content::MODE_RECENT:
+				$links = MMI_Blog_Post::factory($this->_driver)->get_recent($this->_max_items);
+			break;
+
+			case MMI_Blog_Content::MODE_RELATED:
+				$post_id = Arr::get($this->_post, 'post_id');
+				if ( ! empty($post_id))
+				{
+					$links = MMI_Blog_Post::factory($this->_driver)->get_related($post_id, $this->_max_items);
+				}
+			break;
+		}
+
 		foreach ($links as $idx => $link)
 		{
 			$links[$idx]['url'] = $links[$idx]['guid'];
 			unset($links[$idx]['guid']);
 		}
-		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
-		(
-			'id' => 'sb_posts_'.$this->_mode,
-		));
+		return $links;
 	}
 } // End Controller_MMI_Blog_HMVC_Content
