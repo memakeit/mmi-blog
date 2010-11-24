@@ -67,6 +67,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	public function action_popular()
 	{
 		$links = $this->_get_links($this->_mode);
+		$this->_inject_media();
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -81,6 +82,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	public function action_random()
 	{
 		$links = $this->_get_links($this->_mode);
+		$this->_inject_media();
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -95,6 +97,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	public function action_recent()
 	{
 		$links = $this->_get_links($this->_mode);
+		$this->_inject_media();
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -109,6 +112,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	public function action_related()
 	{
 		$links = $this->_get_links($this->_mode);
+		$this->_inject_media();
 		$this->request->response = MMI_Template_Content::get_link_box($this->_header, $links, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -137,6 +141,8 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			))->render();
 			$tabs[$header] = $content;
 		}
+
+		$this->_inject_media('$("#'.$tab_id.'").mmiTabs();');
 		$this->request->response = MMI_Template_Content::get_tab_box('', $tab_id, $tabs, array
 		(
 			'id' => 'sb_posts_'.$this->_mode,
@@ -181,5 +187,21 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			unset($links[$idx]['guid']);
 		}
 		return $links;
+	}
+
+	/**
+	 * Inject CSS and JavaScript.
+	 *
+	 * @return	void
+	 */
+	protected function _inject_media($js_inline = NULL)
+	{
+		$parent = Request::instance();
+		$parent->css->add_url('mmi-template_jquery.mmiTabs');
+		$parent->js->add_url('mmi-template_jquery_jquery.mmiTabs');
+		if ( ! empty($js_inline))
+		{
+			$parent->js->add_inline('mmi-tabs', $js_inline);
+		}
 	}
 } // End Controller_MMI_Blog_HMVC_Content

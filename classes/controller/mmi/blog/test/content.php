@@ -7,27 +7,12 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_Test_Content extends Controller
+class Controller_MMI_Blog_Test_Content extends MMI_Template
 {
 	/**
 	 * @var boolean turn debugging on?
 	 **/
-	public $debug = FALSE;
-
-	/**
-	 * @var string the CSS URL
-	 **/
-	protected $_css_url;
-
-	/**
-	 * @var string the page HTML
-	 **/
-	protected $_html;
-
-	/**
-	 * @var string the inline JavaScript
-	 **/
-	protected $_js_inline;
+	public $debug = TRUE;
 
 	/**
 	 * @var string the page title
@@ -41,7 +26,7 @@ class Controller_MMI_Blog_Test_Content extends Controller
 	 */
 	public function action_index()
 	{
-		$this->action_tabbed();
+		$this->_process( MMI_Blog_Content::MODE_TABBED);
 	}
 
 	/**
@@ -91,14 +76,7 @@ class Controller_MMI_Blog_Test_Content extends Controller
 	 */
 	public function action_tabbed()
 	{
-		$mode = MMI_Blog_Content::MODE_TABBED;
-		$this->_process($mode);
-		$this->_css_url = 'media/css/jquery.mmiTabs.css';
-
-		$config = MMI_Blog::get_config();
-		$mode_settings = Arr::get($config->get('content', array()), $mode, array());
-		$tab_id = Arr::get($mode_settings, 'id', 'tabs_post_meta');
-		$this->_js_inline = '$("#'.$tab_id.'").mmiTabs();';
+		$this->_process( MMI_Blog_Content::MODE_TABBED);
 	}
 
 	/**
@@ -131,38 +109,9 @@ class Controller_MMI_Blog_Test_Content extends Controller
 		{
 			$html = MMI_Debug::get($html, $mode).$html;
 		}
-		$this->_html = $html;
-	}
-
-	/**
-	 * Render the page.
-	 *
-	 * @return	void
-	 */
-	public function after()
-	{
-		$html = array('<!DOCTYPE html>');
-		$html[] = '<html lang="en">';
-		$html[] = '<head>';
-		$html[] = '<title>'.$this->_title.'</title>';
-		$css_url = $this->_css_url;
-		if ( ! empty($css_url))
-		{
-			$html[] = HTML::style($css_url);
-		}
-		$html[] = '</head>';
-		$html[] = '<body>';
-		$html[] = $this->_html;
-		$js_inline = $this->_js_inline;
-		if ( ! empty($js_inline))
-		{
-			$html[] = HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js');
-			$html[] = HTML::script('media/js/jquery.mmiTabs.js');
-			$html[] = '<script type="text/javascript">'.PHP_EOL.$js_inline.PHP_EOL.'</script>';
-		}
-		$html[] = '</body>';
-		$html[] = '</html>';
-
-		$this->request->response = implode(PHP_EOL,$html);
+		$view = View::factory('mmi/template/content/default')
+			->set('content', $html)
+		;
+		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
 	}
 } // End Controller_MMI_Blog_Test_Content
