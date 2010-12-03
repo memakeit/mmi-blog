@@ -51,7 +51,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 		$options = NULL;
 		if ( ! $reload_cache AND $cache_lifetime > 0)
 		{
-			$options = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
+			$options = MMI_Cache::instance()->get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
 		if (empty($options))
 		{
@@ -69,7 +69,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 			}
 			if ($cache_lifetime > 0)
 			{
-				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $options, $cache_lifetime);
+				MMI_Cache::instance()->set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $options, $cache_lifetime);
 			}
 		}
 

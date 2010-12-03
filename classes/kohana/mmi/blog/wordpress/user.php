@@ -64,7 +64,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 		$users = NULL;
 		if ( ! $reload_cache AND $cache_lifetime > 0)
 		{
-			$users = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
+			$users = MMI_Cache::instance()->get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
 		if ( ! isset($users))
 		{
@@ -82,7 +82,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 			}
 			if ($cache_lifetime > 0)
 			{
-				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $users, $cache_lifetime);
+				MMI_Cache::instance()->set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $users, $cache_lifetime);
 			}
 		}
 		return $this->_extract_results($users, $ids, FALSE);

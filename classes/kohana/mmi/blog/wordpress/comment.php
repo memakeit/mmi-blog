@@ -230,7 +230,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		$comments = NULL;
 		if ( ! $reload_cache AND $cache_lifetime > 0)
 		{
-			$comments = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
+			$comments = MMI_Cache::instance()->get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
 		if ( ! isset($comments))
 		{
@@ -251,7 +251,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			}
 			if ($cache_lifetime > 0)
 			{
-				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $comments, $cache_lifetime);
+				MMI_Cache::instance()->set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $comments, $cache_lifetime);
 			}
 		}
 		return $this->_extract_results($comments, $post_ids, FALSE, 'id', 'post_id');
@@ -275,7 +275,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 		$trackbacks = NULL;
 		if ( ! $reload_cache AND $cache_lifetime > 0)
 		{
-			$trackbacks = MMI_Cache::get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
+			$trackbacks = MMI_Cache::instance()->get($cache_id, MMI_Cache::CACHE_TYPE_DATA, $cache_lifetime);
 		}
 		if ( ! isset($trackbacks))
 		{
@@ -292,7 +292,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			}
 			if ($cache_lifetime > 0)
 			{
-				MMI_Cache::set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $trackbacks, $cache_lifetime);
+				MMI_Cache::instance()->set($cache_id, MMI_Cache::CACHE_TYPE_DATA, $trackbacks, $cache_lifetime);
 			}
 		}
 		return $this->_extract_results($trackbacks, $post_ids, FALSE, 'id', 'post_id');
