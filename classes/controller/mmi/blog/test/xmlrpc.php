@@ -23,7 +23,7 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 	public function __construct($request)
 	{
 		parent::__construct($request);
-		require_once Kohana::find_file('vendor', 'xmlrpc/xmlrpc_required');
+		require_once Kohana::find_file('vendor', 'xmlrpc/required');
 	}
 
 	/**
