@@ -243,7 +243,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$slug = $year.'/'.$month.'/'.$post['slug'];
 			if (array_key_exists($slug, $popular))
 			{
-				$popular[$slug]['guid'] = $post['guid'];
+				$popular[$slug]['url'] = $post['guid'];
 				$popular[$slug]['title'] = $post['title'];
 				if (++$count === $max_num)
 				{
@@ -286,7 +286,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$post = $posts[$key];
 			$random[] = array
 			(
-				'guid'	=> $post['guid'],
+				'url'	=> $post['guid'],
 				'title'	=> $post['title'],
 			);
 		}
@@ -323,7 +323,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		{
 			$recent[$post['timestamp_created']] = array
 			(
-				'guid'	=> $post['guid'],
+				'url'	=> $post['guid'],
 				'title'	=> $post['title'],
 			);
 		}
@@ -438,7 +438,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$weight = str_pad($weight, 4, '0', STR_PAD_LEFT).'_'.$item['created'];
 			$related[$weight] = array
 			(
-				'guid'	=> $item['guid'],
+				'url'	=> $item['guid'],
 				'title'	=> $item['title'],
 			);
 		}
