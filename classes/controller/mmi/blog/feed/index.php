@@ -78,6 +78,8 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 		}
 
 		// Required elements
+		$url = Request::instance()->uri;
+		$feed->id(MMI_Atom_Feed::generate_uuid($url));
 		$feed->title(Arr::get($defaults, 'title'));
 
 		// Recommended elements
@@ -127,7 +129,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 		// Required elements
 		$guid = $post->guid;
 		$published = $post->timestamp_created;
-		$id = MMI_Atom_Entry::create_id($guid, $published);
+		$id = MMI_Atom_Entry::generate_id($guid, $published);
 		$entry = MMI_Atom_Entry::factory()
 			->id($id)
 			->title($post->title)
@@ -160,7 +162,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 		}
 
 		$comment_count = $post->comment_count;
-		$url = Route::url('mmi/blog/feed/comment', array
+		$url = Route::url('mmi/blog/feed/post/comments', array
 		(
 			'year'	=> date('Y', $published),
 			'month'	=> date('m', $published),

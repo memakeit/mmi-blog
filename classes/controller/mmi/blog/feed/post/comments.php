@@ -131,6 +131,8 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 		}
 
 		// Required elements
+		$url = Request::instance()->uri;
+		$feed->id(MMI_Atom_Feed::generate_uuid($url));
 		$title = Arr::get($defaults, 'title', 'Comments for %s');
 		$feed->title(sprintf($title, $post->title));
 
@@ -199,7 +201,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 		$guid = $post->guid.'/#comment-'.$comment->id;
 		$timestamp = $comment->timestamp;
 		$title = Arr::get($this->_defaults, '_entry_title', 'Comment by %s');
-		$id = MMI_Atom_Entry::create_id($guid, $timestamp);
+		$id = MMI_Atom_Entry::generate_id($guid, $timestamp);
 		$entry = MMI_Atom_Entry::factory()
 			->id($id)
 			->title(sprintf($title, $author))
@@ -222,7 +224,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 		$entry->add_element('thr:in-reply-to', array
 		(
 			'href'	=> $guid,
-			'ref'	=> MMI_Atom_Entry::create_id($guid, $post->timestamp_created),
+			'ref'	=> MMI_Atom_Entry::generate_id($guid, $post->timestamp_created),
 			'type'	=> File::mime_by_ext('html'),
 		));
 
