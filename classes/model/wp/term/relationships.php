@@ -56,20 +56,20 @@ class Model_WP_Term_Relationships extends Jelly_Model
 	 */
 	public static function select_by_object_id($object_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($object_id))
 		{
-			$where_parms['object_id'] = $object_id;
+			$where_params['object_id'] = $object_id;
 		}
 		$order_by = array('object_id' => NULL, 'term_taxonomy_id' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, '$query_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -84,20 +84,20 @@ class Model_WP_Term_Relationships extends Jelly_Model
 	 */
 	public static function select_by_term_taxonomy_id($term_taxonomy_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($term_taxonomy_id))
 		{
-			$where_parms['term_taxonomy_id'] = $term_taxonomy_id;
+			$where_params['term_taxonomy_id'] = $term_taxonomy_id;
 		}
 		$order_by = array('term_taxonomy_id' => NULL, 'object_id' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, '$query_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 } // End Model_WP_Term_Relationships

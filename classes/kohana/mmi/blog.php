@@ -42,12 +42,12 @@ class Kohana_MMI_Blog
 	 */
 	public static function get_guid($page = 1, $absolute = TRUE)
 	{
-		$parms = array();
+		$params = array();
 		if (intval($page) > 1)
 		{
-			$parms['page'] = $page;
+			$params['page'] = $page;
 		}
-		$url = Route::get('mmi/blog/index')->uri($parms);
+		$url = Route::get('mmi/blog/index')->uri($params);
 		if ($absolute)
 		{
 			$url = URL::site($url, TRUE);

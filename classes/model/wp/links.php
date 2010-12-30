@@ -103,19 +103,19 @@ class Model_WP_Links extends Jelly_Model
 	 */
 	public static function select_by_link_id($link_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($link_id))
 		{
-			$where_parms['link_id'] = $link_id;
+			$where_params['link_id'] = $link_id;
 		}
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 } // End Model_WP_Links

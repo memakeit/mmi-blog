@@ -128,12 +128,12 @@ class Model_MMI_Pingbacks extends Jelly_Model
 	 */
 	public static function select_by_id($id, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($id))
 		{
-			$where_parms['id'] = $id;
+			$where_params['id'] = $id;
 		}
-		$query_parms = array('limit' => $limit, 'where_parms' => $where_parms);
-		return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+		$query_params = array('limit' => $limit, 'where_params' => $where_params);
+		return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 	}
 } // End Model_MMI_Pingbacks

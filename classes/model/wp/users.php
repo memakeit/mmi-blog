@@ -88,19 +88,19 @@ class Model_WP_Users extends Jelly_Model
 	 */
 	public static function select_by_id($id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($id))
 		{
-			$where_parms['ID'] = $id;
+			$where_params['ID'] = $id;
 		}
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 } // End Model_WP_Users

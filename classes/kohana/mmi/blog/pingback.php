@@ -66,16 +66,16 @@ class Kohana_MMI_Blog_Pingback
 		}
 
 		// Get the post parameters
-		$parms = explode('/', $url);
-		if (count($parms) < 3)
+		$params = explode('/', $url);
+		if (count($params) < 3)
 		{
 			$msg = 'A post does not exist for that URL.';
 			MMI_Log::log_error(__METHOD__, __LINE__, $msg);
 			return new IXR_Error(33, $msg);
 		}
-		$slug = array_pop($parms);
-		$month = array_pop($parms);
-		$year = array_pop($parms);
+		$slug = array_pop($params);
+		$month = array_pop($params);
+		$year = array_pop($params);
 		if (empty($year) OR empty($month) OR empty($slug))
 		{
 			$msg = 'A post does not exist for that URL.';
@@ -290,15 +290,15 @@ class Kohana_MMI_Blog_Pingback
 		$model = Jelly::factory('mmi_pingbacks');
 		$date_created = gmdate('Y-m-d H:i:s');
 		$success = $success ? 1 : 0;
-		$parms = array
+		$params = array
 		(
 			'success', 'type','url_xmlrpc', 'url_from', 'url_to', 'post_data',
 			'http_status_code', 'content_type', 'error_num', 'error_msg',
 			'response', 'http_headers', 'curl_info', 'curl_options', 'date_created'
 		);
-		foreach ($parms as $parm)
+		foreach ($params as $param)
 		{
-			$model->$parm = $$parm;
+			$model->$param = $$param;
 		}
 
 		// Save pingback

@@ -112,19 +112,19 @@ class Model_WP_Comments extends Jelly_Model
 	 */
 	public static function select_by_comment_id($comment_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($comment_id))
 		{
-			$where_parms['comment_ID'] = $comment_id;
+			$where_params['comment_ID'] = $comment_id;
 		}
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -170,21 +170,21 @@ class Model_WP_Comments extends Jelly_Model
 	 */
 	protected static function _select_by_post_id($post_id, $type = '', $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms['comment_approved'] = 1;
-		$where_parms['comment_type'] = $type;
+		$where_params['comment_approved'] = 1;
+		$where_params['comment_type'] = $type;
 		if (MMI_Util::is_set($post_id))
 		{
-			$where_parms['comment_post_id'] = $post_id;
+			$where_params['comment_post_id'] = $post_id;
 		}
 		$order_by = array('comment_id' => 'ASC');
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms, 'order_by' => $order_by);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params, 'order_by' => $order_by);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -199,20 +199,20 @@ class Model_WP_Comments extends Jelly_Model
 	 */
 	public static function recent_comments($include_trackbacks = FALSE, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if ( ! $include_trackbacks)
 		{
-			$where_parms['comment_type'] = '';
+			$where_params['comment_type'] = '';
 		}
 		$order_by = array('comment_id' => 'ASC');
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms, 'order_by' => $order_by);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params, 'order_by' => $order_by);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -230,22 +230,22 @@ class Model_WP_Comments extends Jelly_Model
 	 */
 	public static function is_duplicate($post_id, $content, $author = NULL, $type = NULL)
 	{
-		$where_parms = array
+		$where_params = array
 		(
 			'comment_approved'	=> 1,
 			'comment_post_id'	=> $post_id,
 		);
 		if (isset($content))
 		{
-			$where_parms['comment_content'] = $content;
+			$where_params['comment_content'] = $content;
 		}
 		if (isset($type))
 		{
-			$where_parms['comment_type'] = $type;
+			$where_params['comment_type'] = $type;
 		}
 		if (is_string($author))
 		{
-			$where_parms['comment_author'] = $author;
+			$where_params['comment_author'] = $author;
 		}
 		elseif (is_array($author))
 		{
@@ -259,11 +259,11 @@ class Model_WP_Comments extends Jelly_Model
 			{
 				if (isset($author[$key]))
 				{
-					$where_parms[$col] = $author[$key];
+					$where_params[$col] = $author[$key];
 				}
 			}
 		}
-		$query_parms = array('where_parms' => $where_parms);
-		return (count(MMI_DB::select(self::$_table_name, TRUE, $query_parms)) > 0);
+		$query_params = array('where_params' => $where_params);
+		return (count(MMI_DB::select(self::$_table_name, TRUE, $query_params)) > 0);
 	}
 } // End Model_WP_Comments

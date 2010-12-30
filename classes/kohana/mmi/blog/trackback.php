@@ -115,7 +115,7 @@ class Kohana_MMI_Blog_Trackback
 	 * @param	string	the trackback response
 	 * @return	boolean
 	 */
-	public static function send($trackback_url, $parms, $connection_timeout = 10, & $response = '')
+	public static function send($trackback_url, $params, $connection_timeout = 10, & $response = '')
 	{
 		// Verify the trackback URL
 		if (empty($trackback_url))
@@ -127,14 +127,14 @@ class Kohana_MMI_Blog_Trackback
 		}
 
 		// Verify the trackback parameters
-		if (empty($parms))
+		if (empty($params))
 		{
 			$msg = 'No trackback parameters found.';
 			MMI_Log::log_info(__METHOD__, __LINE__, $msg);
 			$response = $msg;
 			return FALSE;
 		}
-		$url_from = Arr::get($parms, 'url');
+		$url_from = Arr::get($params, 'url');
 		if (empty($url_from))
 		{
 			$msg = 'No URL parameter found.';
@@ -148,7 +148,7 @@ class Kohana_MMI_Blog_Trackback
 		$curl_response = MMI_Curl::factory()
 			->debug(TRUE)
 			->add_http_header('Host', $host)
-			->post($trackback_url, $parms)
+			->post($trackback_url, $params)
 		;
 
 		// Check the response

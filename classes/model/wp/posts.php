@@ -151,23 +151,23 @@ class Model_WP_Posts extends Jelly_Model
 	 */
 	public static function select_by_id($id, $post_type = NULL, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms['post_status'] = 'publish';
+		$where_params['post_status'] = 'publish';
 		if (MMI_Util::is_set($id))
 		{
-			$where_parms['ID'] = $id;
+			$where_params['ID'] = $id;
 		}
 		if (MMI_Util::is_set($post_type))
 		{
-			$where_parms['post_type'] = $post_type;
+			$where_params['post_type'] = $post_type;
 		}
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -181,14 +181,14 @@ class Model_WP_Posts extends Jelly_Model
 	 */
 	public static function get_page($slug, $columns = NULL)
 	{
-		$where_parms = array
+		$where_params = array
 		(
 			'post_name'		=> $slug,
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 		);
-		$query_parms = array('columns' => $columns, 'limit' => 1, 'where_parms' => $where_parms);
-		return Arr::get(MMI_DB::select(self::$_table_name, TRUE, $query_parms), '0');
+		$query_params = array('columns' => $columns, 'limit' => 1, 'where_params' => $where_params);
+		return Arr::get(MMI_DB::select(self::$_table_name, TRUE, $query_params), '0');
 	}
 
 	/**

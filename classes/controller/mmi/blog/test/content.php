@@ -86,11 +86,11 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	 * @param	array	an associative array of parameters
 	 * @return	void
 	 */
-	protected function _process($mode, $parms = array())
+	protected function _process($mode, $params = array())
 	{
-		if ( ! is_array($parms))
+		if ( ! is_array($params))
 		{
-			$parms = array();
+			$params = array();
 		}
 		$this->_title .= ' :: '.ucfirst($mode);
 
@@ -100,7 +100,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 			'controller'	=> 'content',
 		));
 		$request = Request::factory($route);
-		$request->post = array_merge($parms, array
+		$request->post = array_merge($params, array
 		(
 			'mode' => $mode,
 		));

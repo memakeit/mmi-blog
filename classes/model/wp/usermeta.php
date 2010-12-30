@@ -59,20 +59,20 @@ class Model_WP_UserMeta extends Jelly_Model
 	 */
 	public static function select_by_umeta_id($umeta_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($umeta_id))
 		{
-			$where_parms['umeta_id'] = $umeta_id;
+			$where_params['umeta_id'] = $umeta_id;
 		}
 		$order_by = array('user_id' => NULL, 'meta_key' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -88,20 +88,20 @@ class Model_WP_UserMeta extends Jelly_Model
 	 */
 	public static function select_by_user_id($user_ids, $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($user_ids))
 		{
-			$where_parms['user_id'] = $user_ids;
+			$where_params['user_id'] = $user_ids;
 		}
 		$order_by = array('user_id' => NULL, 'meta_key' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $array_key, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $array_key, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $array_key, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $array_key, $query_params);
 		}
 	}
 } // End Model_WP_UserMeta

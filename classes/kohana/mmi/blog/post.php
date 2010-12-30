@@ -145,13 +145,13 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 */
 	public static function get_guid($year, $month, $slug, $absolute = TRUE)
 	{
-		$parms = array
+		$params = array
 		(
 			'year'	=> $year,
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('mmi/blog/post')->uri($parms);
+		$url = Route::get('mmi/blog/post')->uri($params);
 		return URL::site($url, $absolute);
 	}
 
@@ -166,16 +166,16 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 */
 	public static function get_archive_guid($year, $month, $page = 1, $absolute = TRUE)
 	{
-		$parms = array
+		$params = array
 		(
 			'year' => $year,
 			'month' => str_pad($month, 2, '0', STR_PAD_LEFT),
 		);
 		if (intval($page) > 1)
 		{
-			$parms['page'] = $page;
+			$params['page'] = $page;
 		}
-		$url = Route::get('mmi/blog/archive')->uri($parms);
+		$url = Route::get('mmi/blog/archive')->uri($params);
 		return $url = URL::site($url, $absolute);
 	}
 
@@ -190,13 +190,13 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 */
 	public static function get_comments_feed_guid($year, $month, $slug, $absolute = TRUE)
 	{
-		$parms = array
+		$params = array
 		(
 			'year'	=> $year,
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('mmi/blog/feed/post/comments')->uri($parms);
+		$url = Route::get('mmi/blog/feed/post/comments')->uri($params);
 		return $url = URL::site($url, $absolute);
 	}
 
@@ -211,13 +211,13 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	 */
 	public static function get_trackback_guid($year, $month, $slug, $absolute = TRUE)
 	{
-		$parms = array
+		$params = array
 		(
 			'year'	=> $year,
 			'month'	=> str_pad($month, 2, '0', STR_PAD_LEFT),
 			'slug'	=> URL::title($slug),
 		);
-		$url = Route::get('mmi/blog/trackback')->uri($parms);
+		$url = Route::get('mmi/blog/trackback')->uri($params);
 		return $url = URL::site($url, $absolute);
 	}
 

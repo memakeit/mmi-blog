@@ -66,12 +66,12 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	 */
 	public static function get_category_guid($slug, $page = 1, $absolute = TRUE)
 	{
-		$parms = array('slug' => URL::title($slug));
+		$params = array('slug' => URL::title($slug));
 		if (intval($page) > 1)
 		{
-			$parms['page'] = $page;
+			$params['page'] = $page;
 		}
-		$url = Route::get('mmi/blog/category')->uri($parms);
+		$url = Route::get('mmi/blog/category')->uri($params);
 		return URL::site($url, $absolute);
 	}
 
@@ -85,12 +85,12 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	 */
 	public static function get_tag_guid($slug, $page = 1, $absolute = TRUE)
 	{
-		$parms = array('slug' => URL::title($slug));
+		$params = array('slug' => URL::title($slug));
 		if (intval($page) > 1)
 		{
-			$parms['page'] = $page;
+			$params['page'] = $page;
 		}
-		$url = Route::get('mmi/blog/tag')->uri($parms);
+		$url = Route::get('mmi/blog/tag')->uri($params);
 		return URL::site($url, $absolute);
 	}
 

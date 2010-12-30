@@ -219,7 +219,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 		foreach ($page_views as $view)
 		{
 			$num = str_pad($view['num_page_views'], 8, '0', STR_PAD_LEFT);
-			$temp[$num] = Arr::get($view, 'request_parms', array());
+			$temp[$num] = Arr::get($view, 'request_params', array());
 		}
 		krsort($temp);
 		$temp = array_slice($temp, 0 , $max_num);

@@ -66,20 +66,20 @@ class Model_WP_Options extends Jelly_Model
 	 */
 	public static function select_by_option_id($option_id, $blog_id = 0, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms['blog_id'] = $blog_id;
+		$where_params['blog_id'] = $blog_id;
 		if (MMI_Util::is_set($option_id))
 		{
-			$where_parms['option_id'] = $option_id;
+			$where_params['option_id'] = $option_id;
 		}
 		$order_by = array('option_name' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 } // End Model_WP_Options

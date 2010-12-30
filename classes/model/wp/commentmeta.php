@@ -59,20 +59,20 @@ class Model_WP_CommentMeta extends Jelly_Model
 	 */
 	public static function select_by_meta_id($meta_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($meta_id))
 		{
-			$where_parms['meta_id'] = $meta_id;
+			$where_params['meta_id'] = $meta_id;
 		}
 		$order_by = array('comment_id' => NULL, 'meta_key' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 
@@ -87,20 +87,20 @@ class Model_WP_CommentMeta extends Jelly_Model
 	 */
 	public static function select_by_comment_id($comment_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
-		$where_parms = array();
+		$where_params = array();
 		if (MMI_Util::is_set($comment_id))
 		{
-			$where_parms['comment_id'] = $comment_id;
+			$where_params['comment_id'] = $comment_id;
 		}
 		$order_by = array('comment_id' => NULL, 'meta_key' => NULL);
-		$query_parms = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_parms' => $where_parms);
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_params' => $where_params);
 		if ($as_array)
 		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
 		}
 		else
 		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_parms);
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
 		}
 	}
 } // End Model_WP_CommentMeta
