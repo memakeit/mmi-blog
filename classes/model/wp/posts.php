@@ -242,7 +242,7 @@ EOSQL;
 	 */
 	public static function update_comment_count($post_id, $comment_count)
 	{
-		$post = Jelly::factory('wp_posts');
+		$post = Jelly::factory(self::$_table_name);
 		$post->comment_count = $comment_count;
  		return MMI_Jelly::update($post_id, $post);
 	}
