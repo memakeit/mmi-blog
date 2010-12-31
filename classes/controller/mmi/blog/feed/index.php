@@ -52,7 +52,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 	{
 		$posts = MMI_Blog_Post::factory($this->_driver)->get_posts(NULL, TRUE);
 		$this->_configure_feed();
-		if (is_array($posts) AND count($posts) > 0)
+		if ( ! empty($posts))
 		{
 			foreach ($posts as $post)
 			{

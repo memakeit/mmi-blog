@@ -147,7 +147,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 		// Get navigation settings
 		$nav_parm = NULL;
 		$nav_type = $this->_nav_type;
-		if (is_array($nav_type) AND count($nav_type) > 0)
+		if (is_array($nav_type) AND ! empty($nav_type))
 		{
 			$nav_type = key($this->_nav_type);
 			$nav_parm = Arr::get($this->_nav_type, $nav_type);
@@ -247,7 +247,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 
 		$prev = NULL;
 		$next = NULL;
-		if (is_array($posts) AND count($posts) > 0)
+		if (is_array($posts) AND ! empty($posts))
 		{
 			$last = end($posts);
 			$first = reset($posts);
@@ -315,7 +315,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 		// Get navigation settings
 		$nav_parm = NULL;
 		$nav_type = $this->_nav_type;
-		if (is_array($nav_type) AND count($nav_type) > 0)
+		if (is_array($nav_type) AND ! empty($nav_type))
 		{
 			$nav_type = key($this->_nav_type);
 			$nav_parm = Arr::get($this->_nav_type, $nav_type);

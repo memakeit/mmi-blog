@@ -397,7 +397,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	 */
 	protected static function _load_gravatars($comments)
 	{
-		if (is_array($comments) AND count($comments) > 0)
+		if ( ! empty($comments))
 		{
 			foreach ($comments as $idx => $comment)
 			{
@@ -434,7 +434,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			$current_id = intval($item['comment_id']);
 			if ($current_id !== $old_id)
 			{
-				if ($old_id > -1 AND count($item_meta > 0))
+				if ($old_id > -1 AND ! empty($item_meta))
 				{
 					$comments[$old_id]->meta = $item_meta;
 				}
@@ -443,7 +443,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 			}
 			$item_meta[Arr::get($item, 'key')] = Arr::get($item, 'value');
 		}
-		if ($old_id > -1 AND count($item_meta > 0))
+		if ($old_id > -1 AND ! empty($item_meta))
 		{
 			$comments[$old_id]->meta = $item_meta;
 		}

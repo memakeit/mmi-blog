@@ -135,7 +135,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 			$current_id = intval($item['user_id']);
 			if ($current_id !== $old_id)
 			{
-				if ($old_id > -1 AND count($item_meta > 0))
+				if ($old_id > -1 AND ! empty($item_meta))
 				{
 					$users[$old_id]->meta = $item_meta;
 				}
@@ -144,7 +144,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 			}
 			$item_meta[Arr::get($item, 'key')] = Arr::get($item, 'value');
 		}
-		if ($old_id > -1 AND count($item_meta > 0))
+		if ($old_id > -1 AND ! empty($item_meta))
 		{
 			$users[$old_id]->meta = $item_meta;
 		}

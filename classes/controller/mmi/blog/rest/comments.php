@@ -33,7 +33,7 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 		$comments = MMI_Blog_Comment::factory($driver)->get_comments($post_id);
 
 		// Process comments
-		if (is_array($comments) AND count($comments) > 0)
+		if ( ! empty($comments))
 		{
 			// Get gravatar defaults
 			$defaults = MMI_Gravatar::get_config()->get('defaults', array());

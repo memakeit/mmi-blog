@@ -199,7 +199,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 				$terms[$id] = self::factory($driver)->_load($fields, $load_meta);
 				$terms[$id]->driver = $driver;
 			}
-			if (is_array($terms) AND count($terms) > 0)
+			if ( ! empty($terms))
 			{
 				// Associate terms with post ids
 				foreach ($terms as $term_id => $term)

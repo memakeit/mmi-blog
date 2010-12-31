@@ -723,7 +723,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _load_meta($posts)
 	{
-		if ( ! (is_array($posts) AND count($posts) > 0))
+		if (empty($posts))
 		{
 			return;
 		}
@@ -742,7 +742,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$current_id = intval($item['post_id']);
 			if ($current_id !== $old_id)
 			{
-				if ($old_id > -1 AND count($item_meta > 0))
+				if ($old_id > -1 AND ! empty($item_meta))
 				{
 					$posts[$old_id]->meta = $item_meta;
 				}
@@ -751,7 +751,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			}
 			$item_meta[Arr::get($item, 'key')] = Arr::get($item, 'value');
 		}
-		if ($old_id > -1 AND count($item_meta > 0))
+		if ($old_id > -1 AND ! empty($item_meta))
 		{
 			$posts[$old_id]->meta = $item_meta;
 		}
@@ -767,7 +767,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _load_categories($posts, $reload_cache = NULL)
 	{
-		if ( ! (is_array($posts) AND count($posts) > 0))
+		if (empty($posts))
 		{
 			return;
 		}
@@ -794,7 +794,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _load_tags($posts, $reload_cache = NULL)
 	{
-		if ( ! (is_array($posts) AND count($posts) > 0))
+		if (empty($posts))
 		{
 			return;
 		}
@@ -834,12 +834,12 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$post_ids[] = $post->id;
 		}
 
-		if (is_array($terms) AND count($terms) > 0)
+		if ( ! empty($terms))
 		{
 			foreach ($terms as $term)
 			{
 				$found = array_intersect($term->post_ids, $post_ids);
-				if (is_array($found) AND count($found) > 0)
+				if ( ! empty($found))
 				{
 					foreach ($found as $found_id)
 					{
@@ -949,7 +949,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _set_category_ids($posts, $reload_cache = NULL)
 	{
-		if ( ! (is_array($posts) AND count($posts) > 0))
+		if (empty($posts))
 		{
 			return;
 		}
@@ -976,7 +976,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 */
 	protected static function _set_tag_ids($posts, $reload_cache = NULL)
 	{
-		if ( ! (is_array($posts) AND count($posts) > 0))
+		if (empty($posts))
 		{
 			return;
 		}
@@ -1016,12 +1016,12 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			$post_ids[] = intval($post['id']);
 		}
 
-		if (is_array($terms) AND count($terms) > 0)
+		if ( ! empty($terms))
 		{
 			foreach ($terms as $term)
 			{
 				$found = array_intersect($term->post_ids, $post_ids);
-				if (is_array($found) AND count($found) > 0)
+				if ( ! empty($found))
 				{
 					foreach ($found as $found_id)
 					{

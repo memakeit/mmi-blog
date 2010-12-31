@@ -78,7 +78,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 		$this->_post = MMI_Blog_Post::factory($this->_driver)->get_post($this->_year, $this->_month, $this->_slug);
 		$this->_configure_feed();
 		$comments = $this->_get_comments();
-		if (is_array($comments) AND count($comments) > 0)
+		if ( ! empty($comments))
 		{
 			foreach ($comments as $comment)
 			{

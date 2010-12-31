@@ -74,7 +74,7 @@ abstract class Kohana_MMI_Blog_Core
 		$cache_id = $driver.'_blog_'.$type;
 		if ( ! empty($ids))
 		{
-			if (is_array($ids) AND count($ids) > 0)
+			if (is_array($ids) AND ! empty($ids))
 			{
 				$cache_id .= '_'.implode('_', $ids);
 			}

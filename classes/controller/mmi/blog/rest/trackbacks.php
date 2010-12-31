@@ -33,7 +33,7 @@ class Controller_MMI_Blog_Rest_Trackbacks extends MMI_REST_JSON
 		$trackbacks = MMI_Blog_Comment::factory($driver)->get_trackbacks($post_id);
 
 		// Process trackbacks
-		if (is_array($trackbacks) AND count($trackbacks) > 0)
+		if ( ! empty($trackbacks))
 		{
 			$trackbacks = array_values($trackbacks);
 			$last = count($trackbacks) - 1;

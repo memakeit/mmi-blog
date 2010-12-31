@@ -59,7 +59,7 @@ class Controller_MMI_Blog_Feed_Comments extends Controller_MMI_Blog_Feed_Atom
 		$comments = MMI_Blog_Comment::factory($this->_driver)->get_recent($this->_include_trackbacks, $num_entries, TRUE);
 
 		$this->_configure_feed();
-		if (is_array($comments) AND count($comments) > 0)
+		if ( ! empty($comments))
 		{
 			$this->_load_posts($comments);
 			foreach ($comments as $comment)
