@@ -12,6 +12,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Receive and process a pingback.
 	 *
+	 * @access	public
 	 * @param	array	the pingback arguments (from URL, to URL)
 	 * @return	string
 	 */
@@ -163,6 +164,7 @@ class Kohana_MMI_Blog_Pingback
 	 * If the destination URLs parameter is an HTML string, the URLs will be
 	 * extracted. Otherwise an array of destination URLs can be specified.
 	 *
+	 * @access	public
 	 * @param	mixed	the destination URLs (an array or an HTML string)
 	 * @param	string	the ping from URL
 	 * @param	integer	the cURL connection timeout
@@ -193,6 +195,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Send a pingback.
 	 *
+	 * @access	public
 	 * @param	string	the ping from URL
 	 * @param	string	the ping to URL
 	 * @param	integer	the cURL connection timeout
@@ -246,6 +249,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Log the pingback response.
 	 *
+	 * @access	public
 	 * @param	boolean				did the pingback succeed?
 	 * @param	string				the type of pingback (pingback|trackback)
 	 * @param	array				an array of URL parameters (keys = from,to,xmlrpc)
@@ -310,6 +314,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Get the pingback URL.
 	 *
+	 * @access	public
 	 * @param	string	the URL to discover the pingback URL for
 	 * @param	integer	the cURL connection timeout
 	 * @return	string
@@ -380,6 +385,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Check if the HTML contains a link element with the URL specified.
 	 *
+	 * @access	public
 	 * @param	string	the link URL
 	 * @param	string	the HTML to check
 	 * @return	boolean
@@ -415,6 +421,7 @@ class Kohana_MMI_Blog_Pingback
 	 * 	- email
 	 * 	- url
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	string	the content to check
 	 * @param	array	the author details
@@ -429,6 +436,7 @@ class Kohana_MMI_Blog_Pingback
 	/**
 	 * Save the pingback.
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	string	the pingback page title
 	 * @param	string	the pingback URL
@@ -453,6 +461,7 @@ class Kohana_MMI_Blog_Pingback
 	 * If the response contains an XML string, the fault or param
 	 * elements are used to create the message output parameter.
 	 *
+	 * @access	protected
 	 * @param	MMI_Curl_Response	the cURL response object
 	 * @param	string				the error or success message extracted
 	 * @return	boolean

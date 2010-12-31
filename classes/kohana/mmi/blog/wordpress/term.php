@@ -51,6 +51,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get categories. If no id is specified, all categories are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -63,6 +64,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get categories by slug. If no slug is specified, all categories are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	slugs being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -75,6 +77,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get category frequencies (the number of posts per category).
 	 *
+	 * @access	public
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
@@ -86,6 +89,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get tags. If no id is specified, all tags are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -98,6 +102,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get tags by slug. If no slug is specified, all tags are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	slugs being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -110,6 +115,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get tag frequencies (the number of posts per tag).
 	 *
+	 * @access	public
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
@@ -121,6 +127,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get terms. If no id is specified, all terms are returned.
 	 *
+	 * @access	protected
 	 * @param	mixed	id's being selected
 	 * @param	string	term type (category | tag)
 	 * @param	mixed	reload cache from database?
@@ -230,6 +237,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get terms by slug. If no slug is specified, all terms are returned.
 	 *
+	 * @access	protected
 	 * @param	mixed	slugs being selected
 	 * @param	string	term type (category | tag)
 	 * @param	mixed	reload cache from database?
@@ -262,6 +270,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get term frequencies (the number of posts per term).
 	 *
+	 * @access	protected
 	 * @param	string	term type (category | tag)
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -297,6 +306,7 @@ class Kohana_MMI_Blog_Wordpress_Term extends MMI_Blog_Term
 	/**
 	 * Get id.
 	 *
+	 * @access	protected
 	 * @param	string	id
 	 * @return	integer
 	 */

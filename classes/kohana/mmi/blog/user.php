@@ -55,6 +55,7 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	/**
 	 * If the user has an associated URL, display the user's name as a link.
 	 *
+	 * @access	public
 	 * @param	MMI_Blog_User	the user object
 	 * @return	string
 	 */
@@ -81,6 +82,7 @@ abstract class Kohana_MMI_Blog_User extends MMI_Blog_Core
 	/**
 	 * Create a user instance.
 	 *
+	 * @access	public
 	 * @throws	Kohana_Exception
 	 * @param	string	blog driver
 	 * @return	MMI_Blog_User

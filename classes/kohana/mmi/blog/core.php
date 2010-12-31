@@ -16,6 +16,7 @@ abstract class Kohana_MMI_Blog_Core
 	 * Load an object with data from an array.
 	 * This method is chainable.
 	 *
+	 * @access	protected
 	 * @param	array	data
 	 * @param	boolean	load meta data?
 	 * @return	mixed
@@ -63,6 +64,7 @@ abstract class Kohana_MMI_Blog_Core
 	/**
 	 * Get the cache id.
 	 *
+	 * @access	protected
 	 * @param	string	blog driver
 	 * @param	mixed	id's being cached
 	 * @return	string
@@ -87,6 +89,7 @@ abstract class Kohana_MMI_Blog_Core
 	/**
 	 * Extract results from a data set based on ids.
 	 *
+	 * @access	protected
 	 * @param	array	items
 	 * @param	mixed	id's being extracted
 	 * @param	boolean	preserve array keys?

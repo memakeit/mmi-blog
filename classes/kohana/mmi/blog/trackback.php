@@ -13,6 +13,7 @@ class Kohana_MMI_Blog_Trackback
 	/**
 	 * Receive and process a trackback.
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public static function receive()
@@ -109,6 +110,7 @@ class Kohana_MMI_Blog_Trackback
 	/**
 	 * Send a trackback.
 	 *
+	 * @access	public
 	 * @param	string	the trackback URL
 	 * @param	array	the trackback parameters (keys = blog_name,excerpt,title,url)
 	 * @param	integer	the cURL connection timeout
@@ -174,6 +176,7 @@ class Kohana_MMI_Blog_Trackback
 	 * 	- email
 	 * 	- url
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	string	the content to check
 	 * @param	array	the author details
@@ -188,6 +191,7 @@ class Kohana_MMI_Blog_Trackback
 	/**
 	 * Save the trackback.
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	string	the trackback page title
 	 * @param	string	the trackback URL
@@ -212,6 +216,7 @@ class Kohana_MMI_Blog_Trackback
 	 * If the response contains an XML string, the message elements are used
 	 * to create the $msg output parameter.
 	 *
+	 * @access	protected
 	 * @param	MMI_Curl_Response	the cURL response object
 	 * @param	string				the error or success message extracted
 	 * @return	boolean
@@ -255,6 +260,7 @@ class Kohana_MMI_Blog_Trackback
 	/**
 	 * Get the XML response.
 	 *
+	 * @access	protected
 	 * @param	boolean	an error occurred?
 	 * @param	string	the error message
 	 * @return	string

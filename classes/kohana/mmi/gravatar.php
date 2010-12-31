@@ -33,6 +33,7 @@ class Kohana_MMI_Gravatar
 	/**
 	 * Get a gravatar URL.
 	 *
+	 * @access	public
 	 * @param	string	email
 	 * @param	integer	image size (between 1 and 512 pixels)
 	 * @param	string	rating (g | pg | r | x)
@@ -111,17 +112,17 @@ class Kohana_MMI_Gravatar
 	/**
 	 * Get the gravatar configuration settings.
 	 *
+	 * @access	public
 	 * @param	boolean	return the configuration as an array?
 	 * @return	mixed
 	 */
 	public static function get_config($as_array = FALSE)
 	{
 		(self::$_config === NULL) AND self::$_config = Kohana::config('mmi-gravatar');
-		$config = self::$_config;
 		if ($as_array)
 		{
-			$config = $config->as_array();
+			return self::$_config->as_array();
 		}
-		return $config;
+		return self::$_config;
 	}
 } // End Kohana_MMI_Gravatar

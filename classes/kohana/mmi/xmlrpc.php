@@ -42,6 +42,7 @@ class Kohana_MMI_XMLRPC
 	 * Return the singleton instance of the XML-RPC server. If no instance
 	 * exists, a new one is created.
 	 *
+	 * @access	public
 	 * @return	IXR_Server
 	 */
 	public static function server()
@@ -58,6 +59,7 @@ class Kohana_MMI_XMLRPC
 	/**
 	 * Get the current date and time.
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public static function datetime()

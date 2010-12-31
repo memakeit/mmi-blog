@@ -36,6 +36,7 @@ class Kohana_MMI_Blog
 	/**
 	 * Get a blog guid.
 	 *
+	 * @access	public
 	 * @param	integer	the page number
 	 * @param	boolean	return an absolute URL?
 	 * @return	string
@@ -63,6 +64,7 @@ class Kohana_MMI_Blog
 	 * 		index		''
 	 * 		tag			array('tag', $slug)
 	 *
+	 * @access	public
 	 * @return	mixed
 	 */
 	public static function get_nav_type()
@@ -83,6 +85,7 @@ class Kohana_MMI_Blog
 	 * 		index		''
 	 * 		tag			array('tag', $slug)
 	 *
+	 * @access	public
 	 * @param	mixed	the navigation-type parameters
 	 * @return	void
 	 */
@@ -98,6 +101,7 @@ class Kohana_MMI_Blog
 	/**
 	 * Does the cache need to be reloaded from the database?
 	 *
+	 * @access	public
 	 * @return	boolean
 	 */
 	public static function reload_cache()
@@ -108,51 +112,51 @@ class Kohana_MMI_Blog
 	/**
 	 * Get the configuration settings.
 	 *
+	 * @access	public
 	 * @param	boolean	return the configuration as an array?
 	 * @return	mixed
 	 */
 	public static function get_config($as_array = FALSE)
 	{
 		(self::$_config === NULL) AND self::$_config = Kohana::config('mmi-blog');
-		$config = self::$_config;
 		if ($as_array)
 		{
-			$config = $config->as_array();
+			return self::$_config->as_array();
 		}
-		return $config;
+		return self::$_config;
 	}
 
 	/**
 	 * Get the feed configuration settings.
 	 *
+	 * @access	public
 	 * @param	boolean	return the configuration as an array?
 	 * @return	mixed
 	 */
 	public static function get_feed_config($as_array = FALSE)
 	{
 		(self::$_feed_config === NULL) AND self::$_feed_config = Kohana::config('mmi-blog-feed');
-		$config = self::$_feed_config;
 		if ($as_array)
 		{
-			$config = $config->as_array();
+			return self::$_feed_config->as_array();
 		}
-		return $config;
+		return self::$_feed_config;
 	}
 
 	/**
 	 * Get the post configuration settings.
 	 *
+	 * @access	public
 	 * @param	boolean	return the configuration as an array?
 	 * @return	mixed
 	 */
 	public static function get_post_config($as_array = FALSE)
 	{
 		(self::$_post_config === NULL) AND self::$_post_config = Kohana::config('mmi-blog-post');
-		$config = self::$_post_config;
 		if ($as_array)
 		{
-			$config = $config->as_array();
+			return self::$_post_config->as_array();
 		}
-		return $config;
+		return self::$_post_config;
 	}
 } // End Kohana_MMI_Blog

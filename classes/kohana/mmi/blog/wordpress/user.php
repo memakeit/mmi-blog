@@ -44,6 +44,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	/**
 	 * Get users. If no id is specified, all users are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -91,6 +92,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	/**
 	 * Get id.
 	 *
+	 * @access	protected
 	 * @param	string	id
 	 * @return	integer
 	 */
@@ -102,6 +104,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	/**
 	 * Get registered timestamp.
 	 *
+	 * @access	protected
 	 * @param	string	registered date
 	 * @return	integer
 	 */
@@ -113,6 +116,7 @@ class Kohana_MMI_Blog_Wordpress_User extends MMI_Blog_User
 	/**
 	 * Load the user metadata.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog user objects
 	 * @return	void
 	 */

@@ -9,6 +9,10 @@
  */
 abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 {
+	// Class constants
+	const TYPE_CATEGORY = 'category';
+	const TYPE_TAG = 'tag';
+
 	// Abstract methods
 	abstract public function get_categories($ids = NULL, $reload_cache = NULL);
 	abstract public function get_categories_by_slug($slugs = NULL, $reload_cache = NULL);
@@ -16,10 +20,6 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	abstract public function get_tags($ids = NULL, $reload_cache = NULL);
 	abstract public function get_tags_by_slug($slugs = NULL, $reload_cache = NULL);
 	abstract public function get_tag_frequencies($reload_cache = NULL);
-
-	// Class constants
-	const TYPE_CATEGORY = 'category';
-	const TYPE_TAG = 'tag';
 
 	/**
 	 * @var string the blog driver
@@ -59,6 +59,7 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	/**
 	 * Get a category guid.
 	 *
+	 * @access	public
 	 * @param	string	the category slug
 	 * @param	integer	the page number
 	 * @param	boolean	return an absolute URL?
@@ -78,6 +79,7 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	/**
 	 * Get a tag guid.
 	 *
+	 * @access	public
 	 * @param	string	the tag slug
 	 * @param	integer	the page number
 	 * @param	boolean	return an absolute URL?
@@ -97,6 +99,7 @@ abstract class Kohana_MMI_Blog_Term extends MMI_Blog_Core
 	/**
 	 * Create a term instance.
 	 *
+	 * @access	public
 	 * @throws	Kohana_Exception
 	 * @param	string	type of post to create
 	 * @return	MMI_Blog_Term

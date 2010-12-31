@@ -90,6 +90,7 @@ abstract class Kohana_MMI_Blog_Comment extends MMI_Blog_Core
 	/**
 	 * Create a comment instance.
 	 *
+	 * @access	public
 	 * @throws	Kohana_Exception
 	 * @param	string	type of post to create
 	 * @return	MMI_Blog_Post

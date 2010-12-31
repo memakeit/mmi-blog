@@ -9,6 +9,10 @@
  */
 abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 {
+	// Type constants
+	const TYPE_PAGE = 'page';
+	const TYPE_POST = 'post';
+
 	// Abstract methods
 	abstract public function comments_open();
 	abstract public function get_archive_list($year, $month, $reload_cache = NULL);
@@ -24,10 +28,6 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	abstract public function get_recent($max_num = 10, $reload_cache = NULL);
 	abstract public function get_related($id, $max_num = 10, $reload_cache = NULL);
 	abstract public function update_comment_count();
-
-	// Type constants
-	const TYPE_PAGE = 'page';
-	const TYPE_POST = 'post';
 
 	/**
 	 * @var string archive guid
@@ -137,6 +137,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	/**
 	 * Get a post guid.
 	 *
+	 * @access	public
 	 * @param	integer	the 4-digit year
 	 * @param	integer	the 2-digit month
 	 * @param	string	the page slug
@@ -158,6 +159,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	/**
 	 * Get an archive guid.
 	 *
+	 * @access	public
 	 * @param	integer	the year
 	 * @param	integer	the month
 	 * @param	integer	the page number
@@ -182,6 +184,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	/**
 	 * Get a comments feed guid.
 	 *
+	 * @access	public
 	 * @param	integer	the 4-digit year
 	 * @param	integer	the 2-digit month
 	 * @param	string	the page slug
@@ -203,6 +206,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	/**
 	 * Get a trackback guid.
 	 *
+	 * @access	public
 	 * @param	integer	the 4-digit year
 	 * @param	integer	the 2-digit month
 	 * @param	string	the page slug
@@ -224,6 +228,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	/**
 	 * Format the content (which is represented as an array of paragraphs).
 	 *
+	 * @access	public
 	 * @param	array	the paragraphs
 	 * @param	array	an associative array of formatting settings
 	 * @return	string
@@ -292,6 +297,7 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 	/**
 	 * Create a post instance.
 	 *
+	 * @access	public
 	 * @throws	Kohana_Exception
 	 * @param	string	type of post to create
 	 * @return	MMI_Blog_Post

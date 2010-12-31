@@ -53,6 +53,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Create a form object using configuration settings.
 	 *
+	 * @access	public
 	 * @return	MMI_Form
 	 */
 	public function get_form()
@@ -142,6 +143,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	 * If the author parameter is an array, the following keys can be used to
 	 * specify author details: name, email, url.
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	string	the content to check
 	 * @param	array	the author details
@@ -156,6 +158,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Save the comment.
 	 *
+	 * @access	public
 	 * @return	boolean
 	 */
 	public function save()
@@ -181,6 +184,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get recent comments.
 	 *
+	 * @access	public
 	 * @param	boolean	include trackbacks?
 	 * @param	integer	the maximum number of comments to return
 	 * @param	boolean	reload cache from database?
@@ -214,6 +218,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get comments. If no post id is specified, all comments are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	post id's being selected
 	 * @param	boolean	reload cache from database?
 	 * @return	array
@@ -260,6 +265,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get trackbacks. If no post id is specified, all trackbacks are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	post id's being selected
 	 * @param	boolean	reload cache from database?
 	 * @return	array
@@ -301,6 +307,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get approved status.
 	 *
+	 * @access	protected
 	 * @param	integer	comment_approved?
 	 * @return	boolean
 	 */
@@ -312,6 +319,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get id.
 	 *
+	 * @access	protected
 	 * @param	string	id
 	 * @return	integer
 	 */
@@ -323,6 +331,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get parent id.
 	 *
+	 * @access	protected
 	 * @param	string	parent id
 	 * @return	integer
 	 */
@@ -334,6 +343,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get post id.
 	 *
+	 * @access	protected
 	 * @param	string	post id
 	 * @return	integer
 	 */
@@ -345,6 +355,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Get timestamp.
 	 *
+	 * @access	protected
 	 * @param	string	date
 	 * @return	integer
 	 */
@@ -356,6 +367,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * If user id is specified, load the user settings (display name, email and url).
 	 *
+	 * @access	protected
 	 * @param	string	user id
 	 * @return	integer
 	 */
@@ -379,6 +391,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Load the comment gravatar URLs.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog comment objects
 	 * @return	void
 	 */
@@ -401,6 +414,7 @@ class Kohana_MMI_Blog_Wordpress_Comment extends MMI_Blog_Comment
 	/**
 	 * Load the comment metadata.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog comment objects
 	 * @return	void
 	 */

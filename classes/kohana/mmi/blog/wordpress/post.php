@@ -58,6 +58,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get a list of posts. If no id is specified, all posts are returned.
 	 * Minimal post details are returned for each list item.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -71,6 +72,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get a list of pages. If no id is specified, all pages are returned.
 	 * Minimal page details are returned for each list item.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -83,6 +85,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get whether comments are open.
 	 *
+	 * @access	public
 	 * @return	boolean
 	 */
 	public function comments_open()
@@ -93,6 +96,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Update the comment count.
 	 *
+	 * @access	public
 	 * @return	boolean
 	 */
 	public function update_comment_count()
@@ -103,6 +107,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get a page using its slug.
 	 *
+	 * @access	public
 	 * @param	string	the page slug
 	 * @return	array
 	 */
@@ -146,6 +151,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get a post using its year, month, and slug.
 	 *
+	 * @access	public
 	 * @param	string	the post year
 	 * @param	string	the post month
 	 * @param	string	the post slug
@@ -192,6 +198,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get popular (most-viewed) posts.
 	 *
+	 * @access	public
 	 * @param	integer	the maximum number of popular posts to return
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -258,6 +265,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get random posts.
 	 *
+	 * @access	public
 	 * @param	integer	the maximum number of random posts to return
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -297,6 +305,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get recent posts.
 	 *
+	 * @access	public
 	 * @param	integer	the maximum number of recent posts to return
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -335,6 +344,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get related posts for the post id specified.
 	 *
+	 * @access	public
 	 * @param	integer	the post id to find related posts for
 	 * @param	integer	the maximum number of related posts to return
 	 * @param	mixed	reload cache from database?
@@ -451,6 +461,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get a list of posts for a month and year.
 	 * Minimal post details are returned for each list item.
 	 *
+	 * @access	public
 	 * @param	integer	year
 	 * @param	integer	month
 	 * @param	mixed	reload cache from database?
@@ -481,6 +492,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get archive frequencies (the number of posts per month and year).
 	 *
+	 * @access	public
 	 * @param	mixed	reload cache from database?
 	 * @return	array
 	 */
@@ -533,6 +545,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get posts. If no id is specified, all posts are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @return	array
 	 */
@@ -544,6 +557,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get pages. If no id is specified, all pages are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	id's being selected
 	 * @return	array
 	 */
@@ -555,6 +569,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get posts. If no id is specified, all posts are returned.
 	 *
+	 * @access	protected
 	 * @param	mixed	id's being selected
 	 * @param	string	post type (page | post)
 	 * @return	array
@@ -602,6 +617,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Create a post object and set its driver and guid properties.
 	 *
+	 * @access	protected
 	 * @param	array	an associative array of post details
 	 * @param	boolean	load the meta-data (from the post details)?
 	 * @return	array
@@ -628,6 +644,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * If an author id is specified, load the author.
 	 *
+	 * @access	protected
 	 * @param	string	user id
 	 * @return	integer
 	 */
@@ -652,6 +669,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get comment count.
 	 *
+	 * @access	protected
 	 * @param	string	count
 	 * @return	integer
 	 */
@@ -663,6 +681,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get id.
 	 *
+	 * @access	protected
 	 * @param	string	id
 	 * @return	integer
 	 */
@@ -674,6 +693,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get timestamp created.
 	 *
+	 * @access	protected
 	 * @param	string	date created
 	 * @return	integer
 	 */
@@ -685,6 +705,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Get timestamp modified.
 	 *
+	 * @access	protected
 	 * @param	string	date modified
 	 * @return	integer
 	 */
@@ -696,6 +717,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Load post metadata.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog post objects
 	 * @return	void
 	 */
@@ -738,6 +760,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Load post categories.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog post objects
 	 * @param	mixed	reload cache from database?
 	 * @return	void
@@ -764,6 +787,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Load post tags.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog post objects
 	 * @param	mixed	reload cache from database?
 	 * @return	void
@@ -790,6 +814,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Load post terms.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog post objects
 	 * @param	array	array of blog term objects
 	 * @param	string	type of term to load (category | tag)
@@ -838,6 +863,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	 * Get a list of posts. If no id is specified, all posts are returned.
 	 * Minimal post details are returned for each list item.
 	 *
+	 * @access	protected
 	 * @param	mixed	id's being selected
 	 * @param	string	post type (page | post)
 	 * @param	mixed	reload cache from database?
@@ -916,6 +942,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Set the category ids for each post.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog posts (represented as arrays)
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -942,6 +969,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Set the tag ids for each post.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog posts (represented as arrays)
 	 * @param	mixed	reload cache from database?
 	 * @return	array
@@ -968,6 +996,7 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 	/**
 	 * Set the term ids for each post.
 	 *
+	 * @access	protected
 	 * @param	array	array of blog posts (represented as arrays)
 	 * @param	array	array of blog term objects
 	 * @param	string	type of term to load (category | tag)

@@ -28,6 +28,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 	/**
 	 * Create a WordPress instance.
 	 *
+	 * @access	public
 	 * @return	MMI_Blog_WordPress
 	 */
 	public static function factory()
@@ -38,6 +39,7 @@ class Kohana_MMI_Blog_WordPress extends MMI_Blog_Core
 	/**
 	 * Get options. If no id is specified, all options are returned.
 	 *
+	 * @access	public
 	 * @param	mixed	option names being selected
 	 * @param	boolean	reload cache from database?
 	 * @return	array
