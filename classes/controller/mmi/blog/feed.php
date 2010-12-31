@@ -1,13 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Base Atom feed controller.
+ * Base feed controller.
  *
  * @package		MMI Blog
  * @author		Me Make It
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-abstract class Controller_MMI_Blog_Feed_Atom extends Controller
+abstract class Controller_MMI_Blog_Feed extends Controller
 {
 	/**
 	 * @var string the cache type
@@ -55,4 +55,4 @@ abstract class Controller_MMI_Blog_Feed_Atom extends Controller
 			$this->request->response = $this->_feed->render().'<!-- published @ '.gmdate('Y-m-d H:i:s').' GMT -->';
 		}
 	}
-} // End Controller_MMI_Blog_Feed_Atom
+} // End Controller_MMI_Blog_Feed

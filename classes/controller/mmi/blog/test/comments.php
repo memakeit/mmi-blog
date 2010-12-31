@@ -7,13 +7,8 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_Test_Comments extends Controller
+class Controller_MMI_Blog_Test_Comments extends Controller_MMI_Blog_Test
 {
-	/**
-	 * @var boolean turn debugging on?
-	 **/
-	public $debug = TRUE;
-
 	/**
 	 * Test comments functionality.
 	 *
@@ -26,4 +21,4 @@ class Controller_MMI_Blog_Test_Comments extends Controller
 		$data = $mmi_comment->get_comments(array(1,2));
 		MMI_Debug::dump($data, 'comments');
 	}
-} // End Controller_MMI_Blog_Test_Blog
+} // End Controller_MMI_Blog_Test_Comments

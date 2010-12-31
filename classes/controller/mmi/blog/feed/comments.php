@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_Feed_Comments extends Controller_MMI_Blog_Feed_Atom
+class Controller_MMI_Blog_Feed_Comments extends Controller_MMI_Blog_Feed
 {
 	/**
 	 * @var array an associative array of feed defaults

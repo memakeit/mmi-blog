@@ -7,18 +7,8 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
+class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 {
-	/**
-	 * @var string the blog driver
-	 **/
-	protected $_driver;
-
-	/**
-	 * @var MMI_Blog_Post the blog post
-	 **/
-	protected $_post;
-
 	/**
 	 * @var array the previous post settings
 	 **/
@@ -35,7 +25,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	protected $_next;
 
 	/**
-	 * Set the post, driver, and navigation type.
+	 * Set the navigation type.
 	 *
 	 * @access	public
 	 * @param	Request	the request that created the controller
@@ -44,11 +34,6 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	public function __construct($request)
 	{
 		parent::__construct($request);
-
-		// Load parameters
-		$post = (isset($request->post)) ? ($request->post) : (array());
-		$this->_post = Arr::get($post, 'post');
-		$this->_driver = $this->_post->driver;
 		$this->_nav_type = MMI_Blog::get_nav_type();
 	}
 

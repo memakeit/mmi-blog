@@ -7,13 +7,8 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
+class Controller_MMI_Blog_HMVC_Content extends Controller_MMI_Blog_HMVC
 {
-	/**
-	 * @var string the blog driver
-	 **/
-	protected $_driver;
-
 	/**
 	 * @var string the header text
 	 **/
@@ -30,11 +25,6 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	protected $_mode;
 
 	/**
-	 * @var array the request post data
-	 **/
-	protected $_post;
-
-	/**
 	 * Load the request parameters.
 	 *
 	 * @access	public
@@ -47,9 +37,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 
 		// Load parameters
 		$config = MMI_Blog::get_config();
-		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
-
-		$post = (isset($request->post)) ? ($request->post) : (array());
+		$post = $this->_post;
 		if ( ! empty($post))
 		{
 			$this->_mode = Arr::get($post, 'mode', MMI_Blog_Content::MODE_POPULAR);
@@ -57,7 +45,6 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 			$this->_header = Arr::get($post, 'header', Arr::get($mode_settings, 'header'));
 			$this->_max_items = Arr::get($post, 'max_items', Arr::get($mode_settings, 'max_items', 5));
 		}
-		$this->_post = $post;
 	}
 
 	/**

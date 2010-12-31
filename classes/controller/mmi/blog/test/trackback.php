@@ -8,13 +8,8 @@
  * @license		http://www.memakeit.com/license
  * @link		http://www.sixapart.com/pronet/docs/trackback_spec
  */
-class Controller_MMI_Blog_Test_Trackback extends Controller
+class Controller_MMI_Blog_Test_Trackback extends Controller_MMI_Blog_Test
 {
-	/**
-	 * @var boolean turn debugging on?
-	 **/
-	public $debug = TRUE;
-
 	/**
 	 * Test trackback functionality.
 	 *

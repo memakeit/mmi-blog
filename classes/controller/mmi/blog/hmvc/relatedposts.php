@@ -7,35 +7,8 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_HMVC_RelatedPosts extends MMI_HMVC
+class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller_MMI_Blog_HMVC
 {
-	/**
-	 * @var string the blog driver
-	 **/
-	protected $_driver;
-
-	/**
-	 * @var MMI_Blog_Post the blog post
-	 **/
-	protected $_post;
-
-	/**
-	 * Set the post and driver.
-	 *
-	 * @access	public
-	 * @param	Request	the request that created the controller
-	 * @return	void
-	 */
-	public function __construct($request)
-	{
-		parent::__construct($request);
-
-		// Load parameters
-		$post = (isset($request->post)) ? ($request->post) : (array());
-		$this->_post = Arr::get($post, 'post');
-		$this->_driver = $this->_post->driver;
-	}
-
 	/**
 	 * Generate the related post links.
 	 *

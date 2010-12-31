@@ -7,18 +7,8 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
+class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 {
-	/**
-	 * @var string the blog driver
-	 **/
-	protected $_driver;
-
-	/**
-	 * @var MMI_Blog_Post the blog post
-	 **/
-	protected $_post;
-
 	/**
 	 * @var boolean load comments via AJAX?
 	 **/
@@ -38,11 +28,6 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 		// Comment settings
 		$comment_config = MMI_Blog::get_config()->get('comments', array());
 		$this->_use_ajax = Arr::get($comment_config, 'use_ajax', FALSE);
-
-		// Load parameters
-		$post = (isset($request->post)) ? ($request->post) : (array());
-		$this->_post = Arr::get($post, 'post');
-		$this->_driver = $this->_post->driver;
 	}
 
 	/**

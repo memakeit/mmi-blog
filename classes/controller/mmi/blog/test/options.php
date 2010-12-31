@@ -7,13 +7,8 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_Test_Options extends Controller
+class Controller_MMI_Blog_Test_Options extends Controller_MMI_Blog_Test
 {
-	/**
-	 * @var boolean turn debugging on?
-	 **/
-	public $debug = TRUE;
-
 	/**
 	 * Test options functionality.
 	 *

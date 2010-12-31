@@ -7,7 +7,7 @@
  * @copyright	(c) 2010 Me Make It
  * @license		http://www.memakeit.com/license
  */
-class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
+class Controller_MMI_Blog_HMVC_Trackbacks extends Controller_MMI_Blog_HMVC
 {
 	/**
 	 * @var boolean allow pingbacks?
@@ -18,16 +18,6 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 	 * @var boolean allow trackbacks?
 	 **/
 	protected $_allow_trackbacks;
-
-	/**
-	 * @var string the blog driver
-	 **/
-	protected $_driver;
-
-	/**
-	 * @var MMI_Blog_Post the blog post
-	 **/
-	protected $_post;
 
 	/**
 	 * @var boolean load comments via AJAX?
@@ -50,11 +40,6 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 		$this->_allow_pingbacks = Arr::get($comment_config, 'pingbacks', TRUE);
 		$this->_allow_trackbacks = Arr::get($comment_config, 'trackbacks', TRUE);
 		$this->_use_ajax = Arr::get($comment_config, 'use_ajax', FALSE);
-
-		// Load parameters
-		$post = (isset($request->post)) ? ($request->post) : (array());
-		$this->_post = Arr::get($post, 'post');
-		$this->_driver = $this->_post->driver;
 	}
 
 	/**
