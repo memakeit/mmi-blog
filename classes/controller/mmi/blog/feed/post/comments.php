@@ -47,6 +47,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 	/**
 	 * Load the feed settings from the configuration file.
 	 *
+	 * @access	public
 	 * @param	object	the request that created the controller
 	 * @return	void
 	 */
@@ -69,6 +70,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 	/**
 	 * Display the comments for a post.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -88,6 +90,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 	/**
 	 * Get the comments for the post.
 	 *
+	 * @access	protected
 	 * @return	array
 	 */
 	protected function _get_comments()
@@ -114,6 +117,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 	/**
 	 * Configure the feed element.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _configure_feed()
@@ -189,6 +193,7 @@ class Controller_MMI_Blog_Feed_Post_Comments extends Controller_MMI_Blog_Feed_At
 	/**
 	 * Add an entry to the feed.
 	 *
+	 * @access	protected
 	 * @param	MMI_Blog_Comment	a blog comment
 	 * @return	void
 	 */

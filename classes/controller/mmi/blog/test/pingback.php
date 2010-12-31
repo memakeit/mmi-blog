@@ -17,6 +17,7 @@ class Controller_MMI_Blog_Test_Pingback extends Controller
 	/**
 	 * Test pingback functionality.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()

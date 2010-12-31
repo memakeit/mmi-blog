@@ -38,6 +38,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	 * Ensure the pagination module is loaded.
 	 * Load the blog settings from the configuration file.
 	 *
+	 * @access	public
 	 * @param	object	the request that created the controller
 	 * @return	void
 	 */
@@ -56,6 +57,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	/**
 	 * Display recent blog posts.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -81,6 +83,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	/**
 	 * Display blog posts for a month and year.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_archive()
@@ -110,6 +113,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	/**
 	 * Display blog posts for a category.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_category()
@@ -144,6 +148,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	/**
 	 * Display blog posts for a tag.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_tag()
@@ -179,6 +184,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	 * Load the post details.
 	 * Create and add the index view.
 	 *
+	 * @access	protected
 	 * @param	array	an array of posts (represented as arrays)
 	 * @param	string	the HTML page title
 	 * @param	string	the page header
@@ -218,6 +224,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	/**
 	 * Inject CSS and JavaScript.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _inject_media()
@@ -232,6 +239,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	/**
 	 * Configure and return a pagination object.
 	 *
+	 * @access	protected
 	 * @param	integer	the total number of items
 	 * @return	Pagination
 	 */

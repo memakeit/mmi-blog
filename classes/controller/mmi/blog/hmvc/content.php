@@ -37,6 +37,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Load the request parameters.
 	 *
+	 * @access	public
 	 * @param	Request	the request that created the controller
 	 * @return	void
 	 */
@@ -62,6 +63,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Generate a list of popular posts.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_popular()
@@ -77,6 +79,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Generate a list of random posts.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_random()
@@ -92,6 +95,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Generate a list of recent posts.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_recent()
@@ -107,6 +111,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Generate a list of related posts.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_related()
@@ -122,6 +127,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Generate a tabbed post list.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_tabbed()
@@ -152,6 +158,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Get the links.
 	 *
+	 * @access	protected
 	 * @param	string	the type of links to get
 	 * @return	array
 	 */
@@ -192,6 +199,7 @@ class Controller_MMI_Blog_HMVC_Content extends MMI_HMVC
 	/**
 	 * Inject CSS and JavaScript.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _inject_media($js_inline = NULL)

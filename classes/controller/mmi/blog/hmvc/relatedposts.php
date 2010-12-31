@@ -22,6 +22,7 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends MMI_HMVC
 	/**
 	 * Set the post and driver.
 	 *
+	 * @access	public
 	 * @param	Request	the request that created the controller
 	 * @return	void
 	 */
@@ -38,6 +39,7 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends MMI_HMVC
 	/**
 	 * Generate the related post links.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()

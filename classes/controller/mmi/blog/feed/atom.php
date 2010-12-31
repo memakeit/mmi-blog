@@ -27,6 +27,7 @@ abstract class Controller_MMI_Blog_Feed_Atom extends Controller
 	/**
 	 * Create the Atom feed object.
 	 *
+	 * @access	public
 	 * @param	object	the request that created the controller
 	 * @return	void
 	 */
@@ -39,6 +40,7 @@ abstract class Controller_MMI_Blog_Feed_Atom extends Controller
 	/**
 	 * Set the content-type and response.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function after()

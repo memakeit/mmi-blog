@@ -23,6 +23,7 @@ class Controller_MMI_Blog_Rest_Comments extends MMI_REST_JSON
 	/**
 	 * Get the comments for a blog post.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()

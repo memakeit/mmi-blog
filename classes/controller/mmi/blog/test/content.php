@@ -22,6 +22,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Test HMVC tabbed post widget.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -32,6 +33,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Test HMVC popular posts widget.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_popular()
@@ -42,6 +44,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Test HMVC random posts widget.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_random()
@@ -52,6 +55,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Test HMVC recent posts widget.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_recent()
@@ -62,6 +66,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Test HMVC related posts widget.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_related()
@@ -72,6 +77,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Test HMVC tabbed post widget.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_tabbed()
@@ -82,6 +88,7 @@ class Controller_MMI_Blog_Test_Content extends MMI_Template
 	/**
 	 * Make the HMVC request and set the variables used during page rendering.
 	 *
+	 * @access	protected
 	 * @param	string	the rendering mode
 	 * @param	array	an associative array of parameters
 	 * @return	void

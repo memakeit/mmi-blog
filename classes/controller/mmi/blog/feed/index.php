@@ -27,6 +27,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 	/**
 	 * Load the feed settings from the configuration file.
 	 *
+	 * @access	public
 	 * @param	object	the request that created the controller
 	 * @return	void
 	 */
@@ -44,6 +45,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 	/**
 	 * Display the recent blog posts feed.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -62,6 +64,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 	/**
 	 * Configure the feed element.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _configure_feed()
@@ -121,6 +124,7 @@ class Controller_MMI_Blog_Feed_Index extends Controller_MMI_Blog_Feed_Atom
 	/**
 	 * Add an entry to the feed.
 	 *
+	 * @access	protected
 	 * @param	MMI_Blog_Post	a blog post
 	 * @return	void
 	 */

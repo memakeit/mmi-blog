@@ -17,12 +17,12 @@ class Controller_MMI_Blog_Test_Comments extends Controller
 	/**
 	 * Test comments functionality.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
 	{
 		$mmi_comment = MMI_Blog_Comment::factory(MMI_Blog::DRIVER_WORDPRESS);
-
 		$data = $mmi_comment->get_comments(array(1,2));
 		MMI_Debug::dump($data, 'comments');
 	}

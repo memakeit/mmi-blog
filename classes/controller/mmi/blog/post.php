@@ -42,6 +42,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Load the blog settings from the configuration file.
 	 *
+	 * @access	public
 	 * @param	object	the request that created the controller
 	 * @return	void
 	 */
@@ -56,6 +57,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Display a blog post.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -145,6 +147,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Inject CSS and JavaScript.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _inject_media()
@@ -172,6 +175,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Using an HMVC request, get the related posts HTML.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_related_posts()
@@ -191,6 +195,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Using an HMVC request, get the previous and next post HTML.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_prev_next()
@@ -210,6 +215,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Using an HMVC request, get the comments HTML.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_comments()
@@ -229,6 +235,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Using an HMVC request, get the trackbacks HTML.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_trackbacks()
@@ -248,6 +255,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Using an HMVC request, get the bookmarking widget HTML.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_bookmarks()
@@ -273,6 +281,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Using an HMVC request, get the pill-style bookmarking widget HTML.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_pill_bookmarks()
@@ -298,6 +307,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Get the comment form view.
 	 *
+	 * @access	protected
 	 * @return	string
 	 */
 	protected function _get_comment_form()
@@ -315,6 +325,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Do form validation, check for duplicate comments and save the comment.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _process_comment_form()
@@ -351,6 +362,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Check if a comment already exists.
 	 *
+	 * @access	protected
 	 * @param	string	the form values
 	 * @return	boolean
 	 */
@@ -378,6 +390,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Save the comment.
 	 *
+	 * @access	protected
 	 * @param	string	the form values
 	 * @return	boolean
 	 */
@@ -410,6 +423,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	/**
 	 * Add Facebook meta tags.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _set_facebook_meta()

@@ -17,6 +17,7 @@ class Controller_MMI_Blog_Test_Options extends Controller
 	/**
 	 * Test options functionality.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()

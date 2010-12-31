@@ -37,6 +37,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 	/**
 	 * Initialize the trackback settings.
 	 *
+	 * @access	public
 	 * @param	Request	the request that created the controller
 	 * @return	void
 	 */
@@ -59,6 +60,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 	/**
 	 * Generate the trackbacks.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -76,6 +78,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 	/**
 	 * Generate the non-AJAX trackbacks.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _trackbacks()
@@ -105,9 +108,10 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 	/**
 	 * Generate the AJAX trackbacks.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
-	public function _trackbacks_ajax()
+	protected function _trackbacks_ajax()
 	{
 		$post = $this->_post;
 		$template = MMI_Text::normalize_spaces(View::factory('mmi/blog/templates/js/trackbacks')->render());
@@ -137,6 +141,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends MMI_HMVC
 	/**
 	 * Get the trackbacks header.
 	 *
+	 * @access	protected
 	 * @param	array	an array of trackbacks
 	 * @return	string
 	 */

@@ -12,14 +12,15 @@ class Controller_MMI_Blog_XMLRPC extends Controller
 	/**
 	 * @var boolean turn debugging on?
 	 **/
-	public $debug_on = FALSE;
+	public $debug = FALSE;
 
 	/**
 	 * Create the XML-RPC server.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
-	function action_index()
+	public function action_index()
 	{
 		$server = MMI_XMLRPC::server();
 	}

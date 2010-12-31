@@ -37,6 +37,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	/**
 	 * Set the post, driver, and navigation type.
 	 *
+	 * @access	public
 	 * @param	Request	the request that created the controller
 	 * @return	void
 	 */
@@ -54,6 +55,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	/**
 	 * Generate the previous and next post links.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -85,6 +87,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	/**
 	 * Generate the meta tags for the previous and next post.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _meta()
@@ -134,6 +137,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	/**
 	 * Generate the meta tags for the navigation (archive, category, index, or tag).
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _nav_meta()
@@ -233,6 +237,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	/**
 	 * Set the previous and next posts' settings.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _set_prev_next()
@@ -302,6 +307,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends MMI_HMVC
 	/**
 	 * Return an array of all posts for the current navigation settings.
 	 *
+	 * @access	protected
 	 * @return	array
 	 */
 	protected function _get_all_nav_posts()

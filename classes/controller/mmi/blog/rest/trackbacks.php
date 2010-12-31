@@ -23,6 +23,7 @@ class Controller_MMI_Blog_Rest_Trackbacks extends MMI_REST_JSON
 	/**
 	 * Get the trackbacks for a blog post.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()

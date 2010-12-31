@@ -17,6 +17,7 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 	/**
 	 * Include the XML-RPC classes.
 	 *
+	 * @access	public
 	 * @param	Request	the request that created the controller
 	 * @return	void
 	 */
@@ -29,6 +30,7 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 	/**
 	 * Test pingback XML-RPC functionality.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -61,6 +63,7 @@ class Controller_MMI_Blog_Test_XMLRPC extends Controller
 	/**
 	 * Test datetime XML-RPC functionality.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_datetime()

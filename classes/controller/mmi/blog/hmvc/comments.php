@@ -27,6 +27,7 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 	/**
 	 * Initialize the comment settings.
 	 *
+	 * @access	public
 	 * @param	Request	the request that created the controller
 	 * @return	void
 	 */
@@ -47,6 +48,7 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 	/**
 	 * Generate the comments.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
@@ -64,6 +66,7 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 	/**
 	 * Generate the non-AJAX comments.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _comments()
@@ -96,6 +99,7 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 	/**
 	 * Generate the AJAX comments.
 	 *
+	 * @access	protected
 	 * @return	void
 	 */
 	protected function _comments_ajax()
@@ -128,6 +132,7 @@ class Controller_MMI_Blog_HMVC_Comments extends MMI_HMVC
 	/**
 	 * Get the comments header.
 	 *
+	 * @access	protected
 	 * @param	array	an array of comments
 	 * @return	string
 	 */

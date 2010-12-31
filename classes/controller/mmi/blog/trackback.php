@@ -18,6 +18,7 @@ class Controller_MMI_Blog_Trackback extends Controller
 	/**
 	 * Process a trackback.
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function action_index()
