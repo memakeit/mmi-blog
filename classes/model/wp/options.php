@@ -17,6 +17,7 @@ class Model_WP_Options extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -57,6 +58,7 @@ class Model_WP_Options extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by option id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more option id's
 	 * @param	integer	the blog id
 	 * @param	array	an associative array of columns names
@@ -67,7 +69,7 @@ class Model_WP_Options extends Jelly_Model
 	public static function select_by_option_id($option_id, $blog_id = 0, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params['blog_id'] = $blog_id;
-		if (MMI_Util::is_set($option_id))
+		if ( ! empty($option_id))
 		{
 			$where_params['option_id'] = $option_id;
 		}

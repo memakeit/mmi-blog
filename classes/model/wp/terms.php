@@ -17,6 +17,7 @@ class Model_WP_Terms extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -52,6 +53,7 @@ class Model_WP_Terms extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by term id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more term id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -61,7 +63,7 @@ class Model_WP_Terms extends Jelly_Model
 	public static function select_by_term_id($term_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($term_id))
+		if ( ! empty($term_id))
 		{
 			$where_params['term_id'] = $term_id;
 		}

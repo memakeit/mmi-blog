@@ -17,6 +17,7 @@ class Model_WP_Users extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -80,6 +81,7 @@ class Model_WP_Users extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -89,7 +91,7 @@ class Model_WP_Users extends Jelly_Model
 	public static function select_by_id($id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($id))
+		if ( ! empty($id))
 		{
 			$where_params['ID'] = $id;
 		}

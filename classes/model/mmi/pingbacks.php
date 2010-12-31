@@ -17,6 +17,7 @@ class Model_MMI_Pingbacks extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -121,6 +122,7 @@ class Model_MMI_Pingbacks extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more id's
 	 * @param	boolean	return the data as an array?
 	 * @param	integer	the maximum number of results
@@ -129,7 +131,7 @@ class Model_MMI_Pingbacks extends Jelly_Model
 	public static function select_by_id($id, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($id))
+		if ( ! empty($id))
 		{
 			$where_params['id'] = $id;
 		}

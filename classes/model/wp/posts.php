@@ -17,6 +17,7 @@ class Model_WP_Posts extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -142,6 +143,7 @@ class Model_WP_Posts extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more id's
 	 * @param	string	the post type
 	 * @param	array	an associative array of columns names
@@ -152,11 +154,11 @@ class Model_WP_Posts extends Jelly_Model
 	public static function select_by_id($id, $post_type = NULL, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params['post_status'] = 'publish';
-		if (MMI_Util::is_set($id))
+		if ( ! empty($id))
 		{
 			$where_params['ID'] = $id;
 		}
-		if (MMI_Util::is_set($post_type))
+		if ( ! empty($post_type))
 		{
 			$where_params['post_type'] = $post_type;
 		}
@@ -175,6 +177,7 @@ class Model_WP_Posts extends Jelly_Model
 	 * Select a page from the database using the page's slug.
 	 * Return the page data as an associative array.
 	 *
+	 * @access	public
 	 * @param	string	the page slug
 	 * @param	array	an associative array of columns names
 	 * @return	array
@@ -195,6 +198,7 @@ class Model_WP_Posts extends Jelly_Model
 	 * Select a post from the database using the post's year, month, and slug.
 	 * Return the post data as an associative array.
 	 *
+	 * @access	public
 	 * @param	string	the post year
 	 * @param	string	the post month
 	 * @param	string	the post slug
@@ -236,6 +240,7 @@ EOSQL;
 	/**
 	 * Update the comment count for a post.
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	integer	the comment count
 	 * @return	boolean

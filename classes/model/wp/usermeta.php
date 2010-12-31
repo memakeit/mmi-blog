@@ -17,6 +17,7 @@ class Model_WP_UserMeta extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -51,6 +52,7 @@ class Model_WP_UserMeta extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by umeta id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more umeta id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -60,7 +62,7 @@ class Model_WP_UserMeta extends Jelly_Model
 	public static function select_by_umeta_id($umeta_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($umeta_id))
+		if ( ! empty($umeta_id))
 		{
 			$where_params['umeta_id'] = $umeta_id;
 		}
@@ -79,6 +81,7 @@ class Model_WP_UserMeta extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by user id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more user id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -86,12 +89,12 @@ class Model_WP_UserMeta extends Jelly_Model
 	 * @param	integer	the maximum number of results
 	 * @return	mixed
 	 */
-	public static function select_by_user_id($user_ids, $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
+	public static function select_by_user_id($user_id, $columns = NULL, $as_array = TRUE, $array_key = NULL, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($user_ids))
+		if ( ! empty($user_id))
 		{
-			$where_params['user_id'] = $user_ids;
+			$where_params['user_id'] = $user_id;
 		}
 		$order_by = array('user_id' => NULL, 'meta_key' => NULL);
 		$query_params = array('columns' => $columns, 'limit' => $limit, 'order_by' => $order_by, 'where_params' => $where_params);

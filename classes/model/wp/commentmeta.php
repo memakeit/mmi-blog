@@ -17,6 +17,7 @@ class Model_WP_CommentMeta extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -51,6 +52,7 @@ class Model_WP_CommentMeta extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by meta id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more meta id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -60,7 +62,7 @@ class Model_WP_CommentMeta extends Jelly_Model
 	public static function select_by_meta_id($meta_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($meta_id))
+		if ( ! empty($meta_id))
 		{
 			$where_params['meta_id'] = $meta_id;
 		}
@@ -79,6 +81,7 @@ class Model_WP_CommentMeta extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by comment id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more comment id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -88,7 +91,7 @@ class Model_WP_CommentMeta extends Jelly_Model
 	public static function select_by_comment_id($comment_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($comment_id))
+		if ( ! empty($comment_id))
 		{
 			$where_params['comment_id'] = $comment_id;
 		}

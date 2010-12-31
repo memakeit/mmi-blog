@@ -17,6 +17,7 @@ class Model_WP_Comments extends Jelly_Model
 	/**
 	 * Initialize the model settings.
 	 *
+	 * @access	public
 	 * @param	Jelly_Meta	meta data for the model
 	 * @return	void
 	 */
@@ -104,6 +105,7 @@ class Model_WP_Comments extends Jelly_Model
 	/**
 	 * Select one or more rows from the database by comment id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more comment id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -113,7 +115,7 @@ class Model_WP_Comments extends Jelly_Model
 	public static function select_by_comment_id($comment_id, $columns = NULL, $as_array = TRUE, $limit = NULL)
 	{
 		$where_params = array();
-		if (MMI_Util::is_set($comment_id))
+		if ( ! empty($comment_id))
 		{
 			$where_params['comment_ID'] = $comment_id;
 		}
@@ -131,6 +133,7 @@ class Model_WP_Comments extends Jelly_Model
 	/**
 	 * Select one or more comments from the database by post id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more post id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -146,6 +149,7 @@ class Model_WP_Comments extends Jelly_Model
 	/**
 	 * Select one or more trackbacks from the database by post id.
 	 *
+	 * @access	public
 	 * @param	mixed	one or more post id's
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -159,38 +163,9 @@ class Model_WP_Comments extends Jelly_Model
 	}
 
 	/**
-	 * Select one or more rows from the database by post id.
-	 *
-	 * @param	mixed	one or more post id's
-	 * @param	string	the comment type ('' | pingback | trackback)
-	 * @param	array	an associative array of columns names
-	 * @param	boolean	return the data as an array?
-	 * @param	integer	the maximum number of results
-	 * @return	mixed
-	 */
-	protected static function _select_by_post_id($post_id, $type = '', $columns = NULL, $as_array = TRUE, $limit = NULL)
-	{
-		$where_params['comment_approved'] = 1;
-		$where_params['comment_type'] = $type;
-		if (MMI_Util::is_set($post_id))
-		{
-			$where_params['comment_post_id'] = $post_id;
-		}
-		$order_by = array('comment_id' => 'ASC');
-		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params, 'order_by' => $order_by);
-		if ($as_array)
-		{
-			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
-		}
-		else
-		{
-			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
-		}
-	}
-
-	/**
 	 * Select recent comments from the database.
 	 *
+	 * @access	public
 	 * @param	boolean	include trackbacks
 	 * @param	array	an associative array of columns names
 	 * @param	boolean	return the data as an array?
@@ -222,6 +197,7 @@ class Model_WP_Comments extends Jelly_Model
 	 * If the author parameter is an array, the following keys can be used to
 	 * specify author details: name, email, url.
 	 *
+	 * @access	public
 	 * @param	integer	the post id
 	 * @param	string	the content to check
 	 * @param	mixed	the author details
@@ -265,5 +241,36 @@ class Model_WP_Comments extends Jelly_Model
 		}
 		$query_params = array('where_params' => $where_params);
 		return (count(MMI_DB::select(self::$_table_name, TRUE, $query_params)) > 0);
+	}
+
+	/**
+	 * Select one or more rows from the database by post id.
+	 *
+	 * @access	protected
+	 * @param	mixed	one or more post id's
+	 * @param	string	the comment type ('' | pingback | trackback)
+	 * @param	array	an associative array of columns names
+	 * @param	boolean	return the data as an array?
+	 * @param	integer	the maximum number of results
+	 * @return	mixed
+	 */
+	protected static function _select_by_post_id($post_id, $type = '', $columns = NULL, $as_array = TRUE, $limit = NULL)
+	{
+		$where_params['comment_approved'] = 1;
+		$where_params['comment_type'] = $type;
+		if ( ! empty($post_id))
+		{
+			$where_params['comment_post_id'] = $post_id;
+		}
+		$order_by = array('comment_id' => 'ASC');
+		$query_params = array('columns' => $columns, 'limit' => $limit, 'where_params' => $where_params, 'order_by' => $order_by);
+		if ($as_array)
+		{
+			return MMI_DB::select(self::$_table_name, $as_array, $query_params);
+		}
+		else
+		{
+			return MMI_Jelly::select(self::$_table_name, $as_array, $query_params);
+		}
 	}
 } // End Model_WP_Comments
