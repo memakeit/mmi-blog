@@ -279,7 +279,8 @@ abstract class Kohana_MMI_Blog_Post extends MMI_Blog_Core
 			$title = Arr::get($features, 'title');
 			$url = Arr::get($features, 'url');
 			$url_settings = array();
-			foreach (array('title', 'url') as $key)
+			$keys = array('title', 'url');
+			foreach ($keys as $key)
 			{
 				$temp  = $$key;
 				if ( ! empty($temp))

@@ -377,11 +377,13 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 			if ($post_id === $id)
 			{
 				// Category and tag ids for the post id specified
-				foreach ($post['categories'] as $category)
+				$categories = $post['categories'];
+				foreach ($categories as $category)
 				{
 					$cat_ids[] = $category;
 				}
-				foreach ($post['tags'] as $tag)
+				$tags = $post['tags'];
+				foreach ($tags as $tag)
 				{
 					$tag_ids[] = $tag;
 				}
@@ -397,11 +399,13 @@ class Kohana_MMI_Blog_Wordpress_Post extends MMI_Blog_Post
 					'tag_ids'	=> array(),
 					'title'		=> $post['title'],
 				);
-				foreach ($post['categories'] as $category)
+				$categories = $post['categories'];
+				foreach ($categories as $category)
 				{
 					$temp[$post_id]['cat_ids'][] = $category;
 				}
-				foreach ($post['tags'] as $tag)
+				$tags = $post['tags'];
+				foreach ($tags as $tag)
 				{
 					$temp[$post_id]['tag_ids'][] = $tag;
 				}

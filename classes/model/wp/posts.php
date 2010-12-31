@@ -209,7 +209,7 @@ class Model_WP_Posts extends Jelly_Model
 	{
 		$db = Database::instance();
 		$cols = array();
-		if (is_array($columns) AND count($columns) > 0)
+		if ( ! empty($columns))
 		{
 			foreach ($columns as $column => $alias)
 			{
