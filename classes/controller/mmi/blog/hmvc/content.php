@@ -174,12 +174,6 @@ class Controller_MMI_Blog_HMVC_Content extends Controller_MMI_Blog_HMVC
 				}
 			break;
 		}
-
-		foreach ($links as $idx => $link)
-		{
-			$links[$idx]['url'] = $links[$idx]['guid'];
-			unset($links[$idx]['guid']);
-		}
 		return $links;
 	}
 

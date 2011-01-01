@@ -10,7 +10,7 @@ if ( ! empty($related))
 	$output[] = '<ul class="push_1 grid_7 alpha omega">';
 	foreach ($related as $item)
 	{
-		$output[] = '<li>'.HTML::anchor($item['guid'], $item['title'], array('rel'	=> 'nofollow')).'</li>';
+		$output[] = '<li>'.HTML::anchor($item['url'], $item['title'], array('rel'	=> 'nofollow')).'</li>';
 	}
 	$output[] = '</ul>';
 	$output[] = '</section>';

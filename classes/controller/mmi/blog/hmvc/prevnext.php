@@ -76,7 +76,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 	 */
 	protected function _meta()
 	{
-		$parent = Request::instance();
+		$meta = MMI_Request::meta();
 		$prev = $this->_prev;
 		if ( ! empty($prev))
 		{
@@ -90,7 +90,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 			{
 				$rel = 'first '.$rel;
 			}
-			$parent->meta->add_link($url, array
+			$meta->add_link($url, array
 			(
 				'rel'	=> $rel,
 				'title'	=> HTML::chars($prev['title']),
@@ -110,7 +110,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 			{
 				$rel = 'first '.$rel;
 			}
-			$parent->meta->add_link($url, array
+			$meta->add_link($url, array
 			(
 				'rel'	=> $rel,
 				'title'	=> HTML::chars($next['title']),
@@ -126,7 +126,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 	 */
 	protected function _nav_meta()
 	{
-		$parent = Request::instance();
+		$meta = MMI_Request::meta();
 
 		// Get navigation settings
 		$nav_parm = NULL;
@@ -143,7 +143,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 				$month = substr($nav_parm, -2);
 				$year = substr($nav_parm, 0, 4);
 				$date = mktime(0, 0, 0, $month, 1, $year);
-				$parent->meta->add_link
+				$meta->add_link
 				(
 					MMI_Blog_Post::get_archive_guid($year, $month),
 					array
@@ -167,7 +167,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 							break;
 						}
 					}
-					$parent->meta->add_link
+					$meta->add_link
 					(
 						MMI_Blog_Term::get_category_guid($nav_parm),
 						array
@@ -192,7 +192,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 							break;
 						}
 					}
-					$parent->meta->add_link
+					$meta->add_link
 					(
 						MMI_Blog_Term::get_category_guid($nav_parm),
 						array
@@ -205,7 +205,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 			break;
 
 			default:
-				$parent->meta->add_link
+				$meta->add_link
 				(
 					MMI_Blog::get_guid(),
 					array
