@@ -11,13 +11,10 @@
 class Controller_MMI_Blog_Test_Mustache extends Controller_MMI_Blog_Test
 {
 	/**
-	 * Test the mustache views.
+	 * Test the index mustache view.
 	 *
 	 * @access	public
 	 * @return	void
-	 * @uses	MMI_Request_Mustache::instance
-	 * @uses	MMI_Request_Mustache::LAYOUT
-	 * @uses	MMI_Request_Mustache::ROOT
 	 */
 	public function action_index()
 	{
@@ -26,15 +23,33 @@ class Controller_MMI_Blog_Test_Mustache extends Controller_MMI_Blog_Test
 		$list = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_post_list();
 		$posts = $this->_process_posts($list);
 
-		$mustache = MMI_Request_Mustache::instance();
-		$root = MMI_Request_Mustache::ROOT;
-		$view = Kostache::factory('mmi/blog/index');
-		$view->set(array
+		$mustache = Kostache::factory('mmi/blog/index');
+		$mustache->set(array
 		(
+			'bookmark_driver' => MMI_Bookmark::DRIVER_ADDTHIS,
 			'header' => 'Testing ...',
 			'posts' => $posts
 		));
-		$mustache->add_view($root, NULL, NULL, $view);
+		MMI_Debug::dead($mustache->render());
+	}
+
+	/**
+	 * Test the post mustache view.
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	public function action_post()
+	{
+		$post = MMI_Blog_Post::factory(MMI_Blog::DRIVER_WORDPRESS)->get_post(2010, 7, 'hello-world');
+		$mustache = Kostache::factory('mmi/blog/post');
+		$mustache->set(array
+		(
+			'ajax_comments' => FALSE,
+			'bookmark_driver' => MMI_Bookmark::DRIVER_ADDTHIS,
+			'header' => 'Testing ...',
+			'post' => $post
+		));
 		MMI_Debug::dead($mustache->render());
 	}
 

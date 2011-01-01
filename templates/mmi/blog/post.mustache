@@ -1,42 +1,21 @@
 {{! mmi-blog/templates/mmi/blog/post.mustache }}
 
 {{#_post}}
-{
-	$author = MMI_Blog_User::format_user($post->author);
-	$comment_count = $post->comment_count;
-	$categories = $post->categories;
-	$post_title = HTML::chars($post->title, FALSE);
-	$slug = $post->slug;
-	$tags = $post->tags;
-
-	$post_date = $post->timestamp_created;
-	$post_guid = $post->guid;
-
-	// Begin article
-	<article id="post_'.$post->id.'">
-
-	// Begin header
-	$link_title = 'jump to comments about '.HTML::chars($post_title, FALSE);
+<article id="post_{{post_id}}">
 	<header class="grid_8 alpha omega">
-	if ($is_homepage)
-	{
-		<h2>'.Text::widont(HTML::chars($post_title, FALSE)).'</h2>
-	}
-	else
-	{
-		<h1>'.Text::widont(HTML::chars($post_title, FALSE)).'</h1>
-	}
+	{{#_is_homepage}}
+		<h2>{{post_title}}</h2>
+	{{/_is_homepage}}
+	{{^_is_homepage}}
+		<h1>{{post_title}}</h1>
+	{{/_is_homepage}}
 
 		<p>
-			if ($ajax_comments)
-			{
-				$link_text = ''
-			}
-			else
-			{
-				$link_text = $comment_count.' '.Inflector::plural('comment', $comment_count);
-			}
-			<a href="#comments" id="comment_ct" title="'.$link_title.'">'.$link_text.'</a>
+			<span class="comments grid_2 omega">
+			{{#comments_link}}
+				<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+			{{/comments_link}}
+			</span>
 
 			<span class="grid_6 alpha">
 				By {{author}} on <time datetime="{{date_time}}" pubdate>
@@ -51,7 +30,7 @@
 				{{/categories}}
 			</span>
 		</p>
-		{{{toolbox}}}
+		{{{_toolbox}}}
 	</header>
 
 	<div class="post">
@@ -65,12 +44,14 @@
 			</p>
 		{{/tags}}
 	</div>
-	</article>
+</article>
 
-	{{{prev_next}}}
-	{{{related_posts}}}
-	{{{bookmarks}}}
-	{{{comment_form}}}
-	{{{comments}}}
-	{{{trackbacks}}}
+{{{_prev_next}}}
+{{{_related_posts}}}
+{{{_bookmarks}}}
+
+{{{_comment_form}}}
+{{{_comments}}}
+{{{_trackbacks}}}
+
 {{/_post}}

@@ -11,24 +11,44 @@
 class View_Kohana_MMI_Blog_Post extends Kostache
 {
 	/**
+	 * @var boolean load the comments via AJAX
+	 **/
+	public $ajax_comments;
+
+	/**
 	 * @var string the bookmark driver
 	 **/
 	public $bookmark_driver;
 
 	/**
-	 * @var string the pagination HTML
-	 **/
-	public $pagination;
+	 * @var boolean is the current page the home page
+	 */
+	protected $_is_homepage;
 
 	/**
-	 * @var array the header settings
+	 * @var MMI_Blog_Post the original post object
 	 **/
-	protected $_header;
+	protected $_mmi_blog_post;
 
 	/**
 	 * @var array the post settings
 	 **/
 	protected $_post;
+
+	/**
+	 * Create and initialize the view.
+	 *
+	 * @access	public
+	 * @param	string 	template
+	 * @param	mixed 	view
+	 * @param	array	partials
+	 * @return	void
+	 */
+	public function __construct($template = null, $view = null, $partials = null)
+	{
+		parent::__construct($template, $view, $partials);
+		$this->_init();
+	}
 
 	/**
 	 * Set a variable.
@@ -43,146 +63,121 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 		$name = trim(strtolower($name));
 		switch ($name)
 		{
-			case 'header':
-				$this->_process_header($value);
-			break;
-			case 'posts':
-				$this->_process_posts($value);
+			case 'post':
+				$this->_process_post($value);
 			break;
 		}
 	}
 
 	/**
-	 * Process the header.
+	 * Get whether the current page is the home page.
 	 *
 	 * @access	protected
 	 * @return	void
+	 * @uses	MMI_URL::canonical
 	 */
-	protected function _process_header($title)
+	protected function _init()
 	{
-		$this->_header = array('title' => $title);
+		// Set whether the current page is the homepage
+		$request = Request::instance();
+		$name = Route::name($request->route);
+		$params = Request::instance()->param();
+		$params['action'] = $request->action;
+		$params['controller'] = $request->controller;
+		$current = MMI_URL::canonical($name, $params);
+		$home = MMI_URL::canonical('default', array('controller' => 'home'));
+		$this->_is_homepage = ($current === $home);
 	}
 
 	/**
-	 * Process the posts.
+	 * Process the post.
 	 *
 	 * @access	protected
 	 * @return	void
 	 */
-	protected function _process_posts($posts)
+	protected function _process_post($post)
 	{
-		if (empty($posts))
+		if (empty($post))
 		{
-			$this->_posts = FALSE;
+			$this->_post = FALSE;
 			return;
 		}
 
-		$excerpt_size = MMI_Blog::get_config()->get('excerpt_size', 2);
+		$this->_mmi_blog_post = $post;
 
-		$i = 0;
-		$last = count($posts) - 1;
-		$processed = array();
-		foreach ($posts as $post)
+		$post_comment_count = $post->comment_count;
+		$post_date = $post->timestamp_created;
+		$post_guid = $post->guid;
+		$post_title= $post->title;
+
+		// Header
+		$temp['post_id'] = $post->id;
+		$temp['post_title'] = $post_title;
+		$temp['header_link'] =array
+		(
+			'attributes' => array
+			(
+				array('name' => 'title', 'value' => $post_title),
+			),
+			'text' => Text::widont($post_title),
+			'url' => $post_guid,
+		);
+
+		if ($this->ajax_comments)
 		{
-			$temp = array();
-
-			// Set CSS class
-			$class = 'grid_8 alpha omega';
-			if ($i === 0)
-			{
-				$class .= ' first';
-			}
-			if ($i === $last)
-			{
-				$class .= ' last';
-			}
-			if ( ! empty($class))
-			{
-				$temp['article_class']['class'] = trim($class);
-			}
-			$i++;
-
-			$post_comment_count = $post->comment_count;
-			$post_date = $post->timestamp_created;
-			$post_guid = $post->guid;
-			$post_title= $post->title;
-
-			// Header
-			$temp['post_id'] = $post->id;
-			$temp['header_link'] =array
-			(
-				'attributes' => array
-				(
-					array('name' => 'title', 'value' => $post_title),
-				),
-				'text' => Text::widont($post_title),
-				'url' => $post_guid,
-			);
-
-			$temp['comments_link'] =array
-			(
-				'attributes' => array
-				(
-					array('name' => 'title', 'value' => "jump to comments about {$post_title}"),
-				),
-				'text' => "{$post_comment_count} ".Inflector::plural('comment', $post_comment_count),
-				'url' => "{$post_guid}/#comments",
-			);
-
-			$temp['author'] = MMI_Blog_User::format_user($post->author);
-			$temp['date_time'] = gmdate('c', $post_date);
-			$temp['date_link'] =array
-			(
-				'attributes' => array
-				(
-					array('name' => 'rel', 'value' => 'archive index'),
-					array('name' => 'title', 'value' => 'articles for '.gmdate('F Y', $post_date)),
-				),
-				'text' => gmdate('F j, Y', $post_date),
-				'url' => $post->archive_guid,
-			);
-
-			$terms = $post->categories;
-			if ( ! empty($terms))
-			{
-				$temp['categories'] = $this->_get_term_links($terms, MMI_Blog_Term::TYPE_CATEGORY);
-			}
-
-			if ( ! empty($this->bookmark_driver))
-			{
-				$route = Route::get('mmi/bookmark/hmvc')->uri(array
-				(
-					'action' 		=> MMI_Bookmark::MODE_PILL,
-					'controller'	=> $this->bookmark_driver,
-				));
-
-				$toolbox = Request::factory($route);
-				$toolbox->post = array
-				(
-					'title'			=> $post_title,
-					'url'			=> $post_guid,
-				);
-				$temp['toolbox'] = $toolbox->execute()->response;
-			}
-
-			// Content
-			$content = MMI_Text::get_paragraphs($post->content, $excerpt_size);
-			$temp['content'] = MMI_Blog_Post::format_content($content, array
-			(
-				'bookmark_driver'	=> $this->bookmark_driver,
-				'image_header'		=> TRUE,
-				'insert_retweet'	=> TRUE,
-				'title'				=> $post_title,
-				'url'				=> $post_guid,
-			));
-
-			$terms = $post->tags;
-			if ( ! empty($terms))
-			{
-				$temp['tags'] = $this->_get_term_links($terms, MMI_Blog_Term::TYPE_TAG);
-			}
-			$processed[] = $temp;
+			$link_text = '';
 		}
+		else
+		{
+			$link_text = "{$post_comment_count} ".Inflector::plural('comment', $post_comment_count);
+		}
+		$temp['comments_link'] =array
+		(
+			'attributes' => array
+			(
+				array('name' => 'title', 'value' => "jump to comments about {$post_title}"),
+				array('name' => 'id', 'value' => 'comment_ct'),
+			),
+			'text' => $link_text,
+			'url' => "{$post_guid}/#comments",
+		);
+
+		$temp['author'] = MMI_Blog_User::format_user($post->author);
+		$temp['date_time'] = gmdate('c', $post_date);
+		$temp['date_link'] =array
+		(
+			'attributes' => array
+			(
+				array('name' => 'rel', 'value' => 'archive index'),
+				array('name' => 'title', 'value' => 'articles for '.gmdate('F Y', $post_date)),
+			),
+			'text' => gmdate('F j, Y', $post_date),
+			'url' => $post->archive_guid,
+		);
+
+		$terms = $post->categories;
+		if ( ! empty($terms))
+		{
+			$temp['categories'] = $this->_get_term_links($terms, MMI_Blog_Term::TYPE_CATEGORY);
+		}
+
+		// Content
+		$content = MMI_Text::get_paragraphs($post->content);
+		$temp['content'] = MMI_Blog_Post::format_content($content, array
+		(
+			'bookmark_driver'	=> $this->bookmark_driver,
+			'image_header'		=> TRUE,
+			'insert_retweet'	=> TRUE,
+			'title'				=> $post_title,
+			'url'				=> $post_guid,
+		));
+
+		$terms = $post->tags;
+		if ( ! empty($terms))
+		{
+			$temp['tags'] = $this->_get_term_links($terms, MMI_Blog_Term::TYPE_TAG);
+		}
+		$processed[] = $temp;
 		$this->_post = $processed;
 	}
 
@@ -223,5 +218,115 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 			}
 		}
 		return FALSE;
+	}
+
+	/**
+	 * Using an HMVC request, get the toolbox widget HTML.
+	 *
+	 * @access	protected
+	 * @return	mixed
+	 */
+	protected function _toolbox()
+	{
+	$bookmark_driver = $this->bookmark_driver;
+		$post = $this->_mmi_blog_post;
+		if (empty($bookmark_driver) OR empty($post))
+		{
+			return FALSE;
+		}
+
+		$route = Route::get('mmi/bookmark/hmvc')->uri(array
+		(
+			'action' 		=> MMI_Bookmark::MODE_BOOKMARKS,
+			'controller'	=> $bookmark_driver,
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'title'	=> $post->title,
+			'url'	=> $post->guid,
+		);
+		return $hmvc->execute()->response;
+	}
+
+	/**
+	 * Using an HMVC request, get the bookmarking widget HTML.
+	 *
+	 * @access	protected
+	 * @return	mixed
+	 */
+	protected function _bookmarks()
+	{
+		$bookmark_driver = $this->bookmark_driver;
+		$post = $this->_mmi_blog_post;
+		if (empty($bookmark_driver) OR empty($post))
+		{
+			return FALSE;
+		}
+
+		$route = Route::get('mmi/bookmark/hmvc')->uri(array
+		(
+			'action' 		=> MMI_Bookmark::MODE_BOOKMARKS,
+			'controller'	=> $bookmark_driver,
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'title'	=> $post->title,
+			'url'	=> $post->guid,
+		);
+		return $hmvc->execute()->response;
+	}
+
+	/**
+	 * Using an HMVC request, get the related posts HTML.
+	 *
+	 * @access	protected
+	 * @return	mixed
+	 */
+	protected function _related_posts()
+	{
+		$post = $this->_mmi_blog_post;
+		if (empty($post))
+		{
+			return FALSE;
+		}
+
+		$route = Route::get('mmi/blog/hmvc')->uri(array
+		(
+			'controller' => 'relatedposts'
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'post' => $post,
+		);
+		return $hmvc->execute()->response;
+	}
+
+	/**
+	 * Using an HMVC request, get the previous and next post HTML.
+	 *
+	 * @access	protected
+	 * @return	mixed
+	 */
+	protected function _prev_next()
+	{
+		$post = $this->_mmi_blog_post;
+		if (empty($post))
+		{
+			return FALSE;
+		}
+
+		$route = Route::get('mmi/blog/hmvc')->uri(array
+		(
+			'controller' => 'prevnext'
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'post' => $post,
+		);
+		return $hmvc->execute()->response;
 	}
 } // End View_Kohana_MMI_Blog_Index
