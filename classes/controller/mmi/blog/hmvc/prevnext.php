@@ -58,8 +58,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 		$this->_nav_meta();
 
 		// Inject media
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-blog_prev-next', array('bundle' => 'blog'));
+		MMI_Request::css()->add_url('prev-next', array('module' => 'mmi-blog'));
 
 		// Set response
 		$this->request->response = View::factory('mmi/blog/content/prev_next', array

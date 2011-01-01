@@ -62,8 +62,7 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 		$comments = MMI_Blog_Comment::factory($this->_driver)->get_comments($post->id);
 
 		// Inject media
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-blog_comments', array('bundle' => 'blog'));
+		MMI_Request::css()->add_url('comments', array('module' => 'mmi-blog'));
 
 		// Gravatar defaults
 		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
@@ -99,12 +98,13 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 		$js = "$(window).load(load_comments('$url', '$template'));";
 
 		// Inject media
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-blog_comments', array('bundle' => 'blog'));
-		$parent->js->add_url('mmi-blog_jquery.tmpl', array('bundle' => 'blog'));
-		$parent->js->add_url('mmi-blog_innershiv.min', array('bundle' => 'blog'));
-		$parent->js->add_url('mmi-blog_ajax-comments', array('bundle' => 'blog'));
-		$parent->js->add_inline('ajax_comments', $js);
+		MMI_Request::css()->add_url('comments', array('module' => 'mmi-blog'));
+		MMI_Request::js()
+			->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
+			->add_url('innershiv.min', array('module' => 'mmi-blog'))
+			->add_url('ajax-comments', array('module' => 'mmi-blog'))
+			->add_inline('ajax_comments', $js)
+		;
 
 		// Set response
 		$this->request->response = View::factory('mmi/blog/content/ajax/comments', array

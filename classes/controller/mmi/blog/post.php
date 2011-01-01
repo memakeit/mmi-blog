@@ -152,24 +152,22 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	 */
 	protected function _inject_media()
 	{
-		$this->add_css_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-bookmark_addthis_pill', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-bookmark_addthis_bookmarks', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-blog_post', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-bookmark_addthis', array('bundle' => 'blog'));
-
+		MMI_Request::css()->add_url('post', array('module' => 'mmi-blog'));
+		MMI_request::js()->add_url('post', array('module' => 'mmi-blog'));
 
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
-			$this->add_css_url('mmi-form_form', array('bundle' => 'blog'));
+			MMI_Request::css()->add_url('form', array('module' => 'mmi-form'));
 			if ($form->plugin_exists('jquery_validation'))
 			{
-				$this->add_js_url('mmi-form_jquery.validate.min', array('bundle' => 'blog'));
-				$this->add_js_inline('jquery_validate', $form->jqv_get_validation_js());
+				MMI_Request::js()
+					->add_url('jquery.validate.min', array('module' => 'mmi-form'))
+					->add_inline('jquery_validate', $form->jqv_get_validation_js())
+				;
 			}
 		}
-		$this->add_css_url('mmi-blog_comment-form', array('bundle' => 'blog'));
+		MMI_Request::css()->add_url('comment-form', array('module' => 'mmi-blog'));
 	}
 
 	/**

@@ -26,8 +26,7 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller_MMI_Blog_HMVC
 		}
 
 		// Inject media
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-blog_related-posts', array('bundle' => 'blog'));
+		MMI_Request::css()->add_url('related-posts', array('module' => 'mmi-blog'));
 
 		// Set response
 		$this->request->response = View::factory('mmi/blog/content/related_posts', array

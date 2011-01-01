@@ -191,12 +191,11 @@ class Controller_MMI_Blog_HMVC_Content extends Controller_MMI_Blog_HMVC
 	 */
 	protected function _inject_media($js_inline = NULL)
 	{
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-template_jquery.mmiTabs');
-		$parent->js->add_url('mmi-template_jquery_jquery.mmiTabs');
+		MMI_Request::css()->add_url('jquery.mmi.tabs', array('module' => 'mmi-template'));
+		MMI_Request::js()->add_url('jquery.mmi.tabs', array('module' => 'mmi-template'));
 		if ( ! empty($js_inline))
 		{
-			$parent->js->add_inline('mmi-tabs', $js_inline);
+			MMI_Request::js()->add_inline('mmi-tabs', $js_inline);
 		}
 	}
 } // End Controller_MMI_Blog_HMVC_Content

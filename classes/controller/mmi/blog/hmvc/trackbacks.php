@@ -78,8 +78,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller_MMI_Blog_HMVC
 		}
 
 		// Inject media
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-blog_trackbacks', array('bundle' => 'blog'));
+		MMI_Request::css()->add_url('trackbacks', array('module' => 'mmi-blog'));
 
 		// Set response
 		$this->request->response = View::factory('mmi/blog/content/trackbacks', array
@@ -108,12 +107,13 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller_MMI_Blog_HMVC
 		$js = "$(window).load(load_trackbacks('$url', '$template', {$this->_allow_pingbacks}, {$this->_allow_trackbacks}));";
 
 		// Inject media
-		$parent = Request::instance();
-		$parent->css->add_url('mmi-blog_trackbacks', array('bundle' => 'blog'));
-		$parent->js->add_url('mmi-blog_jquery.tmpl', array('bundle' => 'blog'));
-		$parent->js->add_url('mmi-blog_innershiv.min', array('bundle' => 'blog'));
-		$parent->js->add_url('mmi-blog_ajax-trackbacks', array('bundle' => 'blog'));
-		$parent->js->add_inline('ajax_trackbacks', $js);
+		MMI_Request::css()->add_url('trackbacks', array('module' => 'mmi-blog'));
+		MMI_Request::js()
+			->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
+			->add_url('innershiv.min', array('module' => 'mmi-blog'))
+			->add_url('ajax-trackbacks', array('module' => 'mmi-blog'))
+			->add_inline('ajax_trackbacks', $js)
+		;
 
 		// Set response
 		$this->request->response = View::factory('mmi/blog/content/ajax/trackbacks', array
