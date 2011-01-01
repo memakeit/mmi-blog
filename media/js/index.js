@@ -1,6 +1,6 @@
 /* mmi-blog/index.js */
 
-$('#content .content a').each(function(e)
+$('#content article section a').each(function(e)
 {
 	$(this).attr('rel', 'nofollow external');
 });

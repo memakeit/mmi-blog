@@ -15,11 +15,6 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	public $debug = TRUE;
 
 	/**
-	 * @var string the social bookmarking driver
-	 **/
-	protected $_bookmark_driver;
-
-	/**
 	 * @var string the blog driver
 	 **/
 	protected $_driver;
@@ -48,7 +43,6 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		MMI_Util::load_module('pagination', MODPATH.'pagination');
 
 		$config = MMI_Blog::get_config();
-		$this->_bookmark_driver = $config->get('bookmark_driver', MMI_Bookmark::DRIVER_ADDTHIS);
 		$this->_driver = $config->get('driver', MMI_Blog::DRIVER_WORDPRESS);
 		$this->_headers_config = $config->get('headers', array());
 		$this->_titles_config = $config->get('titles', array());
@@ -209,16 +203,15 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		// Inject CSS and JavaScript
 		$this->_inject_media();
 
-		// Configure and add the view
-		$view = View::factory('mmi/blog/index', array
+		$bookmark_driver = MMI_Blog::get_config()->get('bookmark_driver', MMI_Bookmark::DRIVER_ADDTHIS);
+		$content = Kostache::factory('mmi/blog/index')->set(array
 		(
-			'bookmark_driver'	=> $this->_bookmark_driver,
-			'excerpt_size'		=> MMI_Blog::get_config()->get('excerpt_size', 2),
+			'bookmark_driver'	=> $bookmark_driver,
 			'header'			=> $header,
 			'pagination'		=> $pagination->render(),
-			'posts'				=> $posts,
-		));
-		$this->add_view('blog_all', self::LAYOUT_ID, 'content', $view);
+			'posts' 			=> $posts,
+		))->render();
+		$this->_add_main_content($content, 'mmi/blog/index');
 	}
 
 	/**
@@ -229,11 +222,11 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	 */
 	protected function _inject_media()
 	{
-		$this->add_css_url('mmi-blog_index', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-blog_pagination', array('bundle' => 'blog'));
-		$this->add_css_url('mmi-bookmark_addthis_pill', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-blog_index', array('bundle' => 'blog'));
-		$this->add_js_url('mmi-bookmark_addthis', array('bundle' => 'blog'));
+		MMI_Request::css()
+			->add_url('index', array('module' => 'mmi-blog'))
+			->add_url('pagination', array('module' => 'mmi-blog'))
+		;
+		MMI_Request::js()->add_url('index', array('module' => 'mmi-blog'));
 	}
 
 	/**
