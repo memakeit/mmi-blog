@@ -226,8 +226,8 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	protected function _inject_media()
 	{
 		MMI_Request::less()
-			->add_url('index', array('module' => 'mmi-blog'))
-			->add_url('index/pagination', array('module' => 'mmi-blog'))
+			->add_url('index', array('bundle' => 'blog', 'module' => 'mmi-blog'))
+			->add_url('index/pagination', array('bundle' => 'blog', 'module' => 'mmi-blog'))
 		;
 		MMI_Request::js()->add_url('index', array('module' => 'mmi-blog'));
 	}

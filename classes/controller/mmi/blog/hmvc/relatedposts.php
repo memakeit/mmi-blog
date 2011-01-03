@@ -28,7 +28,7 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller_MMI_Blog_HMVC
 		// Inject media
 		if (class_exists('MMI_Request'))
 		{
-			MMI_Request::less()->add_url('post/relatedposts', array('module' => 'mmi-blog'));
+			MMI_Request::less()->add_url('post/relatedposts', array('bundle' => 'blog', 'module' => 'mmi-blog'));
 		}
 
 		// Set response

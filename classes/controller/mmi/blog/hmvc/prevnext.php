@@ -60,7 +60,7 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 		// Inject media
 		if (class_exists('MMI_Request'))
 		{
-			MMI_Request::less()->add_url('post/prevnext', array('module' => 'mmi-blog'));
+			MMI_Request::less()->add_url('post/prevnext', array('bundle' => 'blog', 'module' => 'mmi-blog'));
 		}
 
 		// Set response

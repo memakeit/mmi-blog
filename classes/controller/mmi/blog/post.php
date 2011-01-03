@@ -138,15 +138,15 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	 */
 	protected function _inject_media()
 	{
-		MMI_Request::less()->add_url('post', array('module' => 'mmi-blog'));
+		MMI_Request::less()->add_url('post', array('bundle' => 'blog', 'module' => 'mmi-blog'));
 		MMI_request::js()->add_url('post', array('module' => 'mmi-blog'));
 
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
 			MMI_Request::less()
-				->add_url('form', array('module' => 'mmi-form'))
-				->add_url('post/commentform', array('module' => 'mmi-blog'))
+				->add_url('form', array('bundle' => 'blog', 'module' => 'mmi-form'))
+				->add_url('post/commentform', array('bundle' => 'blog', 'module' => 'mmi-blog'))
 			;
 			if ($form->plugin_exists('jquery_validation'))
 			{
