@@ -71,8 +71,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 		// Comment settings
 		$config = MMI_Blog::get_config();
 		$features = $config->get('features', array());
-		$allow_comments = Arr::get($features, 'comments', TRUE);
-		$comment_config = $config->get('comments', array());
+		$allow_comments = Arr::get($features, 'comment', FALSE);
 
 		// Get the post
 		$post = MMI_Blog_Post::factory($this->_driver)->get_post($year, $month, $slug);
@@ -86,39 +85,28 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			$this->_process_comment_form();
 		}
 
-		// Inject CSS and JavaScript
-		$this->_inject_media();
-
 		// Get and re-set the nav type
 		$nav_type = MMI_Blog::get_nav_type();
 		MMI_Blog::set_nav_type($nav_type);
 
 		// Configure the view
-		$post_features = MMI_Blog::get_post_config()->get('features', array());
-		$view = View::factory('mmi/blog/post', array
+		$comment_config = $config->get('comments', array());
+		$view = Kostache::factory('mmi/blog/post')->set(array
 		(
 		 	'ajax_comments'		=> Arr::get($comment_config, 'use_ajax', FALSE),
+			'allow_comments'	=> $allow_comments,
+			'allow_pingbacks'	=> Arr::get($comment_config, 'pingbacks', FALSE),
+			'allow_trackbacks'	=> Arr::get($comment_config, 'trackbacks', FALSE),
 		 	'bookmark_driver'	=> $this->_bookmark_driver,
-		 	'bookmarks'			=> $this->_get_bookmarks(),
 		 	'comment_form'		=> $this->_get_comment_form(),
-			'is_homepage'		=> FALSE,
 			'post'				=> $post,
-			'toolbox'			=> $this->_get_pill_bookmarks(),
 		));
 
 		// Comments and trackbacks
 		if ($allow_comments)
 		{
-			$view->set('comments', $this->_get_comments());
-			$this->_allow_pingbacks = Arr::get($comment_config, 'pingbacks', TRUE);
-			$this->_allow_trackbacks = Arr::get($comment_config, 'trackbacks', TRUE);
-			if ($this->_allow_pingbacks OR $this->_allow_trackbacks)
-			{
-				$view->set('trackbacks', $this->_get_trackbacks());
-			}
-
 			// Add feed for the posts's comments
-			$this->add_meta_link($post->comments_feed_guid, array
+			MMI_Request::meta()->add_link($post->comments_feed_guid, array
 			(
 				'rel'	=> 'alternate',
 				'title'	=> 'Comments for '.HTML::chars($post->title),
@@ -126,22 +114,20 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			));
 		}
 
-		if (Arr::get($post_features, 'prev_next', FALSE))
-		{
-			$view->set('prev_next', $this->_get_prev_next());
-		}
-		if (Arr::get($post_features, 'related_posts', FALSE))
-		{
-			$view->set('related_posts', $this->_get_related_posts());
-		}
-
+		$post_features = MMI_Blog::get_post_config()->get('features', array());
 		if (Arr::get($post_features, 'facebook_meta', FALSE))
 		{
 			$this->_set_facebook_meta();
 		}
 
 		$this->_title = $post->title;
-		$this->add_view('content', self::LAYOUT_ID, 'content', $view);
+		$this->_add_main_content($view->render(), 'mmi/blog/post');
+
+		// Inject CSS and JavaScript
+		if (class_exists('MMI_Request'))
+		{
+			$this->_inject_media();
+		}
 	}
 
 	/**
@@ -152,13 +138,16 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	 */
 	protected function _inject_media()
 	{
-		MMI_Request::css()->add_url('post', array('module' => 'mmi-blog'));
+		MMI_Request::less()->add_url('post', array('module' => 'mmi-blog'));
 		MMI_request::js()->add_url('post', array('module' => 'mmi-blog'));
 
 		$form = $this->_comment_form;
 		if (isset($form))
 		{
-			MMI_Request::css()->add_url('form', array('module' => 'mmi-form'));
+			MMI_Request::less()
+				->add_url('form', array('module' => 'mmi-form'))
+				->add_url('post/commentform', array('module' => 'mmi-blog'))
+			;
 			if ($form->plugin_exists('jquery_validation'))
 			{
 				MMI_Request::js()
@@ -167,139 +156,6 @@ class Controller_MMI_Blog_Post extends MMI_Template
 				;
 			}
 		}
-		MMI_Request::css()->add_url('comment-form', array('module' => 'mmi-blog'));
-	}
-
-	/**
-	 * Using an HMVC request, get the related posts HTML.
-	 *
-	 * @access	protected
-	 * @return	string
-	 */
-	protected function _get_related_posts()
-	{
-		$route = Route::get('mmi/blog/hmvc')->uri(array
-		(
-			'controller' => 'relatedposts'
-		));
-		$hmvc = Request::factory($route);
-		$hmvc->post = array
-		(
-			'post' => $this->_post,
-		);
-		return $hmvc->execute()->response;
-	}
-
-	/**
-	 * Using an HMVC request, get the previous and next post HTML.
-	 *
-	 * @access	protected
-	 * @return	string
-	 */
-	protected function _get_prev_next()
-	{
-		$route = Route::get('mmi/blog/hmvc')->uri(array
-		(
-			'controller' => 'prevnext'
-		));
-		$hmvc = Request::factory($route);
-		$hmvc->post = array
-		(
-			'post' => $this->_post,
-		);
-		return $hmvc->execute()->response;
-	}
-
-	/**
-	 * Using an HMVC request, get the comments HTML.
-	 *
-	 * @access	protected
-	 * @return	string
-	 */
-	protected function _get_comments()
-	{
-		$route = Route::get('mmi/blog/hmvc')->uri(array
-		(
-			'controller' => 'comments'
-		));
-		$hmvc = Request::factory($route);
-		$hmvc->post = array
-		(
-			'post' => $this->_post,
-		);
-		return $hmvc->execute()->response;
-	}
-
-	/**
-	 * Using an HMVC request, get the trackbacks HTML.
-	 *
-	 * @access	protected
-	 * @return	string
-	 */
-	protected function _get_trackbacks()
-	{
-		$route = Route::get('mmi/blog/hmvc')->uri(array
-		(
-			'controller' => 'trackbacks'
-		));
-		$hmvc = Request::factory($route);
-		$hmvc->post = array
-		(
-			'post' => $this->_post,
-		);
-		return $hmvc->execute()->response;
-	}
-
-	/**
-	 * Using an HMVC request, get the bookmarking widget HTML.
-	 *
-	 * @access	protected
-	 * @return	string
-	 */
-	protected function _get_bookmarks()
-	{
-		$post = $this->_post;
-		$title = $post->title;
-		$url = $post->guid;
-
-		$route = Route::get('mmi/bookmark/hmvc')->uri(array
-		(
-			'action' 		=> MMI_Bookmark::MODE_BOOKMARKS,
-			'controller'	=> $this->_bookmark_driver,
-		));
-		$hmvc = Request::factory($route);
-		$hmvc->post = array
-		(
-			'title'	=> $title,
-			'url'	=> $url,
-		);
-		return $hmvc->execute()->response;
-	}
-
-	/**
-	 * Using an HMVC request, get the pill-style bookmarking widget HTML.
-	 *
-	 * @access	protected
-	 * @return	string
-	 */
-	protected function _get_pill_bookmarks()
-	{
-		$post = $this->_post;
-		$title = $post->title;
-		$url = $post->guid;
-
-		$route = Route::get('mmi/bookmark/hmvc')->uri(array
-		(
-			'action' 		=> MMI_Bookmark::MODE_PILL,
-			'controller'	=> $this->_bookmark_driver,
-		));
-		$hmvc = Request::factory($route);
-		$hmvc->post = array
-		(
-			'title'	=> $title,
-			'url'	=> $url,
-		);
-		return $hmvc->execute()->response;
 	}
 
 	/**
@@ -426,11 +282,12 @@ class Controller_MMI_Blog_Post extends MMI_Template
 	 */
 	protected function _set_facebook_meta()
 	{
-		$post = $this->_post;
-		$this->add_meta_tag('og:site_name', $this->_site_name);
-		$this->add_meta_tag('og:type', 'article');
-		$this->add_meta_tag('og:title', $post->title);
-		$this->add_meta_tag('og:url', $post->guid );
+		$meta = MMI_Request::meta()
+			->add_tag('og:site_name', $this->_site_name)
+			->add_tag('og:type', 'article')
+			->add_tag('og:title', $post->title)
+			->add_tag('og:url', $post->guid )
+		;
 //	"http://ia.media-imdb.com/images/M/MV5BNzM2NDU5ODUzOV5BMl5BanBnXkFtZTcwNDY1MzQyMQ@@._V1._SX98_SY140_.jpg" extracted from <meta property="og:image" />
 //	"115109575169727" extracted from <meta property="fb:app_id" />
 	}

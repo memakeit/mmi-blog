@@ -186,8 +186,6 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	 */
 	protected function _process_posts($list, $title, $header)
 	{
-		$this->_title = $title;
-
 		// Configure the pagination
 		$pagination = $this->_get_pagination(count($list));
 		$list = array_slice($list, $pagination->offset, $pagination->items_per_page, TRUE);
@@ -200,9 +198,6 @@ class Controller_MMI_Blog_Index extends MMI_Template
 		}
 		$posts = MMI_Blog_Post::factory($this->_driver)->get_posts($post_ids);
 
-		// Inject CSS and JavaScript
-		$this->_inject_media();
-
 		$bookmark_driver = MMI_Blog::get_config()->get('bookmark_driver', MMI_Bookmark::DRIVER_ADDTHIS);
 		$content = Kostache::factory('mmi/blog/index')->set(array
 		(
@@ -211,7 +206,15 @@ class Controller_MMI_Blog_Index extends MMI_Template
 			'pagination'		=> $pagination->render(),
 			'posts' 			=> $posts,
 		))->render();
+
+		$this->_title = $title;
 		$this->_add_main_content($content, 'mmi/blog/index');
+
+		// Inject CSS and JavaScript
+		if (class_exists('MMI_Request'))
+		{
+			$this->_inject_media();
+		}
 	}
 
 	/**
@@ -222,9 +225,9 @@ class Controller_MMI_Blog_Index extends MMI_Template
 	 */
 	protected function _inject_media()
 	{
-		MMI_Request::css()
+		MMI_Request::less()
 			->add_url('index', array('module' => 'mmi-blog'))
-			->add_url('pagination', array('module' => 'mmi-blog'))
+			->add_url('index/pagination', array('module' => 'mmi-blog'))
 		;
 		MMI_Request::js()->add_url('index', array('module' => 'mmi-blog'));
 	}
