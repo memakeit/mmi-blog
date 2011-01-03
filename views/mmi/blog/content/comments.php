@@ -64,6 +64,7 @@ if ($num_comments > 0)
 		// Header
 		$output[] = '<header class="grid_6 omega">';
 		$output[] = 'By ';
+		$author_url = $comment->author_url;
 		if (empty($author_url))
 		{
 			$output[] = HTML::chars($author, FALSE);
