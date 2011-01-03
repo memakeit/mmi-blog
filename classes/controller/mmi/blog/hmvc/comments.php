@@ -62,21 +62,19 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 		$comments = MMI_Blog_Comment::factory($this->_driver)->get_comments($post->id);
 
 		// Inject media
-		MMI_Request::css()->add_url('comments', array('module' => 'mmi-blog'));
-
-		// Gravatar defaults
-		$defaults = MMI_Gravatar::get_config()->get('defaults', array());
-		$default_img = Arr::get($defaults, 'img');
-		$default_img_size = Arr::get($defaults, 'size');
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/comments', array('module' => 'mmi-blog'));
+		}
 
 		// Set response
-		$this->request->response = View::factory('mmi/blog/content/comments', array
+		$this->request->response = Kostache::factory('mmi/blog/post/comments')->set(array
 		(
-			'comments'			=> $comments,
-			'default_img'		=> $default_img,
-			'default_img_size'	=> $default_img_size,
-			'feed_url'			=> $post->comments_feed_guid,
-			'header'			=> $this->_get_header($comments),
+			'comments'				=> $comments,
+			'feed_url'				=> $post->comments_feed_guid,
+			'header'				=> $this->_get_header($comments),
+			'post_title'			=> $post->title,
+			'use_ajax'				=> FALSE,
 		))->render();
 	}
 
@@ -98,19 +96,24 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 		$js = "$(window).load(load_comments('$url', '$template'));";
 
 		// Inject media
-		MMI_Request::css()->add_url('comments', array('module' => 'mmi-blog'));
-		MMI_Request::js()
-			->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
-			->add_url('innershiv.min', array('module' => 'mmi-blog'))
-			->add_url('ajax-comments', array('module' => 'mmi-blog'))
-			->add_inline('ajax_comments', $js)
-		;
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/comments', array('module' => 'mmi-blog'));
+			MMI_Request::js()
+				->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
+				->add_url('innershiv.min', array('module' => 'mmi-blog'))
+				->add_url('ajax-comments', array('module' => 'mmi-blog'))
+				->add_inline('ajax_comments', $js)
+			;
+		}
 
 		// Set response
-		$this->request->response = View::factory('mmi/blog/content/ajax/comments', array
+		$this->request->response = Kostache::factory('mmi/blog/post/comments')->set(array
 		(
-			'feed_url'	=> $post->comments_feed_guid,
-			'header'	=> $this->_get_header(),
+			'feed_url'		=> $post->comments_feed_guid,
+			'header'		=> $this->_get_header(),
+			'post_title'	=> $post->title,
+			'use_ajax'		=> TRUE,
 		))->render();
 	}
 

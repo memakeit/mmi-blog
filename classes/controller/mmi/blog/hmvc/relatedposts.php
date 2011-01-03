@@ -17,21 +17,24 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller_MMI_Blog_HMVC
 	 */
 	public function action_index()
 	{
-		$num_related_posts = MMI_Blog::get_post_config()->get('num_related_posts', 10);
-		$related = MMI_Blog_Post::factory($this->_driver)->get_related($this->_post->id, $num_related_posts);
-		if (empty($related))
+		$num_related_posts = MMI_Blog::get_post_config()->get('num_related_posts', 5);
+		$related_posts = MMI_Blog_Post::factory($this->_driver)->get_related($this->_post->id, $num_related_posts);
+		if (empty($related_posts))
 		{
 			$this->request->response = '';
 			return;
 		}
 
 		// Inject media
-		MMI_Request::css()->add_url('related-posts', array('module' => 'mmi-blog'));
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/relatedposts', array('module' => 'mmi-blog'));
+		}
 
 		// Set response
-		$this->request->response = View::factory('mmi/blog/content/related_posts', array
+		$this->request->response = Kostache::factory('mmi/blog/post/relatedposts')->set(array
 		(
-			'related' => $related,
+			'related_posts' => $related_posts,
 		))->render();
 	}
 } // End Controller_MMI_Blog_HMVC_RelatedPosts

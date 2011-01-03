@@ -78,14 +78,18 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller_MMI_Blog_HMVC
 		}
 
 		// Inject media
-		MMI_Request::css()->add_url('trackbacks', array('module' => 'mmi-blog'));
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/trackbacks', array('module' => 'mmi-blog'));
+		}
 
 		// Set response
-		$this->request->response = View::factory('mmi/blog/content/trackbacks', array
+		$this->request->response = Kostache::factory('mmi/blog/post/trackbacks')->set(array
 		(
 			'header'		=> $this->_get_header($trackbacks),
 			'trackback_url'	=> $post->trackback_guid,
 			'trackbacks'	=> $trackbacks,
+			'use_ajax'		=> FALSE,
 		))->render();
 	}
 
@@ -107,19 +111,23 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller_MMI_Blog_HMVC
 		$js = "$(window).load(load_trackbacks('$url', '$template', {$this->_allow_pingbacks}, {$this->_allow_trackbacks}));";
 
 		// Inject media
-		MMI_Request::css()->add_url('trackbacks', array('module' => 'mmi-blog'));
-		MMI_Request::js()
-			->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
-			->add_url('innershiv.min', array('module' => 'mmi-blog'))
-			->add_url('ajax-trackbacks', array('module' => 'mmi-blog'))
-			->add_inline('ajax_trackbacks', $js)
-		;
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/trackbacks', array('module' => 'mmi-blog'));
+			MMI_Request::js()
+				->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
+				->add_url('innershiv.min', array('module' => 'mmi-blog'))
+				->add_url('ajax-trackbacks', array('module' => 'mmi-blog'))
+				->add_inline('ajax_trackbacks', $js)
+			;
+		}
 
 		// Set response
-		$this->request->response = View::factory('mmi/blog/content/ajax/trackbacks', array
+		$this->request->response = Kostache::factory('mmi/blog/post/trackbacks')->set(array
 		(
 			'header'		=> $this->_get_header(),
 			'trackback_url'	=> $post->trackback_guid,
+			'use_ajax'		=> TRUE,
 		))->render();
 	}
 
@@ -137,7 +145,7 @@ class Controller_MMI_Blog_HMVC_Trackbacks extends Controller_MMI_Blog_HMVC
 		$num_trackbacks = empty($trackbacks) ? 0 : count($trackbacks);
 		if ($allow_pingbacks AND $allow_trackbacks)
 		{
-			$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Pingback', $num_trackbacks)).' &amp; '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
+			$header = $num_trackbacks.' '.ucfirst(Inflector::plural('Pingback', $num_trackbacks)).' & '.ucfirst(Inflector::plural('Trackback', $num_trackbacks));
 		}
 		elseif ($allow_pingbacks)
 		{

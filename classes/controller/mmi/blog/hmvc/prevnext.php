@@ -58,10 +58,13 @@ class Controller_MMI_Blog_HMVC_PrevNext extends Controller_MMI_Blog_HMVC
 		$this->_nav_meta();
 
 		// Inject media
-		MMI_Request::css()->add_url('prev-next', array('module' => 'mmi-blog'));
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/prevnext', array('module' => 'mmi-blog'));
+		}
 
 		// Set response
-		$this->request->response = View::factory('mmi/blog/content/prev_next', array
+		$this->request->response = Kostache::factory('mmi/blog/post/prevnext')->set(array
 		(
 			'prev'	=> $this->_prev,
 			'next'	=> $this->_next,
