@@ -9,26 +9,26 @@
 	<header class="grid_8 alpha omega">
 		<h2>
 		{{#header_link}}
-			<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{{text}}}</a>
+			<a href="{{{url}}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{{text}}}</a>
 		{{/header_link}}
 		</h2>
 
 		<p>
 			<span class="comments grid_2 omega">
 			{{#comments_link}}
-				<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+				<a href="{{{url}}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
 			{{/comments_link}}
 			</span>
 
 			<span class="grid_6 alpha">
-				By {{author}} on <time datetime="{{date_time}}" pubdate>
+				By {{author}} on <time datetime="{{datetime}}" pubdate>
 				{{#date_link}}
-					<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+					<a href="{{{url}}}" rel="archive index"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
 				{{/date_link}}
 				</time>
 				{{#categories}}in
 					{{#links}}
-						<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
+					 	<a href="{{{url}}}" rel="index category"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
 					{{/links}}
 				{{/categories}}
 			</span>
@@ -46,7 +46,7 @@
 			{{#tags}}
 				<strong>Tags:</strong>
 				{{#links}}
-					<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
+					<a href="{{{url}}}" rel="index tag"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
 				{{/links}}
 			{{/tags}}
 			{{^tags}}&nbsp;{{/tags}}
@@ -54,7 +54,7 @@
 
 			<p class="grid_2 omega">
 			{{#read_more_link}}
-				<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}><strong>{{text}}</strong></a>
+				<a href="{{{url}}}" rel="nofollow"{{#attributes}} {{name}}="{{value}}"{{/attributes}}><strong>{{text}}</strong></a>
 			{{/read_more_link}}
 			</p>
 		</div>

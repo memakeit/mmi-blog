@@ -44,18 +44,18 @@ class View_Kohana_MMI_Blog_Index extends Kostache
 		switch ($name)
 		{
 			case 'header':
-				$this->_process_header($value);
-			break;
 			case 'posts':
-				$this->_process_posts($value);
+				$method = "_process_{$name}";
+				$this->$method($value);
 			break;
 		}
 	}
 
 	/**
-	 * Process the header.
+	 * Process the header settings.
 	 *
 	 * @access	protected
+	 * @param	string	the header title
 	 * @return	void
 	 */
 	protected function _process_header($title)
@@ -67,6 +67,7 @@ class View_Kohana_MMI_Blog_Index extends Kostache
 	 * Process the posts.
 	 *
 	 * @access	protected
+	 * @param	array	an array of MMI_Blog_Post objects
 	 * @return	void
 	 */
 	protected function _process_posts($posts)
@@ -130,12 +131,11 @@ class View_Kohana_MMI_Blog_Index extends Kostache
 			);
 
 			$temp['author'] = MMI_Blog_User::format_user($post->author);
-			$temp['date_time'] = gmdate('c', $post_date);
+			$temp['datetime'] = gmdate('c', $post_date);
 			$temp['date_link'] =array
 			(
 				'attributes' => array
 				(
-					array('name' => 'rel', 'value' => 'archive index'),
 					array('name' => 'title', 'value' => 'articles for '.gmdate('F Y', $post_date)),
 				),
 				'text' => gmdate('F j, Y', $post_date),
@@ -183,7 +183,6 @@ class View_Kohana_MMI_Blog_Index extends Kostache
 			(
 				'attributes' => array
 				(
-					array('name' => 'rel', 'value' => 'nofollow'),
 					array('name' => 'title', 'value' => "read the article about {$post_title}"),
 				),
 				'text' => 'Read more',
@@ -217,7 +216,6 @@ class View_Kohana_MMI_Blog_Index extends Kostache
 				(
 					'attributes' => array
 					(
-						array('name' => 'rel', 'value' => "index {$term_type}"),
 						array('name' => 'title', 'value' => "articles {$wording} as {$name}"),
 					),
 					'separator' => ($idx === $last) ? '' : ', ',

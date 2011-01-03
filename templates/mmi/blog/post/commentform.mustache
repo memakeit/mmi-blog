@@ -1,0 +1,11 @@
+{{! mmi-blog/templates/mmi/blog/post/commentform.mustache }}
+
+<section id="comment_form" class="grid_8 alpha omega">';
+	<header><h3>Leave a Comment</h3></header>';
+	{{#_form}}
+		{{{html}}}
+	{{/_form}}
+	{{^_form}}
+		<div class="closed">Comments are closed for this article.</div>';
+	{{/_form}}
+</section>';

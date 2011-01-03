@@ -1,0 +1,38 @@
+{{! mmi-blog/templates/mmi/blog/post/comments.mustache }}
+
+<section id="comments" class="grid_8 alpha omega">
+	<header id="comments_hdr"{{#_header_class}} class="{{class}}"{{/_header_class}}>
+		<h3>
+		{{#_feed_url}}
+			<span>subscribe</span>
+			<a href="{{{url}}}" title="subscribe to the comment feed for {{post_title}}">{{header}}</a>
+		{{/_feed_url}}
+		{{^_feed_url}}
+			{{header}}
+		{{/_feed_url}}
+		</h3>
+	</header>
+
+{{#_comments}}
+	{{^use_ajax}}{{#items}}
+	<article id="comment-{{id}}"{{#comment_class}} class="{{class}}"{{/comment_class}}>
+		<figure class="grid_2 alpha">
+			<img src="{{{gravatar_url}}}" alt="{{author_name}}" height="{{gravatar_size}}" width="{{gravatar_size}}" />
+		</figure>
+		<header class="grid_6 omega">
+			By {{{author}}} on <time datetime="{{datetime}}" pubdate>{{formatted_datetime}}</time>
+		</header>
+		{{{content}}}
+	</article>
+	{{/items}}{{/use_ajax}}
+
+	{{#use_ajax}}
+	<div id="comments_loading">
+	{{#_loading_img}}
+		<img src="{{{src}}}" height="{{height}}" width="{{width}}" alt="loading comments ..." />
+	{{/_loading_img}}
+		Loading comments &hellip;
+	</div>
+	{{/use_ajax}}
+{{/_comments}}
+</section>

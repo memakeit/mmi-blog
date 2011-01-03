@@ -1,0 +1,11 @@
+{{! mmi-blog/templates/mmi/blog/js/comments.mustache }}
+
+<article id="comment-{{id}}"{{#comment_class}} class="{{class}}"{{/comment_class}}>
+	<figure class="grid_2 alpha">
+		<img src="{{{gravatar_url}}}" alt="{{author_name}}" height="{{gravatar_size}}" width="{{gravatar_size}}" />
+	</figure>
+	<header class="grid_6 omega">
+		By {{{author}}} on <time datetime="{{datetime}}" pubdate>{{formatted_datetime}}</time>
+	</header>
+	{{{content}}}
+</article>

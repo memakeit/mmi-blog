@@ -13,19 +13,19 @@
 		<p>
 			<span class="comments grid_2 omega">
 			{{#comments_link}}
-				<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+				<a href="{{{url}}}" id="comment_ct"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
 			{{/comments_link}}
 			</span>
 
 			<span class="grid_6 alpha">
 				By {{author}} on <time datetime="{{date_time}}" pubdate>
 				{{#date_link}}
-					<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+					<a href="{{{url}}}" rel="archive index"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
 				{{/date_link}}
 				</time>
 				{{#categories}}in
 					{{#links}}
-						<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
+						<a href="{{{url}}}" rel="index category"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
 					{{/links}}
 				{{/categories}}
 			</span>
@@ -39,7 +39,7 @@
 			<p id="tags">
 				<strong>Tags:</strong>
 				{{#links}}
-					<a href="{{url}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
+					<a href="{{{url}}}" rel="index tag"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
 				{{/links}}
 			</p>
 		{{/tags}}
@@ -50,7 +50,7 @@
 {{{_related_posts}}}
 {{{_bookmarks}}}
 
-{{{_comment_form}}}
+{{{comment_form}}}
 {{{_comments}}}
 {{{_trackbacks}}}
 

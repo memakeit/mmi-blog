@@ -11,9 +11,24 @@
 class View_Kohana_MMI_Blog_Post extends Kostache
 {
 	/**
-	 * @var boolean load the comments via AJAX
+	 * @var boolean load the comments via AJAX?
 	 **/
 	public $ajax_comments;
+
+	/**
+	 * @var boolean allow comments?
+	 **/
+	public $allow_comments;
+
+	/**
+	 * @var boolean allow pingbacks?
+	 **/
+	public $allow_pingbacks;
+
+	/**
+	 * @var boolean allow trackbacks?
+	 **/
+	public $allow_trackbacks;
 
 	/**
 	 * @var string the bookmark driver
@@ -21,7 +36,12 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 	public $bookmark_driver;
 
 	/**
-	 * @var boolean is the current page the home page
+	 * @var string the comment form
+	 **/
+	public $comment_form;
+
+	/**
+	 * @var boolean is the current page the home page?
 	 */
 	protected $_is_homepage;
 
@@ -31,24 +51,14 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 	protected $_mmi_blog_post;
 
 	/**
+	 * @var array the post features
+	 **/
+	protected $_post_features;
+
+	/**
 	 * @var array the post settings
 	 **/
 	protected $_post;
-
-	/**
-	 * Create and initialize the view.
-	 *
-	 * @access	public
-	 * @param	string 	template
-	 * @param	mixed 	view
-	 * @param	array	partials
-	 * @return	void
-	 */
-	public function __construct($template = null, $view = null, $partials = null)
-	{
-		parent::__construct($template, $view, $partials);
-		$this->_init();
-	}
 
 	/**
 	 * Set a variable.
@@ -64,29 +74,28 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 		switch ($name)
 		{
 			case 'post':
-				$this->_process_post($value);
+				$method = "_process_{$name}";
+				$this->$method($value);
 			break;
 		}
 	}
 
 	/**
-	 * Get whether the current page is the home page.
+	 * Set whether the current page is the home page.
+	 * Render the view.
 	 *
-	 * @access	protected
+	 * @access	public
+	 * @param	string 	template
+	 * @param	mixed 	view
+	 * @param	array	partials
 	 * @return	void
-	 * @uses	MMI_URL::canonical
+	 * @uses	MMI_URL::is_homepage
 	 */
-	protected function _init()
+	public function render($template = null, $view = null, $partials = null)
 	{
-		// Set whether the current page is the homepage
-		$request = Request::instance();
-		$name = Route::name($request->route);
-		$params = Request::instance()->param();
-		$params['action'] = $request->action;
-		$params['controller'] = $request->controller;
-		$current = MMI_URL::canonical($name, $params);
-		$home = MMI_URL::canonical('default', array('controller' => 'home'));
-		$this->_is_homepage = ($current === $home);
+		$this->_post_features = MMI_Blog::get_post_config()->get('features', array());
+		$this->_is_homepage = MMI_URL::is_homepage();
+		return parent::render($template, $view, $partials);
 	}
 
 	/**
@@ -136,7 +145,6 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 			'attributes' => array
 			(
 				array('name' => 'title', 'value' => "jump to comments about {$post_title}"),
-				array('name' => 'id', 'value' => 'comment_ct'),
 			),
 			'text' => $link_text,
 			'url' => "{$post_guid}/#comments",
@@ -148,7 +156,6 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 		(
 			'attributes' => array
 			(
-				array('name' => 'rel', 'value' => 'archive index'),
 				array('name' => 'title', 'value' => 'articles for '.gmdate('F Y', $post_date)),
 			),
 			'text' => gmdate('F j, Y', $post_date),
@@ -204,7 +211,6 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 				(
 					'attributes' => array
 					(
-						array('name' => 'rel', 'value' => "index {$term_type}"),
 						array('name' => 'title', 'value' => "articles {$wording} as {$name}"),
 					),
 					'separator' => ($idx === $last) ? '' : ', ',
@@ -228,7 +234,7 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 	 */
 	protected function _toolbox()
 	{
-	$bookmark_driver = $this->bookmark_driver;
+		$bookmark_driver = $this->bookmark_driver;
 		$post = $this->_mmi_blog_post;
 		if (empty($bookmark_driver) OR empty($post))
 		{
@@ -237,7 +243,7 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 
 		$route = Route::get('mmi/bookmark/hmvc')->uri(array
 		(
-			'action' 		=> MMI_Bookmark::MODE_BOOKMARKS,
+			'action' 		=> MMI_Bookmark::MODE_PILL,
 			'controller'	=> $bookmark_driver,
 		));
 		$hmvc = Request::factory($route);
@@ -250,7 +256,57 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 	}
 
 	/**
-	 * Using an HMVC request, get the bookmarking widget HTML.
+	 * Using an HMVC request, get the previous and next post HTML.
+	 *
+	 * @access	protected
+	 * @return	mixed
+	 */
+	protected function _prev_next()
+	{
+		if ( ! Arr::get($this->_post_features, 'prev_next', FALSE) OR empty($this->_mmi_blog_post))
+		{
+			return FALSE;
+		}
+
+		$route = Route::get('mmi/blog/hmvc')->uri(array
+		(
+			'controller' => 'prevnext'
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'post' => $this->_mmi_blog_post,
+		);
+		return $hmvc->execute()->response;
+	}
+
+	/**
+	 * Using an HMVC request, get the related posts HTML.
+	 *
+	 * @access	protected
+	 * @return	mixed
+	 */
+	protected function _related_posts()
+	{
+		if ( ! Arr::get($this->_post_features, 'related_posts', FALSE) OR empty($this->_mmi_blog_post))
+		{
+			return FALSE;
+		}
+
+		$route = Route::get('mmi/blog/hmvc')->uri(array
+		(
+			'controller' => 'relatedposts'
+		));
+		$hmvc = Request::factory($route);
+		$hmvc->post = array
+		(
+			'post' => $this->_mmi_blog_post,
+		);
+		return $hmvc->execute()->response;
+	}
+
+	/**
+	 * Using an HMVC request, get the bookmark widget HTML.
 	 *
 	 * @access	protected
 	 * @return	mixed
@@ -279,53 +335,51 @@ class View_Kohana_MMI_Blog_Post extends Kostache
 	}
 
 	/**
-	 * Using an HMVC request, get the related posts HTML.
+	 * Using an HMVC request, get the comments HTML.
 	 *
 	 * @access	protected
-	 * @return	mixed
+	 * @return	string
 	 */
-	protected function _related_posts()
+	protected function _comments()
 	{
-		$post = $this->_mmi_blog_post;
-		if (empty($post))
+		if ( ! $this->allow_comments OR empty($this->_mmi_blog_post))
 		{
 			return FALSE;
 		}
 
 		$route = Route::get('mmi/blog/hmvc')->uri(array
 		(
-			'controller' => 'relatedposts'
+			'controller' => 'comments'
 		));
 		$hmvc = Request::factory($route);
 		$hmvc->post = array
 		(
-			'post' => $post,
+			'post' => $this->_mmi_blog_post,
 		);
 		return $hmvc->execute()->response;
 	}
 
 	/**
-	 * Using an HMVC request, get the previous and next post HTML.
+	 * Using an HMVC request, get the trackbacks HTML.
 	 *
 	 * @access	protected
-	 * @return	mixed
+	 * @return	string
 	 */
-	protected function _prev_next()
+	protected function _trackbacks()
 	{
-		$post = $this->_mmi_blog_post;
-		if (empty($post))
+		if ( ! ($this->allow_pingbacks OR $this->allow_trackbacks) OR empty($this->_mmi_blog_post))
 		{
 			return FALSE;
 		}
 
 		$route = Route::get('mmi/blog/hmvc')->uri(array
 		(
-			'controller' => 'prevnext'
+			'controller' => 'trackbacks'
 		));
 		$hmvc = Request::factory($route);
 		$hmvc->post = array
 		(
-			'post' => $post,
+			'post' => $this->_mmi_blog_post,
 		);
 		return $hmvc->execute()->response;
 	}

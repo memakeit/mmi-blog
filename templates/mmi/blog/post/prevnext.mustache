@@ -1,0 +1,17 @@
+{{! mmi-blog/templates/mmi/blog/post/prevnext.mustache }}
+
+<div id="prev_next">
+{{#_prev}}
+	<div id="prev_post">
+		<a href="{{{url}}}" rel="nofollow" title="{{title}}">Previous</a>
+		<small>{{title}}</small>
+	</div>
+{{/_prev}}
+
+{{#_next}}
+	<div id="next_post">
+		<a href="{{{url}}}" rel="nofollow" title="{{title}}">Next</a>
+		<small>{{title}}</small>
+	</div>
+{{/_next}}
+</div>

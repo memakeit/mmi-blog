@@ -1,0 +1,18 @@
+{{! mmi-blog/templates/mmi/blog/post/trackbacks.mustache }}
+
+{{#_trackbacks}}
+<section id="trackbacks" class="grid_8 alpha omega">
+	<header id="trackbacks_hdr">
+		<h3>{{header}}</h3>
+		{{#_trackback_url}}
+		<small>Trackback URL: {{{url}}}</small>
+		{{/_trackback_url}}
+	</header>
+
+	<ol class="push_1 grid_7 alpha omega">
+	{{^use_ajax}}{{#trackback_urls}}
+		<li id="comment-{{id}}"><a href="{{{url}}}" rel="external nofollow">{{title}}</a></li>
+	{{/trackback_urls}}{{/use_ajax}}
+	</ol>
+</section>
+{{/_trackbacks}}
