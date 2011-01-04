@@ -3,7 +3,8 @@
 
 ## Dependencies
 
-* [kostache](https://github.com/zombor/KOstache)
+* [Jelly](https://github.com/jonathangeiger/kohana-jelly)
+* [KOstache](https://github.com/zombor/KOstache)
 * [mmi-util](https://github.com/memakeit/mmi-util)
 * [mmi-request](https://github.com/memakeit/mmi-request)
 * [mmi-data](https://github.com/memakeit/mmi-data)
