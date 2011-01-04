@@ -64,7 +64,7 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 		// Inject media
 		if (class_exists('MMI_Request'))
 		{
-			MMI_Request::less()->add_url('post/comments', array('bundle' => 'blog', 'module' => 'mmi-blog'));
+			MMI_Request::less()->add_url('post/comments', array('module' => 'mmi-blog'));
 		}
 
 		// Set response
@@ -98,7 +98,7 @@ class Controller_MMI_Blog_HMVC_Comments extends Controller_MMI_Blog_HMVC
 		// Inject media
 		if (class_exists('MMI_Request'))
 		{
-			MMI_Request::less()->add_url('post/comments', array('bundle' => 'blog', 'module' => 'mmi-blog'));
+			MMI_Request::less()->add_url('post/comments', array('module' => 'mmi-blog'));
 			MMI_Request::js()
 				->add_url('jquery.tmpl', array('module' => 'mmi-blog'))
 				->add_url('innershiv.min', array('module' => 'mmi-blog'))

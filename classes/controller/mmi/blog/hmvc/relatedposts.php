@@ -17,18 +17,18 @@ class Controller_MMI_Blog_HMVC_RelatedPosts extends Controller_MMI_Blog_HMVC
 	 */
 	public function action_index()
 	{
+		// Inject media
+		if (class_exists('MMI_Request'))
+		{
+			MMI_Request::less()->add_url('post/relatedposts', array('module' => 'mmi-blog'));
+		}
+
 		$num_related_posts = MMI_Blog::get_post_config()->get('num_related_posts', 5);
 		$related_posts = MMI_Blog_Post::factory($this->_driver)->get_related($this->_post->id, $num_related_posts);
 		if (empty($related_posts))
 		{
 			$this->request->response = '';
 			return;
-		}
-
-		// Inject media
-		if (class_exists('MMI_Request'))
-		{
-			MMI_Request::less()->add_url('post/relatedposts', array('bundle' => 'blog', 'module' => 'mmi-blog'));
 		}
 
 		// Set response
