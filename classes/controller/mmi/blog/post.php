@@ -126,7 +126,7 @@ class Controller_MMI_Blog_Post extends MMI_Template
 			$this->_inject_media();
 		}
 
-		$this->_title = $post->title;
+		$this->title($post->title);
 		$this->_add_main_content($view->render(), 'mmi/blog/post');
 	}
 

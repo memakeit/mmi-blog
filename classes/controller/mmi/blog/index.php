@@ -213,7 +213,7 @@ class Controller_MMI_Blog_Index extends MMI_Template
 			'posts' 			=> $posts,
 		))->render();
 
-		$this->_title = $title;
+		$this->title($title);
 		$this->_add_main_content($content, 'mmi/blog/index');
 	}
 
