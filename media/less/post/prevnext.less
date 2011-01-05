@@ -1,62 +1,71 @@
-/* mmi-blog/prev-next.css */
+/* mmi-blog/media/less/post/prev-next.less */
 
+@icon_size: 24px;
 #prev_next
 {
-	float: left;
 	position: relative;
-	margin-bottom: 40px;
-	width: 100%;
+	@grid_margin_bottom: @grid_margin * 4;
+	@grid_margin_left: 0;
+	@grid_margin_right: 0;
+	@grid_row_new();
+	@grid(8);
+	a
+	{
+		@font_size_em(@icon_size);
+		height: @icon_size;
+		line-height: @icon_size;
+	}
+	small
+	{
+		@em: ((@icon_size / 2) / @font_size) * 1em;
+		display: none;
+		font-size: @em;
+		line-height: @em;
+		position: absolute;
+		top: (@em * -1.2);
+	}
 }
 
-#prev_next a
+#prev_post,
+#next_post
 {
-	font-size: 1.714em; /* 24px */
-	height: 24px;
-	line-height: 24px;
-}
-
-#prev_next small
-{
-	display: none;
-	line-height: 1;
-	position: absolute;
-	top: -1em;
+	@grid_margin_left: @grid_margin;
+	@grid_margin_right: @grid_margin;
+	@grid(4);
 }
 
 /*	previous
  ******************************************************************************/
+@left: @icon_size + @grid_margin;
 #prev_post
 {
 	float: left;
-}
-
-#prev_post small
-{
-	left: 32px;
-}
-
-#prev_post a
-{
-	background: url('../../img/icons/24px/Arrow1 Left.png') no-repeat 0 0;
-	float: left;
-	padding-left: 32px;
+	small
+	{
+		left: @left + @grid_margin;
+	}
+	a
+	{
+		background: url('../../img/icons/{@icon_size}/Arrow1 Left.png') no-repeat 0 0;
+		float: left;
+		padding-left: @left;
+	}
 }
 
 /*	next
  ******************************************************************************/
+@right: @left;
 #next_post
 {
 	float: right;
-}
-
-#next_post small
-{
-	right: 32px;
-}
-
-#next_post a
-{
-	background: url('../../img/icons/24px/Arrow1 Right.png') no-repeat 100% 0;
-	float: right;
-	padding-right: 32px;
+	small
+	{
+		right: @right + @grid_margin;
+	}
+	a
+	{
+		background: url('../../img/icons/{@icon_size}/Arrow1 Right.png') no-repeat 100% 0;
+		float: right;
+		padding-right: @right;
+	}
 }

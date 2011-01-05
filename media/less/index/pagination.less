@@ -1,67 +1,68 @@
-/* mmi-blog/pagination.css */
+/* mmi-blog/media/less/index/pagination.less */
 
+@icon_size: 24px;
 .pagination
 {
-	float: left;
-	padding-bottom: 20px;
-}
-
-.pagination span
-{
-	float: left;
-	height: 26px;
-	line-height: 26px;
-}
-
-.pagination .txt
-{
-	font-weight: bold;
-	margin-right: 8px;
-	text-align: right;
-	width: 212px;
-}
-
-.pagination a,
-.pagination strong
-{
-	border: 1px solid #CCC;
-	display: block;
-	float: left;
-	height: 24px;
-	line-height: 24px;
-	padding: 0 8px;
-	margin-right: 8px;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.pagination a:hover
-{
-	border-color: #000;
-}
-
-.pagination a.next,
-.pagination a.prev
-{
-	padding: 0;
-	text-indent: -7777px;
-	width: 24px;
-}
-
-.pagination a.prev
-{
-	background: url('../../img/icons/24px/Player Play2.png') no-repeat 0 0;
-}
-
-.pagination a.next
-{
-	background: url('../../img/icons/24px/Player Play.png') no-repeat 100% 0;
-	padding: 0;
-	width: 24px;
-	text-indent: -7777px;
-}
-
-.pagination strong
-{
-	background: #EEE;
+	@grid_margin_bottom: @grid_margin * 4;
+	@grid_margin_left: 0;
+	@grid_margin_right: 0;
+	@grid_new_row();
+	@grid(8);
+	span
+	{
+		float: left;
+		height: @icon_size + 2;
+		line-height: @icon_size + 2;
+	}
+	span.txt
+	{
+		font-weight: bold;
+		text-align: right;
+		@grid_margin_bottom: 0;
+		@grid_margin_left: @grid_margin;
+		@grid_margin_right: @grid_margin;
+		@grid(2);
+	}
+	span.links
+	{
+		@grid_margin_bottom: 0;
+		@grid_margin_left: @grid_margin;
+		@grid_margin_right: @grid_margin;
+		@grid(6);
+	}
+	a,
+	strong
+	{
+		@border(;;);
+		display: block;
+		float: left;
+		height: @icon_size;
+		line-height: @icon_size;
+		padding: 0 @grid_margin;
+		margin-right: @grid_margin;
+		text-align: center;
+	}
+	a:hover
+	{
+		border-color: #000;
+	}
+	a.next,
+	a.prev
+	{
+		padding: 0;
+		text-indent: -7777px;
+		width: @icon_size;
+	}
+	a.prev
+	{
+		background: url('../../img/icons/{@icon_size}/Player Play2.png') no-repeat 0 0;
+	}
+	a.next
+	{
+		background: url('../../img/icons/{@icon_size}/Player Play.png') no-repeat 100% 0;
+	}
+	strong
+	{
+		background: #EEE;
+	}
 }

@@ -1,24 +1,28 @@
-/* mmi-blog/related-posts.css */
+/* mmi-blog/media/less/post/related-posts.less */
 
+@li_margin_bottom: @grid_margin / 2;
 #related_posts
 {
-	margin-bottom: 35px;
-}
-
-#related_posts header
-{
-	border-bottom: 1px solid #CCC;
-	font-size: 2.571em; /* 36px */
-	line-height: 1.2;
-	margin-bottom: 10px;
-}
-
-#related_posts ul
-{
-	list-style-type: disc;
-}
-
-#related_posts li
-{
-	margin-bottom: 5px;
+	float: left;
+	margin-bottom: (@grid_margin * 4) - @li_margin_bottom;
+	header
+	{
+		@border_bottom(;;);
+		@font_size_em(36px);
+		line-height: 1.2;
+		@grid_margin_bottom: @grid_margin;
+		@grid_new_row();
+		@grid(8);
+	}
+	ul
+	{
+		list-style-type: disc;
+		@grid_new_row();
+		@grid_push(1);
+		@grid(7);
+	}
+	#related_posts li
+	{
+		margin-bottom: @li_margin_bottom;
+	}
 }

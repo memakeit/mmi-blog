@@ -1,111 +1,118 @@
-/* mmi-blog/index.css */
+/* mmi-blog/media/less/index.less */
 
-article
+header.type
 {
-	margin-bottom: 20px;
+	float: left;
+	h1
+	{
+		color: #999;
+		line-height: 1.2;
+		@grid_row_new();
+		@grid(8);
+	}
 }
-
-header h1
-{
-	color: #999;
-	line-height: 1.2;
-}
-
 p.hdr
 {
-	font-size: 1.286em; /* 18px */
+	@font_size_em(18px);
+	margin-top: @grid_margin;
 }
-
-/*	header
- ******************************************************************************/
-article header
+.addthis_toolbox.pill
 {
-	margin-bottom: 20px;
+	margin: (@grid_margin / 2) @grid_margin 0 @grid_margin;
 }
 
-article header h2
-{
-	font-size: 2.571em; /* 32px */
-	line-height: 1.2;
-}
-
-article header p
-{
-	border-bottom: 1px solid #CCC;
-	float: left;
-	line-height: 24px;
-	position: relative;
-	width: 100%;
-}
-
-article header span a
-{
-	font-size: 1.143em; /* 16px */
-}
-
-article header .comments
-{
-	bottom: 0;
-	position: absolute;
-	right: 0;
-}
-
-article header .comments a
-{
-	background: url('../../img/icons/24px/Discuss.png') no-repeat 100% 0;
-	float: right;
-	height: 24px;
-	padding-right: 32px;
-}
-
-div.addthis_toolbox.pill
-{
-	padding-top: 4px;
-}
-
-/*	section
- ******************************************************************************/
-article section p
-{
-	margin-bottom: 20px;
-}
-
-article section p img
+/*	article
+******************************************************************************/
+@icon_size: 24px;
+article
 {
 	float: left;
-	padding: 0 15px 5px 0;
-}
+	margin-bottom: @grid_margin * 2;
 
-article section p.img_hdr img
-{
-	display: block;
-	float: none;
-	padding: 0;
-}
+	/*	header
+ 	******************************************************************************/
+	header
+	{
+		float: left;
+		margin-bottom: @grid_margin * 2;
+		h2
+		{
+			@font_size_em(32px);
+			line-height: 1.2;
+			@grid_row_new();
+			@grid(8);
+		}
+		p
+		{
+			@border_bottom(;;);
+			line-height: @icon_size;
+			@grid_margin_left: @grid_margin;
+			@grid_margin_right: @grid_margin;
+			@grid_row_new();
+			@grid(8);
+			span.meta
+			{
+				@grid_adjust: @grid_margin * -1;
+				@grid_margin_left: 0;
+				@grid_margin_right: @grid_margin;
+				@grid(5);
+			}
+			span.comments
+			{
+				@grid_adjust: @grid_margin * -1;
+				@grid_margin_left: @grid_margin;
+				@grid_margin_right: 0;
+				@grid(3);
+				a
+				{
+					background: url('../../img/icons/{@icon_size}/Discuss.png') no-repeat 100% 0;
+					float: right;
+					height: @icon_size;
+					padding-right: @icon_size + (@grid_margin / 2);
+				}
+			}
+		}
+	}
 
-/*	tags and read more
- ******************************************************************************/
-div.last
-{
-	float: left;
-}
+	/*	section
+ 	******************************************************************************/
+	section
+	{
+		float: left;
+		p img
+		{
+			float: left;
+			padding: 0 (@grid_margin * 1.5) (@grid_margin / 2) 0;
+		}
+		p.img_hdr img
+		{
+			display: block;
+			float: none;
+			padding: 0;
+		}
+	}
 
-div.last p.alpha
-{
-	font-size: 1.143em; /* 16px */
-}
-
-div.last p.omega
-{
-	margin-bottom: 0;
-}
-
-div.last p.omega a
-{
-	background: url('../../img/icons/24px/Arrow1 Right.png') no-repeat 100% 0;
-	float: right;
-	height: 24px;
-	line-height: 24px;
-	padding-right: 28px;
-	vertical-align: middle;
+	/*	footer
+ 	******************************************************************************/
+	footer
+	{
+		float: left;
+		height: @icon_size;
+		line-height: @icon_size;
+		margin-bottom: @grid_margin * 2;
+		p.tags
+		{
+			@grid(5);
+		}
+		p.read_more
+		{
+			@grid(3);
+			a
+			{
+				background: url('../../img/icons/{@icon_size}/Arrow1 Right.png') no-repeat 100% 0;
+				float: right;
+				padding-right: @icon_size + (@grid_margin / 2);
+			}
+		}
+	}
 }

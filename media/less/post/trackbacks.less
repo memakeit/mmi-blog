@@ -1,10 +1,22 @@
-/* mmi-blog/trackbacks.css */
+/* mmi-blog/media/less/post/trackbacks.less */
 
+@li_margin_bottom: @grid_margin / 2;
 #trackbacks
 {
-	margin-bottom: 35px;
+	float: left;
+	margin-bottom: (@grid_margin * 4) - @li_margin_bottom;;
+	ol
+	{
+		list-style-type: decimal;
+		@grid_new_row();
+		@grid_push(1);
+		@grid(7);
+	}
+	li
+	{
+		margin-bottom: @li_margin_bottom;
+	}
 }
-
 #trackbacks.hidden
 {
 	display: none;
@@ -12,33 +24,23 @@
 
 #trackbacks_hdr
 {
-	margin-bottom: 10px;
-}
-
-#trackbacks_hdr h3
-{
-	border-bottom: 1px solid #CCC;
-	display: block;
-	font-size: 2.571em; /* 36px */
-	line-height: 1.2;
-	margin-bottom: 2px;
-}
-
-#trackbacks_hdr small
-{
-	color: #999;
-	display: block;
-	font-size: .857em; /* 12px */
-	line-height: 1;
-}
-
-#trackbacks ol
-{
-	list-style-type: decimal;
-}
-
-#trackbacks li
-{
-	display: list-item;
-	margin-bottom: 5px;
+	float: left;
+	margin-bottom: @grid_margin;
+	h3
+	{
+		@border_bottom(;;);
+		@font_size_em(36px);
+		line-height: 1.2;
+		@grid_margin_bottom: 2px;
+		@grid_new_row();
+		@grid(8);
+	}
+	small
+	{
+		color: #999;
+		@font_size_em(12px);
+		line-height: 1;
+		@grid_new_row();
+		@grid(8);
+	}
 }

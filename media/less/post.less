@@ -1,78 +1,91 @@
-/* mmi-blog/post.css */
+/* mmi-blog/media/less/post.less */
 
-/*	header
- ******************************************************************************/
-article header
+.addthis_toolbox.pill
 {
-	margin-bottom: 20px;
+	margin: (@grid_margin / 2) @grid_margin 0 @grid_margin;
 }
-
-article header h2
-{
-	font-size: 2.571em; /* 32px */
-	line-height: 1.2;
-}
-
-article header p
-{
-	border-bottom: 1px solid #CCC;
-	display: block;
-	float: left;
-	line-height: 24px;
-	position: relative;
-	width: 100%;
-}
-
-article header a
-{
-	font-size: 1.143em; /* 16px */
-}
-
-#comment_ct
-{
-	background: url('../../img/icons/24px/Discuss.png') no-repeat 100% 0;
-	bottom: 0;
-	float: right;
-	height: 24px;
-	padding-right: 32px;
-	position: absolute;
-	right: 0;
-}
-
-div.addthis_toolbox.pill
-{
-	padding-top: 4px;
-}
-
-/*	content
- ******************************************************************************/
-article div.post
-{
-	margin-bottom: 40px;
-}
-
-article div.post div.last
-{
-	min-height: 68px;
-}
-
-article p img
-{
-	float: left;
-	padding: 0 15px 5px 0;
-}
-
-article p.img_hdr img
-{
-	display: block;
-	float: none;
-	padding: 0;
-}
-
+@tweet_height: 68px;
 .tweet
 {
 	float: left;
-	height: 68px;
-	margin: 5px 15px 5px 0;
+	height: @tweet_height;;
+	margin: (@grid_margin / 2) (@grid_margin * 1.5) (@grid_margin / 2) 0;
 	width: 55px;
+}
+
+/*	article
+******************************************************************************/
+@icon_size: 24px;
+article
+{
+	float: left;
+	margin-bottom: @grid_margin;
+
+	/*	header
+ 	******************************************************************************/
+	header
+	{
+		float: left;
+		margin-bottom: @grid_margin * 2;
+		h1,
+		h2
+		{
+			@font_size_em(32px);
+			line-height: 1.2;
+			@grid_row_new();
+			@grid(8);
+		}
+		p
+		{
+			@border_bottom(;;);
+			line-height: @icon_size;
+			@grid_margin_left: @grid_margin;
+			@grid_margin_right: @grid_margin;
+			@grid_row_new();
+			@grid(8);
+			span.meta
+			{
+				@grid_adjust: @grid_margin * -1;
+				@grid_margin_left: 0;
+				@grid_margin_right: @grid_margin;
+				@grid(5);
+			}
+			span.comments
+			{
+				@grid_adjust: @grid_margin * -1;
+				@grid_margin_left: @grid_margin;
+				@grid_margin_right: 0;
+				@grid(3);
+				a
+				{
+					background: url('../../img/icons/{@icon_size}/Discuss.png') no-repeat 100% 0;
+					float: right;
+					height: @icon_size;
+					padding-right: @icon_size + (@grid_margin / 2);
+				}
+			}
+		}
+	}
+
+	/*	content
+	 ******************************************************************************/
+	div.post
+	{
+		margin-bottom: @grid_margin * 4;
+	}
+	div.post.last
+	{
+		min-height: @tweet_height;
+	}
+	p img
+	{
+		float: left;
+		padding: 0 (@grid_margin * 1.5) (@grid_margin / 2) 0;
+	}
+	p.img_hdr img
+	{
+		display: block;
+		float: none;
+		padding: 0;
+	}
 }
