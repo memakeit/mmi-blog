@@ -1,9 +1,9 @@
 {{! mmi-blog/templates/mmi/blog/post/relatedposts.mustache }}
 
 {{#_related_posts}}
-<section id="related_posts" class="grid_8 alpha omega">
+<section id="related_posts">
 	<header><h3>Possibly Related Articles</h3></header>
-	<ul class="push_1 grid_7 alpha omega">
+	<ul>
 	{{#posts}}
 		<li><a href="{{{url}}}" rel="nofollow">{{title}}</a></li>
 	{{/posts}}

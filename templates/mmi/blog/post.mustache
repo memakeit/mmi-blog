@@ -2,7 +2,7 @@
 
 {{#_post}}
 <article id="post_{{post_id}}">
-	<header class="grid_8 alpha omega">
+	<header>
 	{{#_is_homepage}}
 		<h2>{{post_title}}</h2>
 	{{/_is_homepage}}
@@ -11,13 +11,7 @@
 	{{/_is_homepage}}
 
 		<p>
-			<span class="comments grid_2 omega">
-			{{#comments_link}}
-				<a href="{{{url}}}" id="comment_ct"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
-			{{/comments_link}}
-			</span>
-
-			<span class="grid_6 alpha">
+			<span class="meta">
 				By {{author}} on <time datetime="{{date_time}}" pubdate>
 				{{#date_link}}
 					<a href="{{{url}}}" rel="archive index"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
@@ -29,6 +23,11 @@
 					{{/links}}
 				{{/categories}}
 			</span>
+			<span class="comments">
+			{{#comments_link}}
+				<a href="{{{url}}}" id="comment_ct"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+			{{/comments_link}}
+			</span>
 		</p>
 		{{{_toolbox}}}
 	</header>
@@ -36,7 +35,7 @@
 	<div class="post">
 		{{{content}}}
 		{{#tags}}
-			<p id="tags">
+			<p class="tags">
 				<strong>Tags:</strong>
 				{{#links}}
 					<a href="{{{url}}}" rel="index tag"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}

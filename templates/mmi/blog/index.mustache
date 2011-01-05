@@ -6,7 +6,7 @@
 
 {{#_posts}}
 <article id="post_{{post_id}}"{{#article_class}} class="{{class}}"{{/article_class}}>
-	<header class="grid_8 alpha omega">
+	<header>
 		<h2>
 		{{#header_link}}
 			<a href="{{{url}}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{{text}}}</a>
@@ -14,13 +14,7 @@
 		</h2>
 
 		<p>
-			<span class="comments grid_2 omega">
-			{{#comments_link}}
-				<a href="{{{url}}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
-			{{/comments_link}}
-			</span>
-
-			<span class="grid_6 alpha">
+			<span class="meta">
 				By {{author}} on <time datetime="{{datetime}}" pubdate>
 				{{#date_link}}
 					<a href="{{{url}}}" rel="archive index"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
@@ -32,32 +26,35 @@
 					{{/links}}
 				{{/categories}}
 			</span>
+			<span class="comments">
+			{{#comments_link}}
+				<a href="{{{url}}}"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>
+			{{/comments_link}}
+			</span>
 		</p>
 		{{{toolbox}}}
 	</header>
 
-	<section class="grid_8 alpha omega">
+	<section>
 		{{{content}}}
 	</section>
 
-	<footer class="grid_8 alpha omega">
-		<div class="content last">
-			<p class="grid_6 alpha">
-			{{#tags}}
-				<strong>Tags:</strong>
-				{{#links}}
-					<a href="{{{url}}}" rel="index tag"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
-				{{/links}}
-			{{/tags}}
-			{{^tags}}&nbsp;{{/tags}}
-			</p>
+	<footer>
+		<p class="tags">
+		{{#tags}}
+			<strong>Tags:</strong>
+			{{#links}}
+				<a href="{{{url}}}" rel="index tag"{{#attributes}} {{name}}="{{value}}"{{/attributes}}>{{text}}</a>{{separator}}
+			{{/links}}
+		{{/tags}}
+		{{^tags}}&nbsp;{{/tags}}
+		</p>
 
-			<p class="grid_2 omega">
-			{{#read_more_link}}
-				<a href="{{{url}}}" rel="nofollow"{{#attributes}} {{name}}="{{value}}"{{/attributes}}><strong>{{text}}</strong></a>
-			{{/read_more_link}}
-			</p>
-		</div>
+		<p class="read_more">
+		{{#read_more_link}}
+			<a href="{{{url}}}" rel="nofollow"{{#attributes}} {{name}}="{{value}}"{{/attributes}}><strong>{{text}}</strong></a>
+		{{/read_more_link}}
+		</p>
 	</footer>
 </article>
 {{/_posts}}
